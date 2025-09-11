@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!--!  заголовок сторінки -->
+    <title>Practice-23 JS</title>
+    <!--! завантаження зображення до заголовку сторінки -->
+    <link
+      href="https://img.icons8.com/ios/16/23.png"
+      type="image/x-icon"
+      rel="shortcut icon"
+    />
+    <link rel="stylesheet" href="./css/style.css" />
+  </head>
+  <body>
+    <div class="box">
+      <h3 id="start-case">start case</h3>
+    </div>
+
+    <h3 class="cta">Scroll me</h3>
+    <div class="event-counter">
+
+      <div class="box-in-box">
+        <p>Number of scroll events</p>
+        <span class="output">0</span>
+      </div>
+    </div>
+<div class="box">
+            <h3 class="cta">Scroll me (throttle)</h3>
+            <div class="event-counter">
+                <div class="box2-in-box">
+                    <p>No timing function</p>
+                    <span class="output vanilla">0</span>
+                </div>
+                <div class="box2-in-box">
+                    <p>Throttled</p>
+                    <span class="output throttled">0</span>
+                </div>
+            </div>
+        </div>
+        <button class="button-3">Off</button>
+    </div>
+<div class="box">
+            <h3 class="cta">Input (with debounce)</h3>
+            <input class="input" type="text">
+        </div>
+
+
+    <!--! Підключення скриптів -->
+    <!-- підключення бібліотеки lodash  -->
+
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.21/lodash.min.js"
+      integrity="sha512-WFN04846sdKMIP5LKNphMaWzU7YpMyCU245etK3g/2ARYbPK9Ub18eG+ljU96qKRCWh+quCY7yefSmlkQw1ANQ=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+    <!-- суворий режим  -->
+    <script src="./js/practice-23.js" type="module" defer></script>
+    <!-- не суворий режим -->
+    <!-- <script src="./js/practice-17.js" ></script> -->
+  </body>
+</html>

@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!--!  заголовок сторінки -->
+    <title>Practice-20 JS</title>
+    <!--! завантаження зображення до заголовку сторінки -->
+    <link
+      href="https://img.icons8.com/ios/16/20.png"
+      type="image/x-icon"
+      rel="shortcut icon"
+    />
+    <link rel="stylesheet" href="./css/style.css" />
+  </head>
+  <body>
+
+   <div class="box">
+            <button class="my-button-1">My button-1</button>
+            <button class="my-button-2">My button-2</button>
+            <button class="my-button-3">My button-3</button>
+        </div>
+<div class="box">
+            <button class="btn js-add">Add Listener</button>
+            <button class="btn js-remove">Remove Listener</button>
+            <hr>
+            <button class="btn js-target-btn">Click me</button>
+        </div>
+
+<div class="part_2 box">
+  boxpart2
+            <button class="button4">Button-4</button>
+            <button class="button5">Button-5</button>
+        </div>
+<div class="box">
+            <form class="register-form" autocomplete="off">
+                <input type="text" name="username" placeholder="Username" />
+                <input type="password" name="password" placeholder="Password" />
+                <button type="submit">Register</button>
+            </form>
+        </div>
+<div class="box">
+            <h3>Подія submit​</h3>
+            <form class="form" autocomplete="off">
+                <input type="text" name="userlogin" placeholder="Login">
+                <input type="password" name="userpassword" placeholder="Password">
+                <button class="btn" type="submit">Register</button>
+            </form>
+        </div>
+
+<div class="box">
+            <h3>Подія change​</h3>
+            <!--todo: Приклад-1: -->
+            <input 
+                class="input1" 
+                type="number" 
+                name="user-number" 
+                placeholder ="Your number..."
+            >
+            <input 
+                class="input2" 
+                type="password" 
+                name="user-password" 
+                placeholder="Your password..."
+            >
+            <hr>
+            <!--todo: Приклад-2: -->
+            <p>
+                Selected option value: <span class="value-output">none</span>
+            <p>
+            <p>
+                Selected option text: <span class="text-output">none</span>
+            <p>
+                <select class="pizza-select">
+                    <option value="four_meats">Four Meats</option>
+                    <option value="royal_cheese">Royal Cheese</option>
+                    <option value="vegetarian">Vegetarian</option>
+                    <option value="smoked_salmon">Smoked Salmon</option>
+                </select>
+        </div>
+
+<div class="box">
+            <h3>Подія input​​</h3>
+            <input type="text" class="text-input41" />
+            <p>Text field value: <span class="output"></span></p>
+        </div>
+<div class="box">
+            <h3>Події focus і blur​​</h3>
+            <button
+                class="btn"
+                type="button" 
+                data-action="set"
+            >
+            Set focus to input
+            </button>
+            <button
+            class="btn"
+                type="button" 
+                data-action="remove"
+            >
+            Remove focus from input
+            </button>
+            <br><br>
+            <input type="text" class="text-input42" />
+        </div>
+
+
+    <!--! Підключення скриптів -->
+    <!-- суворий режим  -->
+    <script src="./js/practice-20.js" type="module" defer></script>
+    <!-- не суворий режим -->
+    <!-- <script src="./js/practice-17.js" ></script> -->
+  </body>
+</html>

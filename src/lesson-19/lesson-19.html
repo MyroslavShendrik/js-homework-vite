@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <!--!  заголовок сторінки -->
+        <title>Lesson-19 JS</title>
+        <!--! завантаження зображення до заголовку сторінки -->
+      <link rel="stylesheet" href="./css/style.css">
+      <link rel="stylesheet" href="../css/reset.css">
+        <link href="https://img.icons8.com/ios/16/19.png" type="image/x-icon" rel="shortcut icon">
+    </head>
+
+    <body>
+<form class="form">
+    <p>Choose a color:</p>
+    <label>
+    <input type="radio" name="color" value="red" />
+    Red
+    </label>
+    <label>
+    <input type="radio" name="color" value="white" checked />
+    White
+    </label>
+    <label>
+    <input type="radio" name="color" value="green" />
+    Green
+    </label>
+</form>
+
+<input type="text" placeholder="Ваше ім'я?" id="name-input" />
+<h1>Привіт, <span id="name-output">незнайомець</span>!</h1>
+
+<input
+    type="text"
+    id="validation-input"
+    data-length="6"
+    placeholder="Введи 6 символів"
+/>
+<span id="text">Абракадабра!</span>
+<br />
+<input id="font-size-control" type="range" />
+        <!--! Підключення скриптів -->
+        <script src="./js/lesson-19.js" type="module" defer></script>
+    </body>
+</html>
+
+

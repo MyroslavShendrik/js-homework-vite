@@ -1,0 +1,19 @@
+img {
+	display: block;
+	max-width: 100%;
+	height: auto;
+}
+
+
+.menu li{
+    color: violet;
+    background-color: blue;
+    text-align: center;
+}
+/* .menu-item:nth-child(2){
+    color: tomato;
+}; */
+.image{
+    background-color: yellow;
+    outline: 1px solid tomato;
+}

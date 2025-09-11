@@ -1,0 +1,8 @@
+.accent{
+    background-color: aquamarine;
+}
+.part_2{
+    width:200px ;
+    height:100px ;
+    outline: 1px tomato solid;
+}

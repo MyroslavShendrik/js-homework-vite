@@ -1,0 +1,24 @@
+body {
+  font-family: sans-serif;
+  text-align: center;
+  padding: 20px;
+}
+
+.images {
+  overflow-y:scroll ;
+  max-width: 600px;
+  height: 400px;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 50px; 
+  outline: 1px solid red;
+}
+
+img {
+  background-color: #f0f0f0;
+  display: block;
+  width: 100%;
+  height: auto;
+}
+

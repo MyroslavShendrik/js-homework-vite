@@ -1,0 +1,46 @@
+.blur-up {
+    width: 50%;
+    filter: blur(10px);
+    transition: filter 400ms;
+}
+
+.blur-up.lazyloaded {
+    filter: blur(0);
+}
+
+/*? 3.Відкладене завантаження (з концепцією Intersection Observer) */
+.box-target {
+    height: 200px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2em;
+    color: red;
+    margin: 50vh 0; /*! для того, щоб був скрол */
+    background: lightblue;
+    outline: 1px solid red;
+}
+
+/*! ПРИХОВАТИ для демонстрації відстеження "box-target" у вікні [scrollContainer] */
+#box-rootMargin {
+    position: fixed;
+    width: 100vw;
+    /*todo: Для зменшення знизу зони на 50% висоти в'юпорту */
+    height: 50vh;
+    /* height: 100vh; */
+    top: 0;
+    left: 0;
+    border: 3px solid blue;
+    background-color: #63636336;
+}
+
+/*! ВІДКРИТИ (і в JS) для демонстрації відстеження "box-target" у вікні [scrollContainer] */
+/* #scrollContainer {
+    outline: 1px solid green;
+    width: 50vw;
+    height: 50vh;
+    overflow-y: scroll;
+} */
+.height-container{
+    height: 100vh;
+}

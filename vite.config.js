@@ -11,7 +11,7 @@ export default defineConfig({
       //! ❌ Це шукає тільки HTML-файли верхнього рівня src/, і не включає HTML-файли нижнього рівня
       // input: glob.sync('./src/*.html'),
       //! ✅ Це шукає ВСІ HTML-файли, включаючи HTML-файли нижнього рівня
-      input: glob.sync('./src/**/*.html'),
+      input: glob.sync('./**/*.html'),
     },
     outDir: '../dist',
   },
