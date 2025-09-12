@@ -665,39 +665,39 @@ const object1 = {
 // const phone = "222-22-22";
 const {name1, email1 , phone1} = object1;
 
-//! Методи класу
-console.warn("Методи класу:");
-//? ✴️ Для роботи з властивостями майбутнього екземпляра 
-//? використовуються методи класу - функції,
-//? які будуть доступні екземпляру в його прототипі.
-class User5 {
-    //todo: Синтаксис оголошення методу класу:
-    //todo: Деструктуризуємо об'єкт:
-    constructor({ name, email, phone }) {
-        //todo: Ініціалізація властивостей екземпляра:
-        this.name = name;
-        this.email = email;
-        this.phone = phone;
-    };
+// //! Методи класу
+// console.warn("Методи класу:");
+// //? ✴️ Для роботи з властивостями майбутнього екземпляра 
+// //? використовуються методи класу - функції,
+// //? які будуть доступні екземпляру в його прототипі.
+// class User5 {
+//     //todo: Синтаксис оголошення методу класу:
+//     //todo: Деструктуризуємо об'єкт:
+//     constructor({ name, email, phone }) {
+//         //todo: Ініціалізація властивостей екземпляра:
+//         this.name = name;
+//         this.email = email;
+//         this.phone = phone;
+//     };
 
-    //todo: Метод getEmail()
-    getEmail() {
-        return this.email;
-    };
+//     //todo: Метод getEmail()
+//     getEmail() {
+//         return this.email;
+//     };
 
-    //todo: Метод changeEmail()
-    changeEmail(newEmail) {
-        this.email = newEmail;
-    };
-};
-console.log("User5:", User5); //!
-console.log("`  `  `  `  `  `  `  `  `  `  `  `  `  `  `  `  `  `  `");
+//     //todo: Метод changeEmail()
+//     changeEmail(newEmail) {
+//         this.email = newEmail;
+//     };
+// };
+// console.log("User5:", User5); //!
+// console.log("`  `  `  `  `  `  `  `  `  `  `  `  `  `  `  `  `  `  `");
 
-const mango4 = new User5({
-    name: "Манго",
-    email: "mango@mail.com",
-    phone: "111-11-11",
-});
+// const mango4 = new User5({
+//     name: "Манго",
+//     email: "mango@mail.com",
+//     phone: "111-11-11",
+// });
 console.log("mango1_before:", mango4); //! User1 {name: 'Манго', email: 'mango@mail.com', phone: '111-11-11'}
 console.log("`  `  `  `  `  `  `  `  `  `  `  `  `  `  `  `  `  `  `  `  `  `  `  `  `  `  `  `  `");
 
