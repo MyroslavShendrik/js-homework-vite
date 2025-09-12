@@ -8,11 +8,14 @@ export default defineConfig({
   root: 'src',
   build: {
     rollupOptions: {
-      input: glob.sync('./**/*.html', {
-        ignore: ['**/node_modules/**', '**/test/**', '**/dist/**']
+      input: glob.sync('src/**/*.html', {
+        ignore: ['**/node_modules/**', '**/dist/**']
       }),
     },
     outDir: '../dist',
   },
-  plugins: [injectHTML(), FullReload(['./src/**/*.html'])],
+  plugins: [
+    injectHTML(),
+    FullReload(['./src/**/*.html'])
+  ]
 });
