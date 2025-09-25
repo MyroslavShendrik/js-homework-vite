@@ -56,3 +56,102 @@
 //? • Для відображення списку студентів використовувати таблицю.
 //? • Додати можливість редагувати записи про студентів, використовуючи модальне вікно з формою для редагування.
 //? • Додати функціонал пошуку студентів за прізвищем або курсом. 
+import Handlebars from "handlebars";
+import studentTemplate from "../handlebars/lesson26.hbs?raw";
+
+let dataArray = [];
+let dataJSON = "[]";
+
+const btnAddStudent = document.getElementById("btn-add-student");
+const btnCancel = document.getElementById("btn-cancel");
+const formArea = document.getElementById("form-area");
+const studentForm = document.getElementById("student-form");
+const studentsList = document.getElementById("students-list");
+
+let editId = null;
+
+
+btnAddStudent.addEventListener("click", () => {
+  formArea.classList.remove("hidden");
+  studentForm.reset();
+  editId = null;
+  document.getElementById("form-title").textContent = "Нова картка студента";
+});
+
+
+btnCancel.addEventListener("click", () => {
+  formArea.classList.add("hidden");
+  studentForm.reset();
+});
+
+
+studentForm.addEventListener("submit", (e) => {
+  e.preventDefault();
+  const formData = new FormData(studentForm);
+  const student = Object.fromEntries(formData.entries());
+
+  student.age = Number(student.age);
+  student.course = Number(student.course);
+
+  try {
+    if (editId) {
+      const idx = dataArray.findIndex((s) => s.id === editId);
+      dataArray[idx] = { ...dataArray[idx], ...student };
+      editId = null;
+    } else {
+      student.id = Date.now();
+      dataArray.push(student);
+    }
+
+    dataJSON = JSON.stringify(dataArray, null, 2);
+    renderStudents();
+
+    formArea.classList.add("hidden");
+    studentForm.reset();
+  } catch (err) {
+    alert("Помилка JSON: " + err.message);
+  }
+});
+
+function renderStudents() {
+  studentsList.innerHTML = "";
+  try {
+    const parsed = JSON.parse(dataJSON);
+    const template = Handlebars.compile(studentTemplate);
+
+    parsed.forEach((student) => {
+      studentsList.insertAdjacentHTML("beforeend", template(student));
+    });
+  } catch (err) {
+    console.error("JSON parse error:", err);
+  }
+}
+
+
+studentsList.addEventListener("click", (e) => {
+  const li = e.target.closest(".student-card");
+  if (!li) return;
+  const id = Number(li.dataset.id);
+
+  if (e.target.classList.contains("delete-btn")) {
+    if (confirm("Видалити картку?")) {
+      dataArray = dataArray.filter((s) => s.id !== id);
+      dataJSON = JSON.stringify(dataArray, null, 2);
+      renderStudents();
+    }
+  }
+
+  if (e.target.classList.contains("edit-btn")) {
+    const student = dataArray.find((s) => s.id === id);
+    if (student) {
+      formArea.classList.remove("hidden");
+      document.getElementById("form-title").textContent = "Редагування студента";
+      studentForm.firstName.value = student.firstName;
+      studentForm.lastName.value = student.lastName;
+      studentForm.age.value = student.age;
+      studentForm.course.value = student.course;
+      studentForm.faculty.value = student.faculty;
+      editId = id;
+    }
+  }
+});
