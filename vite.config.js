@@ -4,7 +4,7 @@ import injectHTML from 'vite-plugin-html-inject';
 import FullReload from 'vite-plugin-full-reload';
 
 export default defineConfig({
-  base: '/hw-js-vite/',
+  base: '/js-homework-vite/',
   root: 'src',
   build: {
     rollupOptions: {
