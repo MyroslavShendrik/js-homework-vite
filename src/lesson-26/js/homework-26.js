@@ -60,7 +60,8 @@ import Handlebars from "handlebars";
 import studentTemplate from "../handlebars/lesson26.hbs?raw";
 
 let dataArray = [];
-let dataJSON = "[]";
+let dataJSON = "";
+
 
 const btnAddStudent = document.getElementById("btn-add-student");
 const btnCancel = document.getElementById("btn-cancel");

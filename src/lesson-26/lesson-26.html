@@ -8,11 +8,16 @@
   <title>УРОК-26</title>
 </head>
 <body>
-  <main class="container">
+  <!-- ADD DIV(CONTAINER) -->
+   <main class="container"> 
     <h2>Список студентів</h2>
     <button id="btn-add-student">Додати студента</button>
-  <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <section id="form-area" class="hidden">
+
+    <section id="students-section">
+      <ul id="students-list"></ul>
+    </section>
+  </main>
+<section id="form-area" class="hidden">
       <h2 id="form-title">Нова картка студента</h2>
       <form id="student-form">
         <input name="firstName" placeholder="Ім'я" required />
@@ -26,12 +31,6 @@
         </div>
       </form>
     </section>
-
-    <section id="students-section">
-      <ul id="students-list"></ul>
-    </section>
-  </main>
-
   <script type="module" src="./js/homework-26.js" defer></script>
 </body>
 </html>
