@@ -6,18 +6,23 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
   <title>УРОК-26</title>
-  <script type="module" crossorigin src="/js-homework-vite/assets/lesson-26-c7d954f3.js"></script>
+  <script type="module" crossorigin src="/js-homework-vite/assets/lesson-26-22a731d7.js"></script>
   <link rel="modulepreload" crossorigin href="/js-homework-vite/assets/modulepreload-polyfill-3cfb730f.js">
   <link rel="modulepreload" crossorigin href="/js-homework-vite/assets/_commonjsHelpers-725317a4.js">
   <link rel="modulepreload" crossorigin href="/js-homework-vite/assets/handlebars-b094548b.js">
   <link rel="stylesheet" href="/js-homework-vite/assets/lesson-26-a5d301e5.css">
 </head>
 <body>
-  <main class="container">
+  <!-- ADD DIV(CONTAINER) -->
+   <main class="container"> 
     <h2>Список студентів</h2>
     <button id="btn-add-student">Додати студента</button>
-  <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <section id="form-area" class="hidden">
+
+    <section id="students-section">
+      <ul id="students-list"></ul>
+    </section>
+  </main>
+<section id="form-area" class="hidden">
       <h2 id="form-title">Нова картка студента</h2>
       <form id="student-form">
         <input name="firstName" placeholder="Ім'я" required />
@@ -31,12 +36,6 @@
         </div>
       </form>
     </section>
-
-    <section id="students-section">
-      <ul id="students-list"></ul>
-    </section>
-  </main>
-
   
 </body>
 </html>
