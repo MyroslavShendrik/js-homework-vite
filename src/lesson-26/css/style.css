@@ -1,166 +1,154 @@
-:root {
-  --primary-green: #1abc9c;
-  --primary-green-dark: #16a085;
-  --primary-green-darker: #149174;
-  --light-bg: #f9f9f9;
-  --white: #fff;
-  --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
 
-body {
-  font-family: Arial, Helvetica, sans-serif;
-  background: var(--light-bg);
-  padding: 20px;
-  margin: 0;
-}
+    body {
+      font-family: Arial, sans-serif;
+      background: #e8f5e9; /* світло-зелений фон */
+      margin: 0;
+      padding: 20px;
+    }
 
-.container {
-  max-width: 800px;
-  margin: 0 auto;
-  background: var(--white);
-  padding: 20px;
-  border-radius: 12px;
-  box-shadow: var(--shadow);
-}
+    .container {
+      max-width: 800px;
+      margin: auto;
+      background: #fff;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+    }
 
-h2 {
-  text-align: center;
-  color: var(--primary-green-dark);
-  margin-bottom: 20px;
-}
+    h2 {
+      text-align: center;
+      color: #2e7d32; /* темно-зелений */
+    }
 
-.hidden {
-  display: none;
-}
+    #btn-add-student {
+      display: block;
+      margin: 0 auto 25px;
+      padding: 12px 24px;
+      background: #43a047;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 16px;
+    }
 
-/* Кнопка "Додати студента" */
-#btn-add-student {
-  display: block;
-  background: var(--primary-green);
-  color: var(--white);
-  border: none;
-  padding: 12px 20px;
-  font-size: 16px;
-  border-radius: 6px;
-  cursor: pointer;
-  margin: 0 auto 20px;
-  transition: background-color 0.3s ease, transform 0.2s ease;
-}
+    #btn-add-student:hover {
+      background: #2e7d32;
+    }
 
-#btn-add-student:hover {
-  background: var(--primary-green-dark);
-  transform: translateY(-2px);
-}
+    #students-list {
+      list-style: none;
+      padding: 0;
+    }
 
-#btn-add-student:active {
-  background: var(--primary-green-darker);
-  transform: translateY(0);
-}
+    .student-card {
+      border-left: 6px solid #43a047;
+      background: #fff;
+      padding: 18px;
+      margin-bottom: 18px;
+      border-radius: 10px;
+      box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+    }
 
-/* Форма */
-form input {
-  display: block;
-  width: 100%;
-  margin: 10px 0;
-  padding: 10px;
-  border: 1px solid #ddd;
-  border-radius: 6px;
-  font-size: 14px;
-}
+    .student-card strong {
+      color: #2e7d32;
+    }
 
-form input:focus {
-  border-color: var(--primary-green);
-  outline: none;
-  box-shadow: 0 0 4px rgba(26, 188, 156, 0.5);
-}
+    .student-actions {
+      display: flex;
+      gap: 10px;
+      margin-top: 12px;
+    }
 
-/* Кнопки у формі */
-.form-actions {
-  display: flex;
-  gap: 10px;
-  justify-content: flex-end;
-  margin-top: 15px;
-}
+    .student-actions button {
+      padding: 8px 16px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      color: #fff;
+      font-size: 14px;
+    }
 
-.form-actions button {
-  padding: 10px 18px;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: 14px;
-  transition: background 0.3s ease;
-}
+    .edit-btn { background: #66bb6a; }
+    .delete-btn { background: #e53935; }
 
-.form-actions button[type="submit"] {
-  background: var(--primary-green);
-  color: var(--white);
-}
+    .edit-btn:hover { background: #43a047; }
+    .delete-btn:hover { background: #c62828; }
 
-.form-actions button[type="submit"]:hover {
-  background: var(--primary-green-dark);
-}
+    /* --- МОДАЛКИ --- */
+    .modal {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 100;
+    }
 
-#btn-cancel {
-  background: #ddd;
-  color: #333;
-}
+    .modal.hidden {
+      display: none;
+    }
 
-#btn-cancel:hover {
-  background: #bbb;
-}
+    /* модалка форми — зелено-біла і ширша */
+    #modal-form .modal-content {
+      background: #e8f5e9; /* світло-зелений */
+      border: 2px solid #43a047; /* темно-зелена рамка */
+      padding: 30px;
+      border-radius: 12px;
+      width: 450px;
+      max-width: 90%;
+      color: #2e7d32;
+    }
 
-/* Список студентів */
-#students-list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
+    /* модалка підтвердження видалення — стандартна */
+    #modal-confirm .modal-content {
+      background: #fff;
+      padding: 20px;
+      border-radius: 12px;
+      width: 300px;
+    }
 
-.student-card {
-  background: var(--white);
-  border: 1px solid #eee;
-  border-left: 5px solid var(--primary-green);
-  margin-bottom: 15px;
-  padding: 15px;
-  border-radius: 8px;
-  box-shadow: var(--shadow);
-}
+    /* форма */
+    form input {
+      display: block;
+      width: 100%;
+      margin: 12px 0;
+      padding: 10px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+    }
 
-.student-card h3 {
-  margin: 0 0 8px;
-  color: var(--primary-green-dark);
-}
+    .form-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 12px;
+      margin-top: 15px;
+    }
 
-.student-card p {
-  margin: 4px 0;
-  font-size: 14px;
-  color: #444;
-}
+    .form-actions button {
+      padding: 10px 18px;
+      border-radius: 8px;
+      border: none;
+      cursor: pointer;
+      font-size: 14px;
+    }
 
-.student-actions {
-  display: flex;
-  gap: 8px;
-  margin-top: 10px;
-}
+    .form-actions button[type="submit"] {
+      background: #43a047;
+      color: #fff;
+    }
 
-.student-actions button {
-  background: var(--primary-green);
-  color: var(--white);
-  border: none;
-  padding: 6px 12px;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: background 0.3s ease;
-}
+    .form-actions button[type="submit"]:hover {
+      background: #2e7d32;
+    }
 
-.student-actions button:hover {
-  background: var(--primary-green-dark);
-}
+    .form-actions button[data-close] {
+      background: #ccc;
+      color: #333;
+    }
 
-.student-actions .delete-btn {
-  background: #e74c3c;
-}
-
-.student-actions .delete-btn:hover {
-  background: #c0392b;
-}
+    .form-actions button[data-close]:hover {
+      background: #aaa;
+    }

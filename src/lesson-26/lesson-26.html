@@ -1,36 +1,47 @@
 <!DOCTYPE html>
 <html lang="uk">
 <head>
-  <meta charset="UTF-8" />
-  <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <title>Список студентів</title>
   <link rel="stylesheet" href="./css/style.css">
-  <title>УРОК-26</title>
 </head>
 <body>
-  <!-- ADD DIV(CONTAINER) -->
-   <main class="container"> 
+  <main class="container">
     <h2>Список студентів</h2>
     <button id="btn-add-student">Додати студента</button>
 
-    <section id="students-section">
-      <ul id="students-list"></ul>
-    </section>
+    <ul id="students-list"></ul>
   </main>
-<section id="form-area" class="hidden">
-      <h2 id="form-title">Нова картка студента</h2>
+
+  <!-- Модальне вікно для форми -->
+  <div class="modal hidden" id="modal-form">
+    <div class="modal-content">
+      <h3 id="form-title">Нова картка студента</h3>
       <form id="student-form">
         <input name="firstName" placeholder="Ім'я" required />
         <input name="lastName" placeholder="Прізвище" required />
-        <input name="age" type="number" placeholder="Вік" required min="17" />
-        <input name="course" type="number" placeholder="Курс" required min="1" />
+        <input name="age" type="number" placeholder="Вік" required min="17"/>
+        <input name="course" type="number" placeholder="Курс" required min="1"/>
         <input name="faculty" placeholder="Факультет" required />
         <div class="form-actions">
           <button type="submit">Зберегти</button>
-          <button type="button" id="btn-cancel">Скасувати</button>
+          <button type="button" data-close>Скасувати</button>
         </div>
       </form>
-    </section>
-  <script type="module" src="./js/homework-26.js" defer></script>
+    </div>
+  </div>
+
+  <!-- Модальне вікно для підтвердження -->
+  <div class="modal hidden" id="modal-confirm">
+    <div class="modal-content">
+      <p id="confirm-text"></p>
+      <div class="form-actions">
+        <button id="btn-confirm-yes">Так</button>
+        <button data-close>Ні</button>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="./js/homework-26.js"></script>
 </body>
 </html>
