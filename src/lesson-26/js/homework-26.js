@@ -7,6 +7,7 @@ const studentTemplate = Handlebars.compile(templateRaw);
 let dataArray = [];
 let dataJSON = "";
 let editId = null;
+let isEdit = true;
 let nextId = 1; // Лічильник ID
 
 // DOM елементи
@@ -18,7 +19,7 @@ const confirmText = document.getElementById("confirm-text");
 const btnYes = document.getElementById("btn-confirm-yes");
 
 let deleteId = null;
-
+console.log("typeof deleteId:",typeof deleteId);
 // Відкрити модалку форми
 document.getElementById("btn-add-student").addEventListener("click", () => {
   openForm("Нова картка студента");
@@ -32,12 +33,14 @@ studentForm.addEventListener("submit", (e) => {
   e.preventDefault();
   const formData = new FormData(studentForm);
   const student = Object.fromEntries(formData.entries());
-
+  // console.log("student:", student);
+  // console.log("typeof student.age:",typeof student.age);
   student.age = Number(student.age);
   student.course = Number(student.course);
 
   if (editId) {
-    const idx = dataArray.findIndex((s) => s.id === editId);
+    console.log("editID:",editId);
+    const idx = dataArray.findIndex((item) => item.id === editId);
     dataArray[idx] = { ...dataArray[idx], ...student };
     console.log(" Відредаговано студента:", dataArray[idx]);
     editId = null;
@@ -50,6 +53,7 @@ studentForm.addEventListener("submit", (e) => {
   updateJSON();
   render();
   closeModal(modalForm);
+  // console.log("typeof student.age:",typeof student.age);
 });
 
 // Делегування подій для списку
@@ -106,7 +110,7 @@ function render() {
 }
 
 function updateJSON() {
-  dataJSON = JSON.stringify(dataArray, null, 2);
+  dataJSON = JSON.stringify(dataArray, null, 2); //! розібратися що таке null 2 ;
 }
 
 function openForm(title) {
