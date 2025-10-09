@@ -1,0 +1,7 @@
+import"./modulepreload-polyfill-3cfb730f.js";console.log("%c [1] ","color: yellow; background-color: #2274A5");//! Код виконаного завдання
+console.log("--------------------------------------------------");console.log();const s=()=>{console.log("Hello world!")},r=o=>{o()};r(()=>console.log("Hello World!"));r(s);console.log("%c [2] ","color: yellow; background-color: #2274A5");//! Код виконаного завдання
+const t=7,a=1,u=10,g=(o,l)=>Math.floor(Math.random()*l)+o,d=(o,l,c,e)=>{const n=e(o,l);return c===n?`✅ Ви вгадали число! (${n})`:`❌ Ви НЕ вгадали число. Загадане число було ${n}`};console.log(d(a,u,t,g));console.log("--------------------------------------------------");console.log("%c [3] ","color: yellow; background-color: #2274A5");//! Код виконаного завдання
+const m=()=>Math.floor(Math.random()*5)+1,i=o=>o+"px",b=(o,l)=>l(o());console.log(b(m,i));console.log("--------------------------------------------------");console.log("%c [4] ","color: yellow; background-color: #2274A5");const h=(o,l)=>{let c=[];for(let e=0;e<o.length;e++)c.push(l(o[e]));return c},y=[1,2,3,4,5],k=o=>o*o,p=h(y,k);console.log("result:",p);//! [1, 4, 9, 16, 25]
+console.log("--------------------------------------------------");console.log("%c [5] ","color: yellow; background-color: #2274A5");const w=600,A=50,f=(o,l,c)=>c(o,l),N=(o,l)=>o-o*l/100,M=f(w,A,N);console.log(M);//! Discount price: 90
+//! Код виконаного завдання
+console.log("--------------------------------------------------");

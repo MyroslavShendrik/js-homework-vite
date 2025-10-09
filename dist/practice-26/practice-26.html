@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!--!  заголовок сторінки -->
+    <title>Practice-25 JS</title>
+    <!--! завантаження зображення до заголовку сторінки -->
+    <link
+      href="https://img.icons8.com/ios/16/25.png"
+      type="image/x-icon"
+      rel="shortcut icon"
+    />
+    
+    <script type="module" crossorigin src="/js-homework-vite/assets/practice-26-cdd5c48c.js"></script>
+    <link rel="modulepreload" crossorigin href="/js-homework-vite/assets/modulepreload-polyfill-3cfb730f.js">
+    <link rel="modulepreload" crossorigin href="/js-homework-vite/assets/_commonjsHelpers-725317a4.js">
+    <link rel="modulepreload" crossorigin href="/js-homework-vite/assets/handlebars-b094548b.js">
+  </head>
+  <body>
+   <div id="menu-container"></div>
+
+<!--? Вміст всередині тега <template> не відображається в DOM -->
+    <template id="menu-template">
+      <div class="menu">
+        <h3 class="menu-title">{{title}}</h3>
+        <ul class="menu-list">
+          {{#each items}}
+          <li class="menu-item">{{this}}</li>
+          {{/each}}
+        </ul>
+      </div>
+    </template>
+
+   
+    <!-- суворий режим  -->
+    
+    <!-- <script src="./js/practice-25.js"></script> -->
+    <!-- не суворий режим -->
+    <!-- <script src="./js/practice-17.js" ></script> -->
+  </body>
+</html>
+
