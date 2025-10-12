@@ -1,16 +1,16 @@
 import Handlebars from "handlebars";
 import templateRaw from "../handlebars/lesson26.hbs?raw";
 
+// компілюю шаблон, щоб потім підставляти туди дані студентів
 const studentTemplate = Handlebars.compile(templateRaw);
 
-// Масив даних
-let dataArray = [];
-let dataJSON = "";
-let editId = null;
-let isEdit = true;
-let nextId = 1; // Лічильник ID
 
-// DOM елементи
+let dataArray = []; 
+let dataJSON = ""; 
+let editId = null; 
+let nextId = 1; 
+
+// ловлю всі потрібні елементи з html
 const list = document.getElementById("students-list");
 const modalForm = document.getElementById("modal-form");
 const modalConfirm = document.getElementById("modal-confirm");
@@ -18,55 +18,57 @@ const studentForm = document.getElementById("student-form");
 const confirmText = document.getElementById("confirm-text");
 const btnYes = document.getElementById("btn-confirm-yes");
 
-let deleteId = null;
-console.log("typeof deleteId:",typeof deleteId);
-// Відкрити модалку форми
+let deleteId = null; // тимчасово сюди кидаю id студента, якого хочу видалити
+
+// коли натискаю кнопку “додати студента”
 document.getElementById("btn-add-student").addEventListener("click", () => {
   openForm("Нова картка студента");
-  studentForm.reset();
-  editId = null;
+  studentForm.reset(); // очищаю форму
+  editId = null; // кажу що це новий студент, а не редагування
   console.log(" Відкрито форму для нового студента");
 });
 
-// Сабміт форми
+// коли натискаю “зберегти” в формі
 studentForm.addEventListener("submit", (e) => {
-  e.preventDefault();
+  e.preventDefault(); // щоб не перезавантажувалася сторінка
   const formData = new FormData(studentForm);
-  const student = Object.fromEntries(formData.entries());
-  // console.log("student:", student);
-  // console.log("typeof student.age:",typeof student.age);
+  const student = Object.fromEntries(formData.entries()); // роблю з форми обʼєкт
+
+  // перевожу текстові значення в числа
   student.age = Number(student.age);
   student.course = Number(student.course);
 
-  if (editId) {
-    console.log("editID:",editId);
+  // якщо редагую існуючого студента
+  if (editId !== null) {
     const idx = dataArray.findIndex((item) => item.id === editId);
-    dataArray[idx] = { ...dataArray[idx], ...student };
+    dataArray[idx] = { ...dataArray[idx], ...student }; // оновлюю дані
     console.log(" Відредаговано студента:", dataArray[idx]);
     editId = null;
   } else {
+    // якщо додаю нового
     student.id = nextId++;
     dataArray.push(student);
     console.log(" Додано студента:", student);
   }
 
   updateJSON();
-  render();
-  closeModal(modalForm);
-  // console.log("typeof student.age:",typeof student.age);
+  render(); // перемальовую список
+  closeModal(modalForm); // закриваю форму
 });
 
-// Делегування подій для списку
+// ловлю кліки по картках студентів
 list.addEventListener("click", (e) => {
   const card = e.target.closest(".student-card");
   if (!card) return;
 
-  const id = Number(card.id.replace("student-", ""));
+  // витягую id студента з елемента
+  const id = Number(card.dataset.id);
   const student = dataArray.find((s) => s.id === id);
 
+  // якщо натиснув кнопку “редагувати”
   if (e.target.classList.contains("edit-btn")) {
-    console.log(" Клік по редагуванню:", student);
     openForm("Редагування студента");
+    // заповнюю форму поточними даними
     studentForm.firstName.value = student.firstName;
     studentForm.lastName.value = student.lastName;
     studentForm.age.value = student.age;
@@ -75,56 +77,54 @@ list.addEventListener("click", (e) => {
     editId = id;
   }
 
+  // якщо натиснув кнопку “видалити”
   if (e.target.classList.contains("delete-btn")) {
     deleteId = id;
-    confirmText.textContent = `Видалити картку студента ${card.querySelector("strong").textContent}?`;
+    confirmText.textContent = `Видалити картку студента ${student.firstName}?`;
     openModal(modalConfirm);
-    console.log(" Клік по видаленню студента:", student);
   }
 });
 
-// Підтвердження видалення
+// коли підтверджую видалення
 btnYes.addEventListener("click", () => {
-  console.log(" Підтверджено видалення студента з id:", deleteId);
   dataArray = dataArray.filter((s) => s.id !== deleteId);
+  deleteId = null; // очищаю, щоб не залишився старий id
   updateJSON();
   render();
   closeModal(modalConfirm);
 });
 
-// Закриття модалок
+// якщо натиснув на елемент із атрибутом data-close — закриваю модалку
 document.body.addEventListener("click", (e) => {
   if (e.target.dataset.close !== undefined) {
     closeModal(e.target.closest(".modal"));
-    console.log(" Закрито модалку");
   }
 });
 
-// --- ФУНКЦІЇ ---
+// функція щоб намалювати список студентів
 function render() {
   list.innerHTML = "";
-  JSON.parse(dataJSON).forEach((s) => {
+  const arr = JSON.parse(dataJSON);
+  arr.forEach((s) => {
     list.insertAdjacentHTML("beforeend", studentTemplate(s));
   });
-  console.log(" Поточний список студентів:", JSON.parse(dataJSON));
 }
 
+// перетворюю масив у JSON
 function updateJSON() {
-  dataJSON = JSON.stringify(dataArray, null, 2); //! розібратися що таке null 2 ;
+  dataJSON = JSON.stringify(dataArray, null, 2); // null, 2 — це просто гарне форматування
 }
 
+// відкриття та закриття модалок
 function openForm(title) {
   document.getElementById("form-title").textContent = title;
   openModal(modalForm);
-  console.log(" Відкрито форму:", title);
 }
 
 function openModal(modal) {
   modal.classList.remove("hidden");
-  console.log(" Модалка відкрита:", modal.id);
 }
 
 function closeModal(modal) {
   modal.classList.add("hidden");
-  console.log(" Модалка закрита:", modal.id);
 }
