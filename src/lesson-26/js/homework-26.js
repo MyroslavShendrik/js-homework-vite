@@ -4,127 +4,133 @@ import templateRaw from "../handlebars/lesson26.hbs?raw";
 // компілюю шаблон, щоб потім підставляти туди дані студентів
 const studentTemplate = Handlebars.compile(templateRaw);
 
-
+// головний масив студентів і службові змінні
 let dataArray = []; 
 let dataJSON = ""; 
-let editId = null; 
-let nextId = 1; 
+let editStudentId = null; 
+let nextStudentId = 1; 
+let deleteStudentId = null; // тимчасово зберігаю id студента, якого хочу видалити
 
-// ловлю всі потрібні елементи з html
-const list = document.getElementById("students-list");
-const modalForm = document.getElementById("modal-form");
-const modalConfirm = document.getElementById("modal-confirm");
-const studentForm = document.getElementById("student-form");
-const confirmText = document.getElementById("confirm-text");
-const btnYes = document.getElementById("btn-confirm-yes");
-
-let deleteId = null; // тимчасово сюди кидаю id студента, якого хочу видалити
+// ловлю всі потрібні елементи з HTML
+const studentsListElement = document.getElementById("students-list");
+const modalFormElement = document.getElementById("modal-form");
+const modalConfirmElement = document.getElementById("modal-confirm");
+const studentFormElement = document.getElementById("student-form");
+const confirmTextElement = document.getElementById("confirm-text");
+const confirmYesButtonElement = document.getElementById("btn-confirm-yes");
 
 // коли натискаю кнопку “додати студента”
 document.getElementById("btn-add-student").addEventListener("click", () => {
   openForm("Нова картка студента");
-  studentForm.reset(); // очищаю форму
-  editId = null; // кажу що це новий студент, а не редагування
+  studentFormElement.reset(); // очищаю форму
+  editStudentId = null; // кажу, що це новий студент, а не редагування
   console.log(" Відкрито форму для нового студента");
 });
 
 // коли натискаю “зберегти” в формі
-studentForm.addEventListener("submit", (e) => {
-  e.preventDefault(); // щоб не перезавантажувалася сторінка
-  const formData = new FormData(studentForm);
-  const student = Object.fromEntries(formData.entries()); // роблю з форми обʼєкт
+studentFormElement.addEventListener("submit", (event) => {
+  event.preventDefault(); // щоб не перезавантажувалася сторінка
 
-  // перевожу текстові значення в числа
-  student.age = Number(student.age);
-  student.course = Number(student.course);
+  const formData = new FormData(studentFormElement);
+  const studentData = Object.fromEntries(formData.entries()); // роблю з форми обʼєкт
+
+  // перевожу текстові значення в числа (для віку і курсу)
+  studentData.age = Number(studentData.age);
+  studentData.course = Number(studentData.course);
 
   // якщо редагую існуючого студента
-  if (editId !== null) {
-    const idx = dataArray.findIndex((item) => item.id === editId);
-    dataArray[idx] = { ...dataArray[idx], ...student }; // оновлюю дані
-    console.log(" Відредаговано студента:", dataArray[idx]);
-    editId = null;
+  if (editStudentId !== null) {
+    const studentIndex = dataArray.findIndex((studentItem) => studentItem.id === editStudentId);
+    dataArray[studentIndex] = { ...dataArray[studentIndex], ...studentData }; // оновлюю дані
+    console.log(" Відредаговано студента:", dataArray[studentIndex]);
+    editStudentId = null;
   } else {
-    // якщо додаю нового
-    student.id = nextId++;
-    dataArray.push(student);
-    console.log(" Додано студента:", student);
+    // якщо додаю нового студента
+    studentData.id = nextStudentId++;
+    dataArray.push(studentData);
+    console.log(" Додано студента:", studentData);
   }
 
   updateJSON();
-  render(); // перемальовую список
-  closeModal(modalForm); // закриваю форму
+  renderStudentsList();
+  closeModal(modalFormElement);
 });
 
 // ловлю кліки по картках студентів
-list.addEventListener("click", (e) => {
-  const card = e.target.closest(".student-card");
-  if (!card) return;
+studentsListElement.addEventListener("click", (event) => {
+  const cardElement = event.target.closest(".student-card");
+  if (!cardElement) return;
 
-  // витягую id студента з елемента
-  const id = Number(card.dataset.id);
-  const student = dataArray.find((s) => s.id === id);
+  // витягую id студента з data-id
+  const currentStudentId = Number(cardElement.dataset.id);
+  const currentStudent = dataArray.find((studentItem) => studentItem.id === currentStudentId);
 
   // якщо натиснув кнопку “редагувати”
-  if (e.target.classList.contains("edit-btn")) {
+  if (event.target.classList.contains("edit-btn")) {
     openForm("Редагування студента");
     // заповнюю форму поточними даними
-    studentForm.firstName.value = student.firstName;
-    studentForm.lastName.value = student.lastName;
-    studentForm.age.value = student.age;
-    studentForm.course.value = student.course;
-    studentForm.faculty.value = student.faculty;
-    editId = id;
+    studentFormElement.firstName.value = currentStudent.firstName;
+    studentFormElement.lastName.value = currentStudent.lastName;
+    studentFormElement.age.value = currentStudent.age;
+    studentFormElement.course.value = currentStudent.course;
+    studentFormElement.faculty.value = currentStudent.faculty;
+    editStudentId = currentStudentId;
   }
 
   // якщо натиснув кнопку “видалити”
-  if (e.target.classList.contains("delete-btn")) {
-    deleteId = id;
-    confirmText.textContent = `Видалити картку студента ${student.firstName}?`;
-    openModal(modalConfirm);
+  if (event.target.classList.contains("delete-btn")) {
+    deleteStudentId = currentStudentId;
+    confirmTextElement.textContent = `Видалити картку студента ${currentStudent.firstName}?`;
+    openModal(modalConfirmElement);
   }
 });
 
 // коли підтверджую видалення
-btnYes.addEventListener("click", () => {
-  dataArray = dataArray.filter((s) => s.id !== deleteId);
-  deleteId = null; // очищаю, щоб не залишився старий id
+confirmYesButtonElement.addEventListener("click", () => {
+  dataArray = dataArray.filter((studentItem) => studentItem.id !== deleteStudentId);
+  deleteStudentId = null; // очищаю, щоб не залишився старий id
   updateJSON();
-  render();
-  closeModal(modalConfirm);
+  renderStudentsList();
+  closeModal(modalConfirmElement);
 });
 
 // якщо натиснув на елемент із атрибутом data-close — закриваю модалку
-document.body.addEventListener("click", (e) => {
-  if (e.target.dataset.close !== undefined) {
-    closeModal(e.target.closest(".modal"));
+document.body.addEventListener("click", (event) => {
+  if (event.target.dataset.close !== undefined) {
+    const modalWindowElement = event.target.closest(".modal");
+    closeModal(modalWindowElement);
   }
 });
 
 // функція щоб намалювати список студентів
-function render() {
-  list.innerHTML = "";
-  const arr = JSON.parse(dataJSON);
-  arr.forEach((s) => {
-    list.insertAdjacentHTML("beforeend", studentTemplate(s));
+function renderStudentsList() {
+  studentsListElement.innerHTML = "";
+  const studentsArray = JSON.parse(dataJSON);
+
+  studentsArray.forEach((studentItem) => {
+    studentsListElement.insertAdjacentHTML("beforeend", studentTemplate(studentItem));
   });
 }
 
 // перетворюю масив у JSON
 function updateJSON() {
-  dataJSON = JSON.stringify(dataArray, null, 2); // null, 2 — це просто гарне форматування
+  // null, 2 — це просто форматування JSON з відступами для зручності
+  dataJSON = JSON.stringify(dataArray, null, 2);
 }
 
-// відкриття та закриття модалок
-function openForm(title) {
-  document.getElementById("form-title").textContent = title;
-  openModal(modalForm);
+// відкриття форми (передаю заголовок)
+function openForm(formTitle) {
+  const formTitleElement = document.getElementById("form-title");
+  formTitleElement.textContent = formTitle;
+  openModal(modalFormElement);
 }
 
-function openModal(modal) {
-  modal.classList.remove("hidden");
+// відкриваю будь-яке модальне вікно
+function openModal(modalElement) {
+  modalElement.classList.remove("hidden");
 }
 
-function closeModal(modal) {
-  modal.classList.add("hidden");
+// закриваю будь-яке модальне вікно
+function closeModal(modalElement) {
+  modalElement.classList.add("hidden");
 }
