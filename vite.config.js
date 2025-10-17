@@ -1,21 +1,18 @@
-import { defineConfig } from 'vite';
-import glob from 'glob';
-import injectHTML from 'vite-plugin-html-inject';
-import FullReload from 'vite-plugin-full-reload';
+import { defineConfig } from "vite";
+import glob from "glob";
+import injectHTML from "vite-plugin-html-inject";
+import FullReload from "vite-plugin-full-reload";
 
 export default defineConfig({
-  base: '/js-homework-vite/',
-  root: 'src',
+  base: "/js-homework-vite/",
+  root: "src",
   build: {
     rollupOptions: {
-      input: glob.sync('src/**/*.html', {
-        ignore: ['**/node_modules/**', '**/dist/**']
-      }),
+      //! ✅ Це шукає ВСІ HTML-файли, включаючи HTML-файли нижнього рівня
+      input: glob.sync("./src/**/*.html"),
     },
-    outDir: '../dist',
+    outDir: "../dist",
   },
-  plugins: [
-    injectHTML(),
-    FullReload(['./src/**/*.html'])
-  ]
+
+  plugins: [injectHTML(), FullReload(["./src/**/*.html"])],
 });
