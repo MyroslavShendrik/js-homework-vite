@@ -1,4 +1,5 @@
 import { defineConfig } from "vite";
+import commonjs from "@rollup/plugin-commonjs";
 import glob from "glob";
 import injectHTML from "vite-plugin-html-inject";
 import FullReload from "vite-plugin-full-reload";
@@ -14,5 +15,9 @@ export default defineConfig({
     outDir: "../dist",
   },
 
-  plugins: [injectHTML(), FullReload(["./src/**/*.html"])],
+  plugins: [
+    injectHTML(),
+    FullReload(["./src/**/*.html"]),
+    commonjs(), // 👈 додай сюди
+  ],
 });
