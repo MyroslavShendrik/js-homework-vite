@@ -1,6 +1,10 @@
-import { alert, notice, info, success, error } from '@pnotify/core';
+import { alert, notice, info, success, error, defaultModules } from '@pnotify/core';
+// import '@pnotify/core/dist/BrightTheme.css';
+// import '@pnotify/mobile/dist/PNotifyMobile.css';
+import * as PNotifyMobile from '@pnotify/mobile';
 import '@pnotify/core/dist/BrightTheme.css';
-import '@pnotify/mobile/dist/PNotifyMobile.css';
+//todo: Підключаємо мобільний модуль (опціонально).
+defaultModules.set(PNotifyMobile, {});
 import { Chart } from 'chart.js/auto';
 import '../css/style.css';
 
