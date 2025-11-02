@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <title>Список студентів</title>
+  <link rel="stylesheet" href="./css/style.css">
+</head>
+<body>
+  <main class="container">
+    <h2>Список студентів</h2>
+    <button id="btn-add-student">Додати студента</button>
+
+    <ul id="students-list"></ul>
+  </main>
+
+  <!-- Модальне вікно для форми -->
+  <div class="modal hidden" id="modal-form">
+    <div class="modal-content">
+      <h3 id="form-title">Нова картка студента</h3>
+      <form id="student-form">
+        <input name="firstName" placeholder="Ім'я" required />
+        <input name="lastName" placeholder="Прізвище" required />
+        <input name="age" type="number" placeholder="Вік" required min="17"/>
+        <input name="course" type="number" placeholder="Курс" required min="1"/>
+        <input name="faculty" placeholder="Факультет" required />
+        <div class="form-actions">
+          <button type="submit">Зберегти</button>
+          <button type="button" data-close>Скасувати</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Модальне вікно для підтвердження -->
+  <div class="modal hidden" id="modal-confirm">
+    <div class="modal-content">
+      <p id="confirm-text"></p>
+      <div class="form-actions">
+        <button id="btn-confirm-yes">Так</button>
+        <button data-close>Ні</button>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="./js/homework-27.js"></script>
+</body>
+</html>
