@@ -117,6 +117,7 @@ function updateJSON() {
   // null, 2 — це просто форматування JSON з відступами для зручності
   dataJSON = JSON.stringify(dataArray, null, 2);
   console.log("dataJSON:", dataJSON);
+
 }
 
 // відкриття форми (передаю заголовок)

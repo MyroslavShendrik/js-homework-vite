@@ -7,6 +7,10 @@ const studentTemplate = Handlebars.compile(templateRaw);
 // головний масив студентів і службові змінні
 let dataArray = []; 
 let dataJSON = ""; 
+// if(localStorage.getItem("studentsList")){
+// dataJSON = localStorage.getItem("studentsList");
+// renderStudentsList();
+// } 
 let editStudentId = null; 
 let nextStudentId = 1; 
 let deleteStudentId = null; // тимчасово зберігаю id студента, якого хочу видалити
@@ -19,6 +23,10 @@ const studentFormElement = document.getElementById("student-form");
 const confirmTextElement = document.getElementById("confirm-text");
 const confirmYesButtonElement = document.getElementById("btn-confirm-yes");
 
+if(localStorage.getItem("studentsList")){
+dataJSON = localStorage.getItem("studentsList");
+renderStudentsList();
+} 
 // коли натискаю кнопку “додати студента”
 document.getElementById("btn-add-student").addEventListener("click", () => {
   openForm("Нова картка студента");
@@ -117,6 +125,7 @@ function updateJSON() {
   // null, 2 — це просто форматування JSON з відступами для зручності
   dataJSON = JSON.stringify(dataArray, null, 2);
   console.log("dataJSON:", dataJSON);
+    localStorage.setItem("studentsList", JSON.stringify(dataArray));
 }
 
 // відкриття форми (передаю заголовок)
