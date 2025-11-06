@@ -25,6 +25,7 @@ const confirmYesButtonElement = document.getElementById("btn-confirm-yes");
 
 if(localStorage.getItem("studentsList")){
 dataJSON = localStorage.getItem("studentsList");
+dataArray = JSON.parse(dataJSON);
 renderStudentsList();
 } 
 // коли натискаю кнопку “додати студента”
