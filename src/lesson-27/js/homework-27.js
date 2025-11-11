@@ -55,7 +55,9 @@ studentFormElement.addEventListener("submit", (event) => {
   if (editStudentId !== null) {
     const studentIndex = dataArray.findIndex(
       (studentItem) => studentItem.id === editStudentId
-    );
+    ); 
+    //! забрати з локал сторедж найсвіжіші дані (забираю найостаннішу версію даних)
+    dataArray = JSON.parse(localStorage.getItem("studentsList"));
     dataArray[studentIndex] = { ...dataArray[studentIndex], ...studentData };
     console.log("Відредаговано студента:", dataArray[studentIndex]);
     editStudentId = null;
