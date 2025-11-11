@@ -1,11 +1,22 @@
+
 import Handlebars from "handlebars";
 import templateRaw from "../handlebars/lesson27.hbs?raw";
+
 
 // компілюю шаблон, щоб потім підставляти туди дані студентів
 const studentTemplate = Handlebars.compile(templateRaw);
 
+//! логіка ананлізу початкового стану в localStorage
+if(localStorage.getItem("studentsList")){
+console.log("наявність даних в localStorage:",(localStorage.getItem("studentsList")));
+// renderStudentsList();
+} else{
+localStorage.setItem("studentsList", "[]");
+console.log("початковий стан localStorage:",(localStorage.getItem("studentsList")));
+}
+
 // головний масив студентів і службові змінні
-let dataArray = []; 
+// let dataArray = []; 
 let dataJSON = ""; 
 // if(localStorage.getItem("studentsList")){
 // dataJSON = localStorage.getItem("studentsList");
@@ -22,20 +33,22 @@ const modalConfirmElement = document.getElementById("modal-confirm");
 const studentFormElement = document.getElementById("student-form");
 const confirmTextElement = document.getElementById("confirm-text");
 const confirmYesButtonElement = document.getElementById("btn-confirm-yes");
+const btnAddStudent = document.getElementById("btn-add-student")
 
-if(localStorage.getItem("studentsList")){
-dataJSON = localStorage.getItem("studentsList");
-dataArray = JSON.parse(dataJSON);
-renderStudentsList();
-} 
+let dataArray = JSON.parse(localStorage.getItem("studentsList"));
+console.log("dataArray:",dataArray);
+renderStudentsList(dataArray);
 // коли натискаю кнопку “додати студента”
-document.getElementById("btn-add-student").addEventListener("click", () => {
-  openForm("Нова картка студента");
+btnAddStudent.addEventListener("click", addStudent);
+
+function addStudent() {
+ openForm("Нова картка студента");
   studentFormElement.reset(); // очищаю форму
   editStudentId = null; // кажу, що це новий студент, а не редагування
   console.log(" Відкрито форму для нового студента");
-});
+}
 
+addStudent.addEventListener
 // коли натискаю “зберегти” в формі
 studentFormElement.addEventListener("submit", (event) => {
   event.preventDefault(); // щоб не перезавантажувалася сторінка
@@ -61,18 +74,21 @@ studentFormElement.addEventListener("submit", (event) => {
   }
 
   updateJSON();
-  renderStudentsList();
+  renderStudentsList(dataArray);
   closeModal(modalFormElement);
 });
 
 // ловлю кліки по картках студентів
 studentsListElement.addEventListener("click", (event) => {
+  // console.log(" ловлю кліки по картках студентів");
   const cardElement = event.target.closest(".student-card");
+  console.log("cardElement:",cardElement);
   if (!cardElement) return;
 
   // витягую id студента з data-id
   const currentStudentId = Number(cardElement.dataset.id);
   const currentStudent = dataArray.find((studentItem) => studentItem.id === currentStudentId);
+  console.log("currentStudent:",currentStudent);
 
   // якщо натиснув кнопку “редагувати”
   if (event.target.classList.contains("edit-btn")) {
@@ -112,11 +128,13 @@ document.body.addEventListener("click", (event) => {
 });
 
 // функція щоб намалювати список студентів
-function renderStudentsList() {
+function renderStudentsList(array) {
   studentsListElement.innerHTML = "";
-  const studentsArray = JSON.parse(dataJSON);
-
-  studentsArray.forEach((studentItem) => {
+  // const studentsArray = JSON.parse(dataJSON);
+  console.log (" dataArray:", array);
+  // dataArray = JSON.parse(dataJSON);
+ 
+  array.forEach((studentItem) => {
     studentsListElement.insertAdjacentHTML("beforeend", studentTemplate(studentItem));
   });
 }
