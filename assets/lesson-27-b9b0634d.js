@@ -1,0 +1,14 @@
+import"./modulepreload-polyfill-3cfb730f.js";import{H as b}from"./handlebars-aa0ac26f.js";const p=`<li class="student-card" data-id="{{id}}">
+  <div class="student-info">
+    <p><strong>{{firstName}} {{lastName}}</strong></p>
+    <p><em>Вік:</em> {{age}}</p>
+    <p><em>Курс:</em> {{course}}</p>
+    <p><em>Факультет:</em> {{faculty}}</p>
+  </div>
+  <div class="student-actions">
+    <button class="edit-btn">Edit</button>
+    <button class="delete-btn">Delete</button>
+  </div>
+</li>
+`,y=b.compile(p);//! логіка ананлізу початкового стану в localStorage
+localStorage.getItem("studentsList")?console.log("наявність даних в localStorage:",localStorage.getItem("studentsList")):(localStorage.setItem("studentsList","[]"),console.log("початковий стан localStorage:",localStorage.getItem("studentsList")));let u="",d=null,N=1,c=null;const i=document.getElementById("students-list"),g=document.getElementById("modal-form"),f=document.getElementById("modal-confirm"),l=document.getElementById("student-form"),v=document.getElementById("confirm-text"),B=document.getElementById("btn-confirm-yes"),x=document.getElementById("btn-add-student");let e=JSON.parse(localStorage.getItem("studentsList"));console.log("dataArray:",e);r(e);x.addEventListener("click",E);function E(){I("Нова картка студента"),l.reset(),d=null,console.log(" Відкрито форму для нового студента")}E.addEventListener;l.addEventListener("submit",t=>{t.preventDefault();const o=new FormData(l),n=Object.fromEntries(o.entries());if(n.age=Number(n.age),n.course=Number(n.course),d!==null){const s=e.findIndex(a=>a.id===d);e[s]={...e[s],...n},console.log(" Відредаговано студента:",e[s]),d=null}else n.id=N++,e.push(n),console.log(" Додано студента:",n);S(),r(e),m(g)});i.addEventListener("click",t=>{const o=t.target.closest(".student-card");if(console.log("cardElement:",o),!o)return;const n=Number(o.dataset.id),s=e.find(a=>a.id===n);console.log("currentStudent:",s),t.target.classList.contains("edit-btn")&&(I("Редагування студента"),l.firstName.value=s.firstName,l.lastName.value=s.lastName,l.age.value=s.age,l.course.value=s.course,l.faculty.value=s.faculty,d=n),t.target.classList.contains("delete-btn")&&(c=n,v.textContent=`Видалити картку студента ${s.firstName}?`,L(f))});B.addEventListener("click",()=>{e=e.filter(t=>t.id!==c),c=null,S(),r(),m(f)});document.body.addEventListener("click",t=>{if(t.target.dataset.close!==void 0){const o=t.target.closest(".modal");m(o)}});function r(t){i.innerHTML="",console.log(" dataArray:",t),t.forEach(o=>{i.insertAdjacentHTML("beforeend",y(o))})}function S(){u=JSON.stringify(e,null,2),console.log("dataJSON:",u),localStorage.setItem("studentsList",JSON.stringify(e))}function I(t){const o=document.getElementById("form-title");o.textContent=t,L(g)}function L(t){t.classList.remove("hidden")}function m(t){t.classList.add("hidden")}
