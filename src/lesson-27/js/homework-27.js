@@ -1,25 +1,39 @@
 import Handlebars from "handlebars";
 import templateRaw from "../handlebars/lesson27.hbs?raw";
 
-// компілюю шаблон
+// ============================================================================
+// 🧠 КОМПІЛЯЦІЯ ШАБЛОНУ
+// ============================================================================
 const studentTemplate = Handlebars.compile(templateRaw);
 
-//! --- АНАЛІЗ LOCALSTORAGE ---
+// ============================================================================
+// 💾 АНАЛІЗ LOCALSTORAGE
+// ============================================================================
 if (localStorage.getItem("studentsList")) {
-  console.log("наявність даних в localStorage:", localStorage.getItem("studentsList"));
+  console.log(
+    "Наявність даних у localStorage:",
+    localStorage.getItem("studentsList")
+  );
 } else {
   localStorage.setItem("studentsList", "[]");
-  console.log("початковий стан localStorage:", localStorage.getItem("studentsList"));
+  console.log(
+    "Початковий стан localStorage:",
+    localStorage.getItem("studentsList")
+  );
 }
 
-//! --- ОСНОВНІ ЗМІННІ ---
+// ============================================================================
+// 📦 ОСНОВНІ ЗМІННІ
+// ============================================================================
 let dataArray = JSON.parse(localStorage.getItem("studentsList"));
 let dataJSON = "";
 let editStudentId = null;
 let nextStudentId = 1;
 let deleteStudentId = null;
 
-//! --- HTML-ЕЛЕМЕНТИ ---
+// ============================================================================
+// 🧩 HTML-ЕЛЕМЕНТИ
+// ============================================================================
 const studentsListElement = document.getElementById("students-list");
 const modalFormElement = document.getElementById("modal-form");
 const modalConfirmElement = document.getElementById("modal-confirm");
@@ -28,41 +42,49 @@ const confirmTextElement = document.getElementById("confirm-text");
 const confirmYesButtonElement = document.getElementById("btn-confirm-yes");
 const btnAddStudent = document.getElementById("btn-add-student");
 
-//! --- РЕНДЕР СПИСКУ СТУДЕНТІВ ПРИ ЗАПУСКУ ---
+// ============================================================================
+// 🚀 РЕНДЕР СПИСКУ СТУДЕНТІВ ПРИ ЗАПУСКУ
+// ============================================================================
 renderStudentsList(dataArray);
-
-
 
 // ============================================================================
 // 🎧 СЛУХАЧІ ПОДІЙ
 // ============================================================================
+btnAddStudent.addEventListener("click", handleAddStudentClick);
+studentFormElement.addEventListener("submit", handleSubmitForm);
+studentsListElement.addEventListener("click", handleStudentCardClick);
+confirmYesButtonElement.addEventListener("click", handleConfirmDelete);
+document.body.addEventListener("click", handleCloseModal);
 
-// 1. Кнопка “Додати студента”
-btnAddStudent.addEventListener("click", addStudent);
+// ============================================================================
+// ⚙️ ФУНКЦІЇ-СЛУХАЧІ
+// ============================================================================
 
-// 2. Подання форми “Зберегти”
-studentFormElement.addEventListener("submit", (event) => {
+// 1. Натискання “Додати студента”
+function handleAddStudentClick() {
+  addStudent();
+}
+
+// 2. Відправлення форми “Зберегти”
+function handleSubmitForm(event) {
   event.preventDefault();
 
   const formData = new FormData(studentFormElement);
   const studentData = Object.fromEntries(formData.entries());
-
-  // Переводжу числові значення
   studentData.age = Number(studentData.age);
   studentData.course = Number(studentData.course);
 
-  // Якщо редагування
   if (editStudentId !== null) {
     const studentIndex = dataArray.findIndex(
       (studentItem) => studentItem.id === editStudentId
-    ); 
-    //! забрати з локал сторедж найсвіжіші дані (забираю найостаннішу версію даних)
+    );
+
     dataArray = JSON.parse(localStorage.getItem("studentsList"));
     dataArray[studentIndex] = { ...dataArray[studentIndex], ...studentData };
+
     console.log("Відредаговано студента:", dataArray[studentIndex]);
     editStudentId = null;
   } else {
-    // Якщо новий студент
     studentData.id = nextStudentId++;
     dataArray.push(studentData);
     console.log("Додано студента:", studentData);
@@ -71,10 +93,10 @@ studentFormElement.addEventListener("submit", (event) => {
   updateJSON();
   renderStudentsList(dataArray);
   closeModal(modalFormElement);
-});
+}
 
-// 3. Клік по картках студентів (редагування / видалення)
-studentsListElement.addEventListener("click", (event) => {
+// 3. Клік по картці студента (редагування / видалення)
+function handleStudentCardClick(event) {
   const cardElement = event.target.closest(".student-card");
   if (!cardElement) return;
 
@@ -83,7 +105,6 @@ studentsListElement.addEventListener("click", (event) => {
     (studentItem) => studentItem.id === currentStudentId
   );
 
-  // Якщо натиснуто “Редагувати”
   if (event.target.classList.contains("edit-btn")) {
     openForm("Редагування студента");
     studentFormElement.firstName.value = currentStudent.firstName;
@@ -94,16 +115,15 @@ studentsListElement.addEventListener("click", (event) => {
     editStudentId = currentStudentId;
   }
 
-  // Якщо натиснуто “Видалити”
   if (event.target.classList.contains("delete-btn")) {
     deleteStudentId = currentStudentId;
     confirmTextElement.textContent = `Видалити картку студента ${currentStudent.firstName}?`;
     openModal(modalConfirmElement);
   }
-});
+}
 
 // 4. Підтвердження видалення
-confirmYesButtonElement.addEventListener("click", () => {
+function handleConfirmDelete() {
   dataArray = dataArray.filter(
     (studentItem) => studentItem.id !== deleteStudentId
   );
@@ -111,20 +131,18 @@ confirmYesButtonElement.addEventListener("click", () => {
   updateJSON();
   renderStudentsList(dataArray);
   closeModal(modalConfirmElement);
-});
+}
 
 // 5. Закриття модальних вікон
-document.body.addEventListener("click", (event) => {
+function handleCloseModal(event) {
   if (event.target.dataset.close !== undefined) {
     const modalWindowElement = event.target.closest(".modal");
     closeModal(modalWindowElement);
   }
-});
-
-
+}
 
 // ============================================================================
-// ⚙️ ФУНКЦІЇ
+// 🧠 ОСНОВНІ ФУНКЦІЇ
 // ============================================================================
 
 // --- Додає нового студента ---
