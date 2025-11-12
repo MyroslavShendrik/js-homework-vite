@@ -1,0 +1,13 @@
+import"./modulepreload-polyfill-3cfb730f.js";import{H as b}from"./handlebars-aa0ac26f.js";const p=`<li class="student-card" data-id="{{id}}">
+  <div class="student-info">
+    <p><strong>{{firstName}} {{lastName}}</strong></p>
+    <p><em>Вік:</em> {{age}}</p>
+    <p><em>Курс:</em> {{course}}</p>
+    <p><em>Факультет:</em> {{faculty}}</p>
+  </div>
+  <div class="student-actions">
+    <button class="edit-btn">Edit</button>
+    <button class="delete-btn">Delete</button>
+  </div>
+</li>
+`,L=b.compile(p);localStorage.getItem("studentsList")?console.log("Наявність даних у localStorage:",localStorage.getItem("studentsList")):(localStorage.setItem("studentsList","[]"),console.log("Початковий стан localStorage:",localStorage.getItem("studentsList")));let e=JSON.parse(localStorage.getItem("studentsList")),c="",d=null,y=1,i=null;const u=document.getElementById("students-list"),f=document.getElementById("modal-form"),g=document.getElementById("modal-confirm"),l=document.getElementById("student-form"),N=document.getElementById("confirm-text"),v=document.getElementById("btn-confirm-yes"),h=document.getElementById("btn-add-student");m(e);h.addEventListener("click",B);l.addEventListener("submit",C);u.addEventListener("click",x);v.addEventListener("click",O);document.body.addEventListener("click",k);function B(){D()}function C(t){t.preventDefault();const o=new FormData(l),n=Object.fromEntries(o.entries());if(n.age=Number(n.age),n.course=Number(n.course),d!==null){const s=e.findIndex(a=>a.id===d);e=JSON.parse(localStorage.getItem("studentsList")),e[s]={...e[s],...n},console.log("Відредаговано студента:",e[s]),d=null}else n.id=y++,e.push(n),console.log("Додано студента:",n);S(),m(e),r(f)}function x(t){const o=t.target.closest(".student-card");if(!o)return;const n=Number(o.dataset.id),s=e.find(a=>a.id===n);t.target.classList.contains("edit-btn")&&(E("Редагування студента"),l.firstName.value=s.firstName,l.lastName.value=s.lastName,l.age.value=s.age,l.course.value=s.course,l.faculty.value=s.faculty,d=n),t.target.classList.contains("delete-btn")&&(i=n,N.textContent=`Видалити картку студента ${s.firstName}?`,I(g))}function O(){e=e.filter(t=>t.id!==i),i=null,S(),m(e),r(g)}function k(t){if(t.target.dataset.close!==void 0){const o=t.target.closest(".modal");r(o)}}function D(){E("Нова картка студента"),l.reset(),d=null,console.log("Відкрито форму для нового студента")}function S(){c=JSON.stringify(e,null,2),console.log("dataJSON:",c),localStorage.setItem("studentsList",c)}function m(t){u.innerHTML="",console.log("dataArray:",t),t.forEach(o=>{u.insertAdjacentHTML("beforeend",L(o))})}function E(t){const o=document.getElementById("form-title");o.textContent=t,I(f)}function I(t){t.classList.remove("hidden")}function r(t){t.classList.add("hidden")}
