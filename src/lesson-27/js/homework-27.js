@@ -9,26 +9,20 @@ const studentTemplate = Handlebars.compile(templateRaw);
 // ============================================================================
 // 💾 АНАЛІЗ LOCALSTORAGE
 // ============================================================================
-if (localStorage.getItem("studentsList")) {
-  console.log(
-    "Наявність даних у localStorage:",
-    localStorage.getItem("studentsList")
-  );
-} else {
+if (!localStorage.getItem("studentsList")) {
   localStorage.setItem("studentsList", "[]");
-  console.log(
-    "Початковий стан localStorage:",
-    localStorage.getItem("studentsList")
-  );
+  console.log("Початковий стан localStorage:", localStorage.getItem("studentsList"));
+} else {
+  console.log("Наявність даних у localStorage:", localStorage.getItem("studentsList"));
 }
 
 // ============================================================================
 // 📦 ОСНОВНІ ЗМІННІ
 // ============================================================================
-let dataArray = JSON.parse(localStorage.getItem("studentsList"));
+let dataArray = JSON.parse(localStorage.getItem("studentsList")) || [];
 let dataJSON = "";
 let editStudentId = null;
-let nextStudentId = 1;
+let nextStudentId = dataArray.length ? Math.max(...dataArray.map(s => s.id)) + 1 : 1;
 let deleteStudentId = null;
 
 // ============================================================================
@@ -62,6 +56,8 @@ document.body.addEventListener("click", handleCloseModal);
 
 // 1. Натискання “Додати студента”
 function handleAddStudentClick() {
+  dataArray = JSON.parse(localStorage.getItem("studentsList")) || [];
+  console.log("Перед додаванням студента, dataArray:", dataArray);
   addStudent();
 }
 
@@ -69,19 +65,17 @@ function handleAddStudentClick() {
 function handleSubmitForm(event) {
   event.preventDefault();
 
+  dataArray = JSON.parse(localStorage.getItem("studentsList")) || [];
+  console.log("Перед збереженням, dataArray:", dataArray);
+
   const formData = new FormData(studentFormElement);
   const studentData = Object.fromEntries(formData.entries());
   studentData.age = Number(studentData.age);
   studentData.course = Number(studentData.course);
 
   if (editStudentId !== null) {
-    const studentIndex = dataArray.findIndex(
-      (studentItem) => studentItem.id === editStudentId
-    );
-
-    dataArray = JSON.parse(localStorage.getItem("studentsList"));
+    const studentIndex = dataArray.findIndex(s => s.id === editStudentId);
     dataArray[studentIndex] = { ...dataArray[studentIndex], ...studentData };
-
     console.log("Відредаговано студента:", dataArray[studentIndex]);
     editStudentId = null;
   } else {
@@ -100,10 +94,11 @@ function handleStudentCardClick(event) {
   const cardElement = event.target.closest(".student-card");
   if (!cardElement) return;
 
+  dataArray = JSON.parse(localStorage.getItem("studentsList")) || [];
+  console.log("Перед редагуванням/видаленням, dataArray:", dataArray);
+
   const currentStudentId = Number(cardElement.dataset.id);
-  const currentStudent = dataArray.find(
-    (studentItem) => studentItem.id === currentStudentId
-  );
+  const currentStudent = dataArray.find(s => s.id === currentStudentId);
 
   if (event.target.classList.contains("edit-btn")) {
     openForm("Редагування студента");
@@ -124,9 +119,7 @@ function handleStudentCardClick(event) {
 
 // 4. Підтвердження видалення
 function handleConfirmDelete() {
-  dataArray = dataArray.filter(
-    (studentItem) => studentItem.id !== deleteStudentId
-  );
+  dataArray = dataArray.filter(s => s.id !== deleteStudentId);
   deleteStudentId = null;
   updateJSON();
   renderStudentsList(dataArray);
@@ -163,8 +156,8 @@ function updateJSON() {
 // --- Рендер списку студентів ---
 function renderStudentsList(array) {
   studentsListElement.innerHTML = "";
-  console.log("dataArray:", array);
-  array.forEach((studentItem) => {
+  console.log("Рендеримо dataArray:", array);
+  array.forEach(studentItem => {
     studentsListElement.insertAdjacentHTML(
       "beforeend",
       studentTemplate(studentItem)
