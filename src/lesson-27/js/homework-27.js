@@ -109,7 +109,7 @@ function handleStudentCardClick(event) {
 
   if (event.target.classList.contains("edit-btn")) {
     // openForm("Редагування студента");
-    document.getElementById("form-title").textContent = "Редагування студента";
+   formTitle.textContent = "Редагування студента";
     toggleModal(modalFormElement);
     studentFormElement.firstName.value = currentStudent.firstName;
     studentFormElement.lastName.value = currentStudent.lastName;
