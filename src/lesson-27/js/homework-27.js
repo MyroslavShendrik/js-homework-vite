@@ -20,10 +20,9 @@ if (!localStorage.getItem("studentsList")) {
 // 📦 ОСНОВНІ ЗМІННІ
 // ============================================================================
 let dataArray = JSON.parse(localStorage.getItem("studentsList"));
-// let dataJSON = "";
 let editStudentId = null ;
 let nextStudentId = dataArray.length ? Math.max(...dataArray.map(s => s.id)) + 1 : 1;
-// let deleteStudentId ;
+
 
 
 // ============================================================================
@@ -36,6 +35,7 @@ const studentFormElement = document.getElementById("student-form");
 const confirmTextElement = document.getElementById("confirm-text");
 const confirmYesButtonElement = document.getElementById("btn-confirm-yes");
 const btnAddStudent = document.getElementById("btn-add-student");
+const formTitle =document.getElementById("form-title");
 
 // ============================================================================
 // 🚀 РЕНДЕР СПИСКУ СТУДЕНТІВ ПРИ ЗАПУСКУ
@@ -56,10 +56,14 @@ document.body.addEventListener("click", handleCloseModal);
 // ============================================================================
 
 // 1. Натискання “Додати студента”
-function handleAddStudentClick() {
-  dataArray = JSON.parse(localStorage.getItem("studentsList")) || [];
+function addStudent() {
+  dataArray = JSON.parse(localStorage.getItem("studentsList")) ;
   console.log("Перед додаванням студента, dataArray:", dataArray);
-  addStudent();
+  formTitle.textContent = "Нова картка студента";
+  studentFormElement.reset(); //! додати цю логіку в кінці роботи форми 
+  editStudentId = null;
+  console.log("Відкрито форму для нового студента");
+  toggleModal(modalFormElement);
 }
 
 // 2. Відправлення форми “Зберегти”
@@ -92,9 +96,6 @@ function handleSubmitForm(event) {
 
 // 3. Клік по картці студента (редагування / видалення)
 function handleStudentCardClick(event) {
-  // const cardElement = event.target.closest(".student-card");
-  // console.log("cardElement:",cardElement);
-  // if (!cardElement) return;
  if(event.target.classList.contains("edit-btn") || event.target.classList.contains("delete-btn")){
   console.log("Клік по картці студента (редагування / видалення)");
  editStudentId = Number(event.target.parentNode.parentNode.dataset.id);
@@ -104,21 +105,21 @@ function handleStudentCardClick(event) {
   dataArray = JSON.parse(localStorage.getItem("studentsList"));
   console.log("Перед редагуванням/видаленням, dataArray:", dataArray);
 
-  // const currentStudentId = Number(cardElement.dataset.id);
   const currentStudent = dataArray.find(s => s.id === editStudentId);
 
   if (event.target.classList.contains("edit-btn")) {
-    openForm("Редагування студента");
+    // openForm("Редагування студента");
+    document.getElementById("form-title").textContent = "Редагування студента";
+    toggleModal(modalFormElement);
     studentFormElement.firstName.value = currentStudent.firstName;
     studentFormElement.lastName.value = currentStudent.lastName;
     studentFormElement.age.value = currentStudent.age;
     studentFormElement.course.value = currentStudent.course;
     studentFormElement.faculty.value = currentStudent.faculty;
-    // editStudentId = id;
+
   }
 
   if (event.target.classList.contains("delete-btn")) {
-    // deleteStudentId = editStudentId;
     console.log("Видалити картку студента")
     confirmTextElement.textContent = `Видалити картку студента ${currentStudent.firstName}?`;
     toggleModal(modalConfirmElement);
@@ -128,7 +129,6 @@ function handleStudentCardClick(event) {
 // 4. Підтвердження видалення
 function handleConfirmDelete() {
   dataArray = dataArray.filter(s => s.id !== editStudentId);
-  // deleteStudentId = null;
   console.log("editStudentId видалення:",editStudentId) 
   updateJSON();
   renderStudentsList(dataArray);
@@ -149,17 +149,16 @@ function handleCloseModal(event) {
 
 // --- Додає нового студента ---
 function addStudent() {
-  openForm("Нова картка студента");
-  studentFormElement.reset();
+  document.getElementById("form-title").textContent = "Нова картка студента";
+  toggleModal(modalFormElement);
+  studentFormElement.reset(); //! додати цю логіку в кінці роботи форми 
   editStudentId = null;
   console.log("Відкрито форму для нового студента");
+  
 }
 
 // --- Оновлення JSON та localStorage ---
 function updateJSON() {
-  // dataJSON = JSON.stringify(dataArray, null, 2);
-  // console.log("dataJSON:", dataJSON);
-  // localStorage.setItem("studentsList", dataJSON);
   localStorage.setItem("studentsList", JSON.stringify(dataArray, null, 2));
 }
 
@@ -176,21 +175,13 @@ function renderStudentsList(array) {
 }
 
 // --- Відкрити форму з заголовком ---
-function openForm(formTitle) {
-  const formTitleElement = document.getElementById("form-title");
-  formTitleElement.textContent = formTitle;
-  toggleModal(modalFormElement);
-}
-
-// --- Відкрити будь-яке модальне вікно ---
-// function openModal(modalElement) {
-//   modalElement.classList.remove("hidden");
+// function openForm(formTitle) {
+//   const formTitleElement = document.getElementById("form-title");
+//   formTitleElement.textContent = formTitle;
+//   toggleModal(modalFormElement);
 // }
 
-// --- Закрити будь-яке модальне вікно ---
-// function closeModal(modalElement) {
-//   modalElement.classList.add("hidden");
-// }
+
 function toggleModal(modalElement) {
   modalElement.classList.toggle("hidden");
 }
