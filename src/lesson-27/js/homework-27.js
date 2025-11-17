@@ -45,7 +45,7 @@ renderStudentsList(dataArray);
 // ============================================================================
 // 🎧 СЛУХАЧІ ПОДІЙ
 // ============================================================================
-btnAddStudent.addEventListener("click", handleAddStudentClick);
+btnAddStudent.addEventListener("click", addStudent);
 studentFormElement.addEventListener("submit", handleSubmitForm);
 studentsListElement.addEventListener("click", handleStudentCardClick);
 confirmYesButtonElement.addEventListener("click", handleConfirmDelete);
@@ -61,7 +61,7 @@ function addStudent() {
   console.log("Перед додаванням студента, dataArray:", dataArray);
   formTitle.textContent = "Нова картка студента";
   studentFormElement.reset(); //! додати цю логіку в кінці роботи форми 
-  editStudentId = null;
+  //! editStudentId = null;
   console.log("Відкрито форму для нового студента");
   toggleModal(modalFormElement);
 }
@@ -148,14 +148,14 @@ function handleCloseModal(event) {
 // ============================================================================
 
 // --- Додає нового студента ---
-function addStudent() {
-  document.getElementById("form-title").textContent = "Нова картка студента";
-  toggleModal(modalFormElement);
-  studentFormElement.reset(); //! додати цю логіку в кінці роботи форми 
-  editStudentId = null;
-  console.log("Відкрито форму для нового студента");
+// function addStudent() {
+//   document.getElementById("form-title").textContent = "Нова картка студента";
+//   toggleModal(modalFormElement);
+//   studentFormElement.reset(); //! додати цю логіку в кінці роботи форми 
+//   editStudentId = null;
+//   console.log("Відкрито форму для нового студента");
   
-}
+// }
 
 // --- Оновлення JSON та localStorage ---
 function updateJSON() {
