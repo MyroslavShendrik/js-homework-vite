@@ -20,8 +20,8 @@ if (!localStorage.getItem("studentsList")) {
 // 📦 ОСНОВНІ ЗМІННІ
 // ============================================================================
 let dataArray = JSON.parse(localStorage.getItem("studentsList"));
-let editStudentId = null ;
-let nextStudentId = dataArray.length ? Math.max(...dataArray.map(s => s.id)) + 1 : 1;
+let editStudentId ;
+// let nextStudentId = dataArray.length ? Math.max(...dataArray.map(s => s.id)) + 1 : 1;
 
 
 
@@ -57,7 +57,8 @@ document.body.addEventListener("click", handleCloseModal);
 
 // 1. Натискання “Додати студента”
 function addStudent() {
-  dataArray = JSON.parse(localStorage.getItem("studentsList")) ;
+  // dataArray = JSON.parse(localStorage.getItem("studentsList")) ;
+  updateData();
   console.log("Перед додаванням студента, dataArray:", dataArray);
   formTitle.textContent = "Нова картка студента";
   studentFormElement.reset(); //! додати цю логіку в кінці роботи форми 
@@ -70,7 +71,6 @@ function addStudent() {
 function handleSubmitForm(event) {
   event.preventDefault();
 
-  dataArray = JSON.parse(localStorage.getItem("studentsList")) || [];
   console.log("Перед збереженням, dataArray:", dataArray);
 
   const formData = new FormData(studentFormElement);
@@ -79,17 +79,22 @@ function handleSubmitForm(event) {
   studentData.course = Number(studentData.course);
 
   if (editStudentId !== null) {
-    const studentIndex = dataArray.findIndex(s => s.id === editStudentId);
+    // const studentIndex = dataArray.findIndex(s => s.id === editStudentId);
+    
+    console.log("studentIndex:",studentIndex);
     dataArray[studentIndex] = { ...dataArray[studentIndex], ...studentData };
     console.log("Відредаговано студента:", dataArray[studentIndex]);
     editStudentId = null;
+    
   } else {
-    studentData.id = nextStudentId++;
+    // studentData.id = nextStudentId++;
+    console.log("dataArray.length:",dataArray.length)
+    studentData.id = dataArray.length;
     dataArray.push(studentData);
     console.log("Додано студента:", studentData);
   }
 
-  updateJSON();
+  updateLocalStorage();
   renderStudentsList(dataArray);
   toggleModal(modalFormElement);
 }
@@ -102,11 +107,11 @@ function handleStudentCardClick(event) {
  console.log("editStudentId:",editStudentId);
  } else return;
  
-  dataArray = JSON.parse(localStorage.getItem("studentsList"));
+  updateData();
   console.log("Перед редагуванням/видаленням, dataArray:", dataArray);
 
   const currentStudent = dataArray.find(s => s.id === editStudentId);
-
+console.log("currentStudent:",currentStudent);
   if (event.target.classList.contains("edit-btn")) {
     // openForm("Редагування студента");
    formTitle.textContent = "Редагування студента";
@@ -130,7 +135,7 @@ function handleStudentCardClick(event) {
 function handleConfirmDelete() {
   dataArray = dataArray.filter(s => s.id !== editStudentId);
   console.log("editStudentId видалення:",editStudentId) 
-  updateJSON();
+  updateLocalStorage();
   renderStudentsList(dataArray);
   toggleModal(modalConfirmElement);
 }
@@ -158,10 +163,13 @@ function handleCloseModal(event) {
 // }
 
 // --- Оновлення JSON та localStorage ---
-function updateJSON() {
+function updateLocalStorage() {
   localStorage.setItem("studentsList", JSON.stringify(dataArray, null, 2));
 }
-
+function updateData(){
+  dataArray = JSON.parse(localStorage.getItem("studentsList"));
+  console.log("dataArray:",dataArray);
+}
 // --- Рендер списку студентів ---
 function renderStudentsList(array) {
   studentsListElement.innerHTML = "";
