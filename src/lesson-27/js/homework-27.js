@@ -152,15 +152,6 @@ function handleCloseModal(event) {
 // 🧠 ОСНОВНІ ФУНКЦІЇ
 // ============================================================================
 
-// --- Додає нового студента ---
-// function addStudent() {
-//   document.getElementById("form-title").textContent = "Нова картка студента";
-//   toggleModal(modalFormElement);
-//   studentFormElement.reset(); //! додати цю логіку в кінці роботи форми 
-//   editStudentId = null;
-//   console.log("Відкрито форму для нового студента");
-  
-// }
 
 // --- Оновлення JSON та localStorage ---
 function updateLocalStorage() {
@@ -182,12 +173,8 @@ function renderStudentsList(array) {
   });
 }
 
-// --- Відкрити форму з заголовком ---
-// function openForm(formTitle) {
-//   const formTitleElement = document.getElementById("form-title");
-//   formTitleElement.textContent = formTitle;
-//   toggleModal(modalFormElement);
-// }
+
+
 
 
 function toggleModal(modalElement) {
