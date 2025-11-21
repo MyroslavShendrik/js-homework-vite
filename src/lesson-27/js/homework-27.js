@@ -1,5 +1,6 @@
 import Handlebars from "handlebars";
 import templateRaw from "../handlebars/lesson27.hbs?raw";
+import { forEach, forIn } from "lodash";
 
 // ============================================================================
 // 🧠 КОМПІЛЯЦІЯ ШАБЛОНУ
@@ -37,7 +38,7 @@ const formTitle = document.getElementById("form-title");
 // ============================================================================
 // 🚀 РЕНДЕР СПИСКУ СТУДЕНТІВ ПРИ ЗАПУСКУ
 // ============================================================================
-normalizeIds();
+// normalizeIds();
 renderStudentsList(dataArray);
 
 // ============================================================================
@@ -47,7 +48,7 @@ btnAddStudent.addEventListener("click", addStudent);
 studentFormElement.addEventListener("submit", handleSubmitForm);
 studentsListElement.addEventListener("click", handleStudentCardClick);
 confirmYesButtonElement.addEventListener("click", handleConfirmDelete);
-document.body.addEventListener("click", handleCloseModal);
+// document.body.addEventListener("click", handleCloseModal);
 
 // ============================================================================
 // ⚙️ ФУНКЦІЇ-СЛУХАЧІ
@@ -71,6 +72,7 @@ function handleStudentCardClick(event) {
     editStudentId = Number(event.target.closest(".student-card").dataset.id);
     console.log("editStudentId:", editStudentId);
   } else return;
+
 
   updateData();
   console.log("Перед редагуванням/видаленням, dataArray:", dataArray);
@@ -106,28 +108,22 @@ function handleSubmitForm(event) {
   studentData.course = Number(studentData.course);
 
   if (formTitle.textContent === "Редагування студента") {
-    // редагуємо існуючого студента
-    // const studentIndex = dataArray.findIndex(s => s.id === editStudentId);
-    //     console.log("studentIndex:", studentIndex);
-    //     console.log("editStudentId:", editStudentId);
-    
-
-    // if (studentIndex !== -1) {
+    //! редагуємо існуючого студента
       dataArray[editStudentId] = { ...dataArray[editStudentId], ...studentData };
       console.log("Відредаговано студента:", dataArray[editStudentId]);
-    // }
 
-    //! editStudentId = null; // 
-    //? логіка додавання
+    //! логіка додавання
   } else {
-    // додаємо нового студента
-     console.log("editStudentId-ДОДАВАННЯ:", editStudentId);
+    //! додаємо нового студента
+    studentData.id = dataArray.length;
+    console.log("editStudentId-ДОДАВАННЯ:", editStudentId);
     console.log("dataArray.length:", dataArray.length);
     dataArray.push(studentData);
+    console.log('dataArray:',dataArray);
     console.log("Додано студента:", studentData);
   }
 
-  normalizeIds(); 
+  // normalizeIds(); 
   updateLocalStorage();
   renderStudentsList(dataArray);
   toggleModal(modalFormElement);
@@ -137,8 +133,21 @@ function handleSubmitForm(event) {
 
 // 4. Підтвердження видалення
 function handleConfirmDelete() {
-  dataArray = dataArray.filter(s => s.id !== editStudentId);
-  normalizeIds();     
+  // dataArray = dataArray.filter(item => item.id !== editStudentId); //! var1 
+
+  dataArray.splice(editStudentId,1); //! var 2
+  console.log("dataArray:",dataArray);
+
+  //  dataArray = dataArray.map((student, index) => {
+  //   return {
+  //   ...student,
+  //   id: index
+  //   };
+  // });
+  // normalizeIds();
+ for (let index = 0; index < dataArray.length; index++) {
+  dataArray[index].id = index; 
+ }     
   console.log("editStudentId видалення:", editStudentId);
   updateLocalStorage();
   renderStudentsList(dataArray);
@@ -146,12 +155,12 @@ function handleConfirmDelete() {
 }
 
 // 5. Закриття модальних вікон
-function handleCloseModal(event) {
-  if (event.target.dataset.close !== undefined) {
-    const modalWindowElement = event.target.closest(".modal");
-    toggleModal(modalWindowElement);
-  }
-}
+// function handleCloseModal(event) {
+//   if (event.target.dataset.close !== undefined) {
+//     const modalWindowElement = event.target.closest(".modal");
+//     toggleModal(modalWindowElement);
+//   }
+// }
 
 // ============================================================================
 // 🧠 ОСНОВНІ ФУНКЦІЇ
@@ -182,9 +191,13 @@ function toggleModal(modalElement) {
 }
 
 // --- Перерахунок ID, щоб починалося з 0 ---
-function normalizeIds() {
-  dataArray = dataArray.map((student, index) => ({
-    ...student,
-    id: index
-  }));
-}
+// function normalizeIds() {
+//   dataArray = dataArray.map((student, index) => {
+//     console.log("student:",student);
+//     return {
+//     ...student,
+//     id: index
+//     };
+//   });
+// }
+
