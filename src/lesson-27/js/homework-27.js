@@ -64,41 +64,7 @@ function addStudent() {
   toggleModal(modalFormElement);
 }
 
-// 2. Відправлення форми “Зберегти”
-function handleSubmitForm(event) {
-  event.preventDefault();
-  console.log("Перед збереженням, dataArray:", dataArray);
-
-  const formData = new FormData(studentFormElement);
-  const studentData = Object.fromEntries(formData.entries());
-  studentData.age = Number(studentData.age);
-  studentData.course = Number(studentData.course);
-
-  if (editStudentId !== null && editStudentId !== undefined) {
-    // редагуємо існуючого студента
-    const studentIndex = dataArray.findIndex(s => s.id === editStudentId);
-    console.log("studentIndex:", studentIndex);
-
-    if (studentIndex !== -1) {
-      dataArray[studentIndex] = { ...dataArray[studentIndex], ...studentData };
-      console.log("Відредаговано студента:", dataArray[studentIndex]);
-    }
-
-    //! editStudentId = null; // 
-  } else {
-    // додаємо нового студента
-    console.log("dataArray.length:", dataArray.length);
-    dataArray.push(studentData);
-    console.log("Додано студента:", studentData);
-  }
-
-  normalizeIds(); 
-  updateLocalStorage();
-  renderStudentsList(dataArray);
-  toggleModal(modalFormElement);
-}
-
-// 3. Клік по картці студента (редагування / видалення)
+// 2. Клік по картці студента (редагування / видалення)
 function handleStudentCardClick(event) {
   if (event.target.classList.contains("edit-btn") || event.target.classList.contains("delete-btn")) {
     console.log("Клік по картці студента (редагування / видалення)");
@@ -128,6 +94,46 @@ function handleStudentCardClick(event) {
     toggleModal(modalConfirmElement);
   }
 }
+
+// 3. Відправлення форми “Зберегти”
+function handleSubmitForm(event) {
+  event.preventDefault();
+  console.log("Перед збереженням, dataArray:", dataArray);
+
+  const formData = new FormData(studentFormElement);
+  const studentData = Object.fromEntries(formData.entries());
+  studentData.age = Number(studentData.age);
+  studentData.course = Number(studentData.course);
+
+  if (formTitle.textContent === "Редагування студента") {
+    // редагуємо існуючого студента
+    // const studentIndex = dataArray.findIndex(s => s.id === editStudentId);
+    //     console.log("studentIndex:", studentIndex);
+    //     console.log("editStudentId:", editStudentId);
+    
+
+    // if (studentIndex !== -1) {
+      dataArray[editStudentId] = { ...dataArray[editStudentId], ...studentData };
+      console.log("Відредаговано студента:", dataArray[editStudentId]);
+    // }
+
+    //! editStudentId = null; // 
+    //? логіка додавання
+  } else {
+    // додаємо нового студента
+     console.log("editStudentId-ДОДАВАННЯ:", editStudentId);
+    console.log("dataArray.length:", dataArray.length);
+    dataArray.push(studentData);
+    console.log("Додано студента:", studentData);
+  }
+
+  normalizeIds(); 
+  updateLocalStorage();
+  renderStudentsList(dataArray);
+  toggleModal(modalFormElement);
+}
+
+
 
 // 4. Підтвердження видалення
 function handleConfirmDelete() {
