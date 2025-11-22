@@ -48,7 +48,7 @@ btnAddStudent.addEventListener("click", addStudent);
 studentFormElement.addEventListener("submit", handleSubmitForm);
 studentsListElement.addEventListener("click", handleStudentCardClick);
 confirmYesButtonElement.addEventListener("click", handleConfirmDelete);
-// document.body.addEventListener("click", handleCloseModal);
+document.body.addEventListener("click",  toggleModal);
 
 // ============================================================================
 // ⚙️ ФУНКЦІЇ-СЛУХАЧІ
@@ -187,6 +187,11 @@ function renderStudentsList(array) {
 }
 
 function toggleModal(modalElement) {
+  if (modalElement instanceof Event) {
+    modalElement = modalElement.target.closest(".modal");
+  }
+  if (!modalElement) return; 
+
   modalElement.classList.toggle("hidden");
 }
 
