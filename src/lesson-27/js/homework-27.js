@@ -1,6 +1,5 @@
 import Handlebars from "handlebars";
 import templateRaw from "../handlebars/lesson27.hbs?raw";
-import { forEach, forIn } from "lodash";
 
 // ============================================================================
 // 🧠 КОМПІЛЯЦІЯ ШАБЛОНУ
@@ -48,7 +47,8 @@ btnAddStudent.addEventListener("click", addStudent);
 studentFormElement.addEventListener("submit", handleSubmitForm);
 studentsListElement.addEventListener("click", handleStudentCardClick);
 confirmYesButtonElement.addEventListener("click", handleConfirmDelete);
-document.body.addEventListener("click",  toggleModal);
+// document.body.addEventListener("click",  toggleModal); //! ChatGPT var 2 
+document.body.addEventListener("click",  handleCloseModal); //! ChatGPT var 1
 
 // ============================================================================
 // ⚙️ ФУНКЦІЇ-СЛУХАЧІ
@@ -64,7 +64,7 @@ function addStudent() {
   console.log("Відкрито форму для нового студента");
   toggleModal(modalFormElement);
 }
-
+// addStudent()
 // 2. Клік по картці студента (редагування / видалення)
 function handleStudentCardClick(event) {
   if (event.target.classList.contains("edit-btn") || event.target.classList.contains("delete-btn")) {
@@ -155,12 +155,12 @@ function handleConfirmDelete() {
 }
 
 // 5. Закриття модальних вікон
-// function handleCloseModal(event) {
-//   if (event.target.dataset.close !== undefined) {
-//     const modalWindowElement = event.target.closest(".modal");
-//     toggleModal(modalWindowElement);
-//   }
-// }
+function handleCloseModal(event) {
+  if (event.target.dataset.close !== undefined) {
+    const modalWindowElement = event.target.closest(".modal");
+    toggleModal(modalWindowElement);
+  }
+}
 
 // ============================================================================
 // 🧠 ОСНОВНІ ФУНКЦІЇ
@@ -187,10 +187,10 @@ function renderStudentsList(array) {
 }
 
 function toggleModal(modalElement) {
-  if (modalElement instanceof Event) {
-    modalElement = modalElement.target.closest(".modal");
-  }
-  if (!modalElement) return; 
+  // if (modalElement instanceof Event) {
+  //   modalElement = modalElement.target.closest(".modal");
+  // }
+  // if (!modalElement) return; 
 
   modalElement.classList.toggle("hidden");
 }
