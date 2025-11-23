@@ -1,4 +1,4 @@
-import"./modulepreload-polyfill-3cfb730f.js";import{H as n}from"./handlebars-7f89a36c.js";const c=`<div class="menu">
+import"./modulepreload-polyfill-3cfb730f.js";import{H as n}from"./handlebars-aa0ac26f.js";const c=`<div class="menu">
   <h3 class="menu-title">{{title}}</h3>
   <ul class="menu-list">
     {{#each items}}

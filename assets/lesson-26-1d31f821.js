@@ -1,4 +1,4 @@
-import"./modulepreload-polyfill-3cfb730f.js";import{H as y}from"./handlebars-7f89a36c.js";const N=`<li class="student-card" data-id="{{id}}">
+import"./modulepreload-polyfill-3cfb730f.js";import{H as y}from"./handlebars-aa0ac26f.js";const N=`<li class="student-card" data-id="{{id}}">
   <div class="student-info">
     <p><strong>{{firstName}} {{lastName}}</strong></p>
     <p><em>Вік:</em> {{age}}</p>
