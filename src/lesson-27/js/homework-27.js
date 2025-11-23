@@ -25,15 +25,17 @@ let editStudentId;
 // ============================================================================
 // 🧩 HTML-ЕЛЕМЕНТИ
 // ============================================================================
-const studentsListElement = document.getElementById("students-list");
 const modalFormElement = document.getElementById("modal-form");
 const modalConfirmElement = document.getElementById("modal-confirm");
+const studentsListElement = document.getElementById("students-list");
 const studentFormElement = document.getElementById("student-form");
 const confirmTextElement = document.getElementById("confirm-text");
 const confirmYesButtonElement = document.getElementById("btn-confirm-yes");
 const btnAddStudent = document.getElementById("btn-add-student");
 const formTitle = document.getElementById("form-title");
-
+const btnClose = document.getElementById("btn-close");
+const btnCloseConfirm = document.getElementById("btn-close-confirm");
+console.log("btnClose:",btnClose);
 // ============================================================================
 // 🚀 РЕНДЕР СПИСКУ СТУДЕНТІВ ПРИ ЗАПУСКУ
 // ============================================================================
@@ -48,7 +50,10 @@ studentFormElement.addEventListener("submit", handleSubmitForm);
 studentsListElement.addEventListener("click", handleStudentCardClick);
 confirmYesButtonElement.addEventListener("click", handleConfirmDelete);
 // document.body.addEventListener("click",  toggleModal); //! ChatGPT var 2 
-document.body.addEventListener("click",  handleCloseModal); //! ChatGPT var 1
+// document.body.addEventListener("click",  handleCloseModal); //! ChatGPT var 1
+btnClose.addEventListener("click",() => toggleModal(modalFormElement));
+btnCloseConfirm.addEventListener("click",() => toggleModal(modalConfirmElement));
+
 
 // ============================================================================
 // ⚙️ ФУНКЦІЇ-СЛУХАЧІ
@@ -155,12 +160,12 @@ function handleConfirmDelete() {
 }
 
 // 5. Закриття модальних вікон
-function handleCloseModal(event) {
-  if (event.target.dataset.close !== undefined) {
-    const modalWindowElement = event.target.closest(".modal");
-    toggleModal(modalWindowElement);
-  }
-}
+// function handleCloseModal(event) {
+//   if (event.target.dataset.close !== undefined) {
+//     const modalWindowElement = event.target.closest(".modal");
+//     toggleModal(modalWindowElement);
+//   }
+// }
 
 // ============================================================================
 // 🧠 ОСНОВНІ ФУНКЦІЇ
