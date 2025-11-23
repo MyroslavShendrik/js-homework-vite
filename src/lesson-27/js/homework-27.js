@@ -107,11 +107,18 @@ function handleSubmitForm(event) {
   event.preventDefault();
   console.log("Перед збереженням, dataArray:", dataArray);
 
-  const formData = new FormData(studentFormElement);
-  const studentData = Object.fromEntries(formData.entries());
-  studentData.age = Number(studentData.age);
-  studentData.course = Number(studentData.course);
-
+  // const formData = new FormData(studentFormElement);
+  // const studentData = Object.fromEntries(formData.entries());
+  // studentData.age = Number(studentData.age);
+  // studentData.course = Number(studentData.course);
+  let studentData = {};
+  // console.log("studentData:",studentData);
+    studentFormElement.firstName.value = studentData.firstName;
+    studentFormElement.lastName.value = studentData.lastName;
+    studentFormElement.age.value = Number(studentData.age);
+    studentFormElement.course.value = Number(studentData.course);
+    studentFormElement.faculty.value = studentData.faculty;
+    console.log("studentData:",studentData);
   if (formTitle.textContent === "Редагування студента") {
     //! редагуємо існуючого студента
       dataArray[editStudentId] = { ...dataArray[editStudentId], ...studentData };
