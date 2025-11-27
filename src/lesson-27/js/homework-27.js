@@ -107,18 +107,16 @@ function handleSubmitForm(event) {
   event.preventDefault();
   console.log("Перед збереженням, dataArray:", dataArray);
 
-  // const formData = new FormData(studentFormElement);
-  // const studentData = Object.fromEntries(formData.entries());
-  // studentData.age = Number(studentData.age);
-  // studentData.course = Number(studentData.course);
-  let studentData = {};
-  // console.log("studentData:",studentData);
-    studentFormElement.firstName.value = studentData.firstName;
-    studentFormElement.lastName.value = studentData.lastName;
-    studentFormElement.age.value = Number(studentData.age);
-    studentFormElement.course.value = Number(studentData.course);
-    studentFormElement.faculty.value = studentData.faculty;
-    console.log("studentData:",studentData);
+
+let studentData = {
+  firstName: studentFormElement.firstName.value,
+  lastName: studentFormElement.lastName.value,
+  age: Number(studentFormElement.age.value),
+  course: Number(studentFormElement.course.value),
+  faculty: studentFormElement.faculty.value
+};
+console.log("studentData:", studentData);
+
   if (formTitle.textContent === "Редагування студента") {
     //! редагуємо існуючого студента
       dataArray[editStudentId] = { ...dataArray[editStudentId], ...studentData };
@@ -150,13 +148,7 @@ function handleConfirmDelete() {
   dataArray.splice(editStudentId,1); //! var 2
   console.log("dataArray:",dataArray);
 
-  //  dataArray = dataArray.map((student, index) => {
-  //   return {
-  //   ...student,
-  //   id: index
-  //   };
-  // });
-  // normalizeIds();
+
  for (let index = 0; index < dataArray.length; index++) {
   dataArray[index].id = index; 
  }     
@@ -166,13 +158,7 @@ function handleConfirmDelete() {
   toggleModal(modalConfirmElement);
 }
 
-// 5. Закриття модальних вікон
-// function handleCloseModal(event) {
-//   if (event.target.dataset.close !== undefined) {
-//     const modalWindowElement = event.target.closest(".modal");
-//     toggleModal(modalWindowElement);
-//   }
-// }
+
 
 // ============================================================================
 // 🧠 ОСНОВНІ ФУНКЦІЇ
@@ -199,22 +185,9 @@ function renderStudentsList(array) {
 }
 
 function toggleModal(modalElement) {
-  // if (modalElement instanceof Event) {
-  //   modalElement = modalElement.target.closest(".modal");
-  // }
-  // if (!modalElement) return; 
-
   modalElement.classList.toggle("hidden");
 }
 
 // --- Перерахунок ID, щоб починалося з 0 ---
-// function normalizeIds() {
-//   dataArray = dataArray.map((student, index) => {
-//     console.log("student:",student);
-//     return {
-//     ...student,
-//     id: index
-//     };
-//   });
-// }
+
 
