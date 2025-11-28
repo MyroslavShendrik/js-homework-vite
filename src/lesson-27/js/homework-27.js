@@ -107,7 +107,7 @@ function handleSubmitForm(event) {
   event.preventDefault();
   console.log("Перед збереженням, dataArray:", dataArray);
 
-
+//! Заповнення форми var.1.0
 let studentData = {
   firstName: studentFormElement.firstName.value,
   lastName: studentFormElement.lastName.value,
@@ -115,6 +115,21 @@ let studentData = {
   course: Number(studentFormElement.course.value),
   faculty: studentFormElement.faculty.value
 };
+//! Заповнення форми var.1.1
+  // let studentData = {};
+  // studentData.firstName = studentFormElement.firstName.value;
+  // studentData.lastName = studentFormElement.lastName.value;
+  // studentData.age = Number(studentFormElement.age.value);
+  // studentData.course = Number(studentFormElement.course.value);
+  // studentData.faculty = studentFormElement.faculty.value;
+  // console.log("studentData:", studentData);
+
+//! Заповнення форми var.2
+  // const formData = new FormData(studentFormElement);
+  // const studentData = Object.fromEntries(formData.entries());
+  // studentData.age = Number(studentData.age);
+  // studentData.course = Number(studentData.course);
+
 console.log("studentData:", studentData);
 
   if (formTitle.textContent === "Редагування студента") {
