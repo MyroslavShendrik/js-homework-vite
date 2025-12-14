@@ -201,6 +201,7 @@ function renderStudentsList(array) {
 
 function toggleModal(modalElement) {
   modalElement.classList.toggle("hidden");
+  document.body.classList.toggle("no-scroll");
 }
 
 // --- Перерахунок ID, щоб починалося з 0 ---
