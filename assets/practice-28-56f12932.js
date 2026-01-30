@@ -1,16 +1,16 @@
 import"./modulepreload-polyfill-3cfb730f.js";//! Приклад-1: setTimeout()
-console.warn("Приклад-1: setTimeout():");const l=document.querySelector(".btn-set-interval"),s=()=>{const t=setTimeout(()=>{console.log("Реакція на клік в кнопку <Click setInterval> через 5 секунд")},5e3);console.log("timerId:",t);//! Що спрацює раніше: console.warn() або setTimeout(() => {console.log()}, 5000);
-};l.addEventListener("click",s);//! Приклад-2: setTimeout()
+console.warn("Приклад-1: setTimeout():");const l=document.querySelector(".btn-set-interval"),r=()=>{const o=setTimeout(()=>{console.log("Реакція на клік в кнопку <Click setInterval> через 5 секунд")},5e3);console.log("timerId:",o);//! Що спрацює раніше: console.warn() або setTimeout(() => {console.log()}, 5000);
+};l.addEventListener("click",r);//! Приклад-2: setTimeout()
 console.warn("Приклад-2: setTimeout():");//! ❌ Видалення таймера
 //! Таймер: setInterval()
 console.log(`%c
     const intervalId = setInterval(callback, delay, arg1, arg2, ...);
     `,"color: blue; font-size: 18px");console.log("----------------------------------------------------------------------------------------------------");//! Приклад-1: setInterval()
-console.warn("Приклад-1: setInterval():");const r=document.querySelector(".btn-start"),c=document.querySelector(".btn-stop");let o=null;//! ✅ Старт таймера кнопкою
-r.addEventListener("click",()=>{let t=0;o=setInterval(()=>{t++;//! лічильник часу
-console.log(`${t} Генерація випадкового числа: ${Math.random()}, id: ${o}`);//! ✅❌ Видалення/зупинення таймера за умовою
-const n=10;t===n&&(clearTimeout(o),console.error(`Інтервал з ідентифікатором ${o} зупинено на ${n}-ій секунді!`))},1e3)});//! ✅❌ Видалення/зупинення таймера кнопкою
-c.addEventListener("click",()=>{clearInterval(o),console.warn(`Інтервал з ідентифікатором ${o} зупинено!`)});//! Приклад-1 таймера відкладеного старту з конспекту
+console.warn("Приклад-1: setInterval():");const c=document.querySelector(".btn-start"),i=document.querySelector(".btn-stop");let t=null;//! ✅ Старт таймера кнопкою
+c.addEventListener("click",()=>{let o=0;t=setInterval(()=>{o++;//! лічильник часу
+console.log(`${o} Генерація випадкового числа: ${Math.random()}, id: ${t}`);//! ✅❌ Видалення/зупинення таймера за умовою
+const s=10;o===s&&(clearTimeout(t),console.error(`Інтервал з ідентифікатором ${t} зупинено на ${s}-ій секунді!`))},1e3)});//! ✅❌ Видалення/зупинення таймера кнопкою
+i.addEventListener("click",()=>{clearInterval(t),console.warn(`Інтервал з ідентифікатором ${t} зупинено!`)});//! Приклад-1 таймера відкладеного старту з конспекту
 console.warn("Приклад-1 таймера відкладеного старту з конспекту:");console.log(`%c
     let seconds = 10;
     let timerId = setTimeout(
@@ -48,4 +48,4 @@ console.warn("КРОК-1.2.Зробимо таймер прямого відлі
         }, index * timeBeforeStart);
     };
     `,"color: blue; font-size: 18px");console.log(". . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .");console.log("----------------------------------------------------------------------------------------------------");//! об'єкт - це "коробка" в якій зберігаються речі однієї категорії 
-const e={bread1:"родиний",bread2:"батон",bread3:"хлібці смаженні"};console.log("breads:",e);console.log("breads.bread1:",e.bread1);console.log("breads.bread2:",e.bread2);delete e.bread2;console.log("breads:",e);e.bread4="сонячний";console.log("breads:",e);e.bread4="КиївХліб";console.log("breads:",e);
+const e={bread1:"родиний",bread2:"батон",bread3:"хлібці смаженні"};console.log("breads:",e);console.log("breads.bread1:",e.bread1);console.log("breads.bread2:",e.bread2);delete e.bread2;console.log("breads:",e);e.bread4="сонячний";console.log("breads:",e);e.bread4="КиївХліб";console.log("breads:",e);const n={heroes:["Дарт Вейдер","Граф Дуку","Люк Скайвокер","Лея Органа","Обі-Ван Кенобі"],getHeroes(){console.log("✅ Цей метод буде повертати всіх героїв"),console.log("✅ heroes:",n.heroes)},addHeroes(o){console.log("Цей метод додає героя"),n.heroes.push(o),console.log("this:",this),this.heroes.push(o)}};n.getHeroes();n.addHeroes("Падме Амідала");n.getHeroes();
