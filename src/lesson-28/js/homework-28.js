@@ -1,4 +1,4 @@
-//! 1
+// ! 1
 // let count = 0;
 
 // const intervalId = setInterval(() => {
@@ -10,7 +10,7 @@
 //     console.log("Інтервал зупинено");
 //   }
 // }, 1000);
-//! 2
+// ! 2
 // const box = document.querySelector('.box');
 // let size = 100;
 
@@ -22,7 +22,7 @@
 // }, 500);
 
 
-//!3
+// !3
 // const target = document.querySelector('.target');
 // const scoreEl = document.querySelector('.score');
 // let score = 0;
@@ -38,7 +38,7 @@
 //   target.style.transform = `translate(${x}px, ${y}px)`;
 // }, 1000);
 
-//! 4 
+// ! 4 
 // const time = Number(prompt("Введіть час у секундах"));
 
 // setTimeout(() => {
