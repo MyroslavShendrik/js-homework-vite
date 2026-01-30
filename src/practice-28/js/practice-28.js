@@ -27,7 +27,7 @@ const greet = () => {
     clearTimeout(timerId); //! ✅ Видалення таймера
 };
 
-const timerId = setTimeout(greet, 2000);
+// const timerId = setTimeout(greet, 2000);
 
 //! ❌ Видалення таймера
 // clearTimeout(timerId);
@@ -79,3 +79,106 @@ stopBtn.addEventListener("click", () => {
     clearInterval(intervalId);
     console.warn(`Інтервал з ідентифікатором ${intervalId} зупинено!`);
 });
+
+//! Приклад-1 таймера відкладеного старту з конспекту
+console.warn("Приклад-1 таймера відкладеного старту з конспекту:")
+console.log(
+    `%c
+    let seconds = 10;
+    let timerId = setTimeout(
+        function() {
+            console.log("Time's up!");
+        },
+        seconds * 1000
+    );
+    `,
+    'color: blue; font-size: 18px',
+);
+console.log(". . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .");
+// let seconds = 10;
+// let timerId = setTimeout(
+//     function() {
+//         console.log("Time's up!");
+//     },
+//     seconds * 1000
+// );
+console.log("----------------------------------------------------------------------------------------------------");
+//! КРОК-1.1.Створюємо простий таймер відкладеного старту
+console.warn("КРОК-1.1.Створюємо простий таймер відкладеного старту:")
+console.log(
+    `%c
+    const timeBeforeStart = 3000; //! час до старту
+
+    function timeСount() {
+        console.log(
+            "Спрацювала функція timeСount() через",
+            timeBeforeStart/1000,
+            "секунди"
+        );
+    };
+    
+    const timerId = setTimeout(timeСount, timeBeforeStart);
+    `,
+    'color: blue; font-size: 18px',
+);
+console.log(". . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .");
+// const timeBeforeStart = 5000; //! час до старту
+
+// function timeСount() {
+//     console.log("Спрацювала функція timeСount() через", timeBeforeStart/1000, "секунди");
+// };
+
+// const timerId = setTimeout(timeСount, timeBeforeStart);
+console.log("----------------------------------------------------------------------------------------------------");
+//! КРОК-1.2.Зробимо таймер прямого відліку
+console.warn("КРОК-1.2.Зробимо таймер прямого відліку:")
+console.log(
+    `%c
+    let timerId;
+    const timeBeforeStart = 1000; //! час між відліками
+    const iterations = 10; //! кількість ітерацій
+
+    for (let index = 1; index <= iterations; index++) {
+    timerId = setTimeout(
+        function timeСount() {
+            console.log(
+                index,
+                "Спрацювала функція timeСount()"
+            );
+        }, index * timeBeforeStart);
+    };
+    `,
+    'color: blue; font-size: 18px',
+);
+console.log(". . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .");
+// let timerId;
+// const timeBeforeStart = 1000; //! час між відліками
+// const iterations = 10; //! кількість ітерацій
+
+// for (let index = 1; index <= iterations; index++) {
+//     timerId = setTimeout(
+//         function timeСount() {
+//             console.log(index, "Спрацювала функція timeСount()");
+//         }, index * timeBeforeStart);
+// };
+console.log("----------------------------------------------------------------------------------------------------");
+//! Тема: об'єкти
+const bread1 ="родиний";
+const bread2 = "батон";
+const bread3 = "хлібці смаженні";
+const bread4 = "сонячний";
+//! об'єкт - це "коробка" в якій зберігаються речі однієї категорії 
+const breads = {
+    bread1: "родиний",
+    bread2:"батон",
+    bread3:"хлібці смаженні"
+}
+console.log("breads:",breads);
+console.log("breads.bread1:",breads.bread1);
+console.log("breads.bread2:",breads.bread2);
+delete breads.bread2
+console.log("breads:",breads);
+breads.bread4 = "сонячний";
+console.log("breads:",breads);
+breads.bread4 = "КиївХліб";
+console.log("breads:",breads);
