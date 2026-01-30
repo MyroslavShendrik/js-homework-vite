@@ -182,3 +182,25 @@ breads.bread4 = "сонячний";
 console.log("breads:",breads);
 breads.bread4 = "КиївХліб";
 console.log("breads:",breads);
+const starWars = {
+heroes:[
+    "Дарт Вейдер",
+    "Граф Дуку",
+    "Люк Скайвокер",
+    "Лея Органа",
+    "Обі-Ван Кенобі"
+    ],
+    getHeroes() {
+        console.log("✅ Цей метод буде повертати всіх героїв");
+        console.log("✅ heroes:", starWars.heroes);
+    },
+    addHeroes(heroName) {
+        console.log("Цей метод додає героя");
+        starWars.heroes.push(heroName);
+        console.log("this:", this);
+        this.heroes.push(heroName);
+    },
+};
+starWars.getHeroes();
+starWars.addHeroes("Падме Амідала");
+starWars.getHeroes();
