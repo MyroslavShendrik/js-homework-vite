@@ -1,0 +1,1 @@
+body{font-family:Arial;text-align:center;padding:20px}.block{margin:20px auto}input{width:60px;padding:5px;font-size:18px}button{padding:8px 15px;font-size:16px;cursor:pointer;margin-top:10px}button:disabled{opacity:.5}#timer1,#timer2{font-size:32px;margin-top:10px;transition:.3s}.warning{color:red;transform:scale(1.5)}#msg{color:orange;margin-top:10px}
