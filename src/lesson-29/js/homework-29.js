@@ -7,6 +7,8 @@
 //? що залишилось менше половини часу.
 
 
+
+
 //todo: Завдання-2 (task-2)
 //* Завдання "Таймер зворотного відліку з блокуванням кнопки старту":
 //? Створити таймер, який буде починати відлік 
@@ -22,6 +24,7 @@ const mInput = document.getElementById("m");
 const sInput = document.getElementById("s");
 const timer1 = document.getElementById("timer1");
 const msg = document.getElementById("msg");
+const stop1 = document.getElementById("stop1");
 
 let id1;
 
@@ -54,7 +57,13 @@ document.getElementById("start1").onclick = () => {
   }, 1000);
 };
 
-
+function stopInterval(){
+  clearInterval(id1);
+};
+stop1.addEventListener("click",() => {
+  clearInterval(id1);
+  // timer1.textContent = "00:00:00"
+});
 /* ---------- TASK 2 ---------- */
 
 const btn2 = document.getElementById("start2");
