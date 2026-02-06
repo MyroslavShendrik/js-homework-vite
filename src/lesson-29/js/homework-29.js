@@ -38,7 +38,7 @@ document.getElementById("start1").onclick = () => {
 
   id1 = setInterval(() => {
     total--;
-
+   console.log("total:",total);
     let h = Math.floor(total / 3600);
     let m = Math.floor((total % 3600) / 60);
     let s = total % 60;
