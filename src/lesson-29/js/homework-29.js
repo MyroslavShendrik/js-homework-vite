@@ -24,9 +24,16 @@ const mInput = document.getElementById("m");
 const sInput = document.getElementById("s");
 const timer1 = document.getElementById("timer1");
 const msg = document.getElementById("msg");
-const stop1 = document.getElementById("stop1");
-
+const reset1 = document.getElementById("reset1");
 let id1;
+
+// обмеження 0–59
+[hInput, mInput, sInput].forEach(inp => {
+  inp.addEventListener("input", () => {
+    if (inp.value > 59) inp.value = 59;
+    if (inp.value < 0) inp.value = 0;
+  });
+});
 
 document.getElementById("start1").onclick = () => {
   clearInterval(id1);
@@ -36,9 +43,14 @@ document.getElementById("start1").onclick = () => {
     +mInput.value * 60 +
     +sInput.value;
 
+  let half = Math.floor(total / 2);
+  msg.textContent = "";
+
   id1 = setInterval(() => {
+    if (total <= 0) return clearInterval(id1);
+
     total--;
-   console.log("total:",total);
+
     let h = Math.floor(total / 3600);
     let m = Math.floor((total % 3600) / 60);
     let s = total % 60;
@@ -48,38 +60,40 @@ document.getElementById("start1").onclick = () => {
       `${String(m).padStart(2,"0")}:` +
       `${String(s).padStart(2,"0")}`;
 
-    if (total === 1800) {
-      msg.textContent =
-        "Залишилось менше половини часу!";
-    }
-
-    if (total <= 0) clearInterval(id1);
+    if (total === half)
+      msg.textContent = "Менше половини часу!";
   }, 1000);
 };
 
-function stopInterval(){
+document.getElementById("stop1").onclick = () => {
   clearInterval(id1);
 };
-stop1.addEventListener("click",() => {
-  clearInterval(id1);
-  // timer1.textContent = "00:00:00"
-});
+
 /* ---------- TASK 2 ---------- */
 
-const btn2 = document.getElementById("start2");
+const startBtn = document.getElementById("start2");
+const stopBtn = document.getElementById("stop2");
+const resetBtn = document.getElementById("reset2");
 const timer2 = document.getElementById("timer2");
+const stateMsg = document.getElementById("stateMsg");
 
 let id2;
+let time = 30000;
+let running = false;
 
-btn2.onclick = () => {
-  btn2.disabled = true;
+function updateTimer() {
+  timer2.textContent = (time / 1000).toFixed(2);
+}
 
-  let time = 30000;
+startBtn.onclick = () => {
+  if (running) return;
+
+  stateMsg.textContent = "";
+  running = true;
 
   id2 = setInterval(() => {
     time -= 10;
-
-    timer2.textContent = (time / 1000).toFixed(2);
+    updateTimer();
 
     if (time === 10000) {
       timer2.classList.add("warning");
@@ -87,9 +101,25 @@ btn2.onclick = () => {
 
     if (time <= 0) {
       clearInterval(id2);
-      btn2.disabled = false;
-      timer2.classList.remove("warning");
+      running = false;
       timer2.textContent = "0";
+      timer2.classList.remove("warning");
+      stateMsg.textContent = "Час вийшов!";
     }
   }, 10);
+};
+
+stopBtn.onclick = () => {
+  clearInterval(id2);
+  running = false;
+  stateMsg.textContent = "Таймер зупинено";
+};
+
+resetBtn.onclick = () => {
+  clearInterval(id2);
+  running = false;
+  time = 30000;
+  updateTimer();
+  timer2.classList.remove("warning");
+  stateMsg.textContent = "";
 };
