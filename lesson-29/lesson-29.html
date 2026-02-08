@@ -4,33 +4,51 @@
   <meta charset="UTF-8">
   <title>Список студентів</title>
   
-  <script type="module" crossorigin src="/js-homework-vite/assets/lesson-29-30fc2397.js"></script>
+  <script type="module" crossorigin src="/js-homework-vite/assets/lesson-29-91c24331.js"></script>
   <link rel="modulepreload" crossorigin href="/js-homework-vite/assets/modulepreload-polyfill-3cfb730f.js">
-  <link rel="stylesheet" href="/js-homework-vite/assets/lesson-29-2b4d9ab6.css">
+  <link rel="stylesheet" href="/js-homework-vite/assets/lesson-29-972ad88a.css">
 </head>
 <body>
 <h2>Завдання 1</h2>
 
 <div class="block">
-  <input id="h" type="number" min="0" max="59" value="0">
-  <input id="m" type="number" min="0" max="59" value="31">
-  <input id="s" type="number" min="0" max="59" value="0">
+  <div class="inputs">
+    <label>Години
+      <input id="h" type="number" min="0" max="59" value="0">
+    </label>
 
-  <button id="start1">Start</button>
+    <label>Хвилини
+      <input id="m" type="number" min="0" max="59" value="1">
+    </label>
 
-  <div id="timer1">00:00:00</div>
+    <label>Секунди
+      <input id="s" type="number" min="0" max="59" value="30">
+    </label>
+  </div>
+
+  <button id="start1">START</button>
+
+  <div id="timer1">00:01:30</div>
   <div id="msg"></div>
-  <button id="stop1">Stop</button>
-</div>
 
-<hr>
+  <button id="stop1">STOP</button>
+  <button id="reset1">RESET</button>
+
+</div>
 
 <h2>Завдання 2 </h2>
 
-<div class="block">
-  <button id="start2">Start</button>
+<div class="block block2">
+  <button id="start2">START</button>
+
   <div id="timer2">30.00</div>
+
+  <button id="stop2">STOP</button>
+  <button id="reset2">RESET</button>
+
+  <div id="stateMsg"></div>
 </div>
+
   
     <!-- <script type="module" src="./js/homework-27-teacher.js"></script> -->
 </body>
