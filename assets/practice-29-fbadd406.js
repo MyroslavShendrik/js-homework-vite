@@ -2,16 +2,16 @@ import"./modulepreload-polyfill-3cfb730f.js";console.log("practice 29");//! Да
 //! Клас new Date() (поточна дата)
 console.warn("Клас new Date() (поточна дата):");console.log(`%c
     const date = new Date(); //! поточна дата
-    `,"color: blue; font-size: 18px");const a=new Date;//! поточна дата
-console.log("date:",a);//! "Thu Jul 24 2025 19:36:39 GMT+0300 (Восточная Европа, летнее время)"
-console.log("typeof date:",typeof a);//! object
-console.log(". . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .");console.log("date.toString():",a.toString());//! "Thu Jul 24 2025 19:36:39 GMT+0300 (Восточная Европа, летнее время)"
-console.log("typeof date.toString():",typeof a.toString());//! string
+    `,"color: blue; font-size: 18px");const s=new Date;//! поточна дата
+console.log("date:",s);//! "Thu Jul 24 2025 19:36:39 GMT+0300 (Восточная Европа, летнее время)"
+console.log("typeof date:",typeof s);//! object
+console.log(". . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .");console.log("date.toString():",s.toString());//! "Thu Jul 24 2025 19:36:39 GMT+0300 (Восточная Европа, летнее время)"
+console.log("typeof date.toString():",typeof s.toString());//! string
 console.log("------------------------------------------------------------------------------------");//! Клас new Date(string)
-console.warn("Клас new Date(string):");const g=new Date("March 16, 2030");console.log(`teamMeetingDate = new Date("March 16, 2030"):
-`,g);//! "Mon Mar 16 2030 00:00:00 GMT+0200 (Eastern European Standard Time)"
-const D=new Date("March 16, 2030 14:25:00");console.log(`preciseTeamMeetingDate = new Date("March 16, 2030 14:25:00"):
-`,D);//! "Mon Mar 16 2030 14:25:00 GMT+0200 (Eastern European Standard Time)"
+console.warn("Клас new Date(string):");const i=new Date("March 16, 2030");console.log(`teamMeetingDate = new Date("March 16, 2030"):
+`,i);//! "Mon Mar 16 2030 00:00:00 GMT+0200 (Eastern European Standard Time)"
+const w=new Date("March 16, 2030 14:25:00");console.log(`preciseTeamMeetingDate = new Date("March 16, 2030 14:25:00"):
+`,w);//! "Mon Mar 16 2030 14:25:00 GMT+0200 (Eastern European Standard Time)"
 console.log(". . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .");console.log(`%c
     Маємо майже однаковий результат:
     
@@ -28,26 +28,26 @@ console.log(". . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
     new Date("2030-03-16T14:25:00");
 
     new Date("Sat Mar 16 2030 19:25:00 GMT+0200");
-    `,"color: blue; font-size: 18px");const r=new Date("2030"),d=new Date("2030-03"),w=new Date("2030-03-16"),i=new Date("03/16/2030"),u=new Date("2030/03/16"),M=new Date("2030/3/16"),m=new Date("March 16, 2030"),p=new Date("16 March 2030"),f=new Date("March 16, 2030 14:25:00"),T=new Date("2030-03-16 14:25:00"),h=new Date("2030-03-16T14:25:00"),y=new Date("Sat Mar 16 2030 14:25:00 GMT+0200");console.log(`
-`,r,`
+    `,"color: blue; font-size: 18px");const d=new Date("2030"),u=new Date("2030-03"),m=new Date("2030-03-16"),M=new Date("03/16/2030"),T=new Date("2030/03/16"),p=new Date("2030/3/16"),f=new Date("March 16, 2030"),S=new Date("16 March 2030"),y=new Date("March 16, 2030 14:25:00"),h=new Date("2030-03-16 14:25:00"),U=new Date("2030-03-16T14:25:00"),Y=new Date("Sat Mar 16 2030 14:25:00 GMT+0200");console.log(`
 `,d,`
-`,w,`
-`,i,`
 `,u,`
-`,M,`
 `,m,`
+`,M,`
+`,T,`
 `,p,`
 `,f,`
-`,T,`
+`,S,`
+`,y,`
 `,h,`
+`,U,`
 `,`
-`,y);console.log("------------------------------------------------------------------------------------");//! Метод - Date.parse(string)
+`,Y);console.log("------------------------------------------------------------------------------------");//! Метод - Date.parse(string)
 console.warn("Метод - Date.parse(string):");console.log(`%c
     Date.parse("2030-03-16T14:25:00.000+02:00");
-    `,"color: blue; font-size: 18px");const l=Date.parse("2030-03-16T14:25:00.000+02:00");console.log('timestampDateParse = Date.parse("2030-03-16T14:25:00.000+02:00"):',l);//! 1899894300000 (timestamp)
-console.log("typeof timestampDateParse:",typeof l);//! number
+    `,"color: blue; font-size: 18px");const c=Date.parse("2030-03-16T14:25:00.000+02:00");console.log('timestampDateParse = Date.parse("2030-03-16T14:25:00.000+02:00"):',c);//! 1899894300000 (timestamp)
+console.log("typeof timestampDateParse:",typeof c);//! number
 //! ✳️ Формат недійсний, повертає NaN:
-const Y=Date.parse("2030-03-16T14:25:00.000Z");console.log('timestampDateParseError = Date.parse("2030-03-16T14:25:00.000+Z"):',Y);//! NaN
+const x=Date.parse("2030-03-16T14:25:00.000Z");console.log('timestampDateParseError = Date.parse("2030-03-16T14:25:00.000+Z"):',x);//! NaN
 console.log(`%c
             Формат рядка:
 
@@ -73,9 +73,9 @@ console.warn("Створення дати. 7 аргументів.:");console.lo
         seconds,
         ms
     )
-    `,"color: blue; font-size: 18px");const x=new Date(2030,2,16,14,25,0,0);//! індекси місяців починаються з 0, тому 5-й місяць це липень.
+    `,"color: blue; font-size: 18px");const C=new Date(2030,2,16,14,25,0,0);//! індекси місяців починаються з 0, тому 5-й місяць це липень.
 console.log(`fullDate = new Date(2030, 2, 16, 14, 25, 0, 0):
-`,x);//! "Sat Mar 16 2030 14:25:00 GMT+0200 (Восточная Европа, стандартное время)"
+`,C);//! "Sat Mar 16 2030 14:25:00 GMT+0200 (Восточная Европа, стандартное время)"
 console.log("-------------------------------------------------------------------------");//! new Date(number)
 console.warn("new Date(numder):");console.log(`%c
     - Дата початку відліку часу - 1 січня 1970 року,
@@ -83,18 +83,18 @@ console.warn("new Date(numder):");console.log(`%c
     - timestamp.
 
     const startDate0 = new Date(0); 
-    `,"color: blue; font-size: 18px");const U=new Date(0);//! дата початку відліку часу - 1 січня 1970 року - Unix час - timestamp
-console.log("startDate0 = new Date(0):",U);//! Thu Jan 01 1970 03:00:00 GMT+0300 (Восточная Европа, стандартное время)
-const S=new Date(1e3);//! Повертає числове значення цієї дати (timestamp) - кількість мілісекунд, що минула з півночі 1 січня 1970 року.
-console.log("startDate1000 = new Date(1000):",S);//! Thu Jan 01 1970 03:00:01 GMT+0300 (Восточная Европа, стандартное время)
+    `,"color: blue; font-size: 18px");const z=new Date(0);//! дата початку відліку часу - 1 січня 1970 року - Unix час - timestamp
+console.log("startDate0 = new Date(0):",z);//! Thu Jan 01 1970 03:00:00 GMT+0300 (Восточная Европа, стандартное время)
+const H=new Date(1e3);//! Повертає числове значення цієї дати (timestamp) - кількість мілісекунд, що минула з півночі 1 січня 1970 року.
+console.log("startDate1000 = new Date(1000):",H);//! Thu Jan 01 1970 03:00:01 GMT+0300 (Восточная Европа, стандартное время)
 console.log("new Date(1899894300000):",new Date(18998943e5));//! Sat Mar 16 2030 19:25:00 GMT+0200 (Восточная Европа, стандартное время)
 console.log("new Date(1753541240287):",new Date(1753541240287));//! Sat Jul 26 2025 17:47:20 GMT+0300 (Восточная Европа, летнее время)
 console.log("--------------------------------------------------------------------------------------------------------");//! Date.now()
 console.warn("Date.now():");console.log(`%c
     const date = Date.now();
-    `,"color: blue; font-size: 18px");const s=Date.now();console.log("date = Date.now():",s);//! 1753541240287
-console.log("typeof date:",typeof s);//! number
-console.log("--------------------------------------------------------------------------------------------------------");const z=new Date(s);console.log("data2:",z);//! Методи new Date()
+    `,"color: blue; font-size: 18px");const l=Date.now();console.log("date = Date.now():",l);//! 1753541240287
+console.log("typeof date:",typeof l);//! number
+console.log("--------------------------------------------------------------------------------------------------------");const b=new Date(l);console.log("data2:",b);//! Методи new Date()
 //! Геттери
 console.warn("Геттери:");console.log(`%c
     const date = new Date();
@@ -126,12 +126,12 @@ console.log("date3.getHours(): ",e.getHours());//! 16
 console.log("date3.getMinutes(): ",e.getMinutes());//! 39
 console.log("date3.getSeconds(): ",e.getSeconds());//! 21
 console.log("date3.getMilliseconds(): ",e.getMilliseconds());//! 358
-console.log("getTime():",e.getTime());console.log("------------------------------------------------------------------------------------------------------------------------");const C=Date.parse(e);console.log("timestampDateParse1:",C);console.log("date = Date.now():",s);//! Приклад форматування поточної дати
+console.log("getTime():",e.getTime());console.log("------------------------------------------------------------------------------------------------------------------------");const F=Date.parse(e);console.log("timestampDateParse1:",F);console.log("date = Date.now():",l);//! Приклад форматування поточної дати
 console.warn("Приклад форматування поточної дати:");const t=new Date;console.log(`Час в мс з початку епохи Unix: ${t.getTime()}`);let o=" Дата: ";o+=t.getDate()+"/";//! день
 o+=t.getMonth()+1+"/";//! місяць
 o+=t.getFullYear()+",";//! рік
 o+=`
- День тижня: `+H(t.getDay())+",";//! день тижня
+ День тижня: `+N(t.getDay())+",";//! день тижня
 o+=`
  Час: `+t.getHours()+":";//! години
 o+=t.getMinutes()+":";//! хвилини
@@ -141,7 +141,7 @@ console.log(o);//! ...  значення будуть змінюватися
 //! Дата: 27/7/2025,
 //! День тижня: неділя,
 //! Час: 17:3:41:541
-function H(c){return["Неділя","Понеділок","Вівторок","Середа","Четверг","П'ятниця","Субота"][c]}console.log("------------------------------------------------------------------------------------------------------------------------");//! Геттери у форматі UTC
+function N(r){return["Неділя","Понеділок","Вівторок","Середа","Четверг","П'ятниця","Субота"][r]}console.log("------------------------------------------------------------------------------------------------------------------------");//! Геттери у форматі UTC
 console.warn("Геттери у форматі UTC:");console.log(`%c
     const date = new Date();
     ----------------------------------------------------------------------------
@@ -183,11 +183,22 @@ console.log(`%c
 
     date.setTime() - встановлює кількість мілісекунд минулих зі старту епохи Unix
     -------------------------------------------------------------------------------
-    `,"color: blue; font-size: 18px");const n=new Date("March 16, 2030 14:25:00");console.log("date4: ",n);//! Sat Mar 16 2030 14:25:00 GMT+0200 (Восточная Европа, стандартное время)
-console.log(". . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .  . . . . . . . . . . . . . . .");console.log("date4.setMinutes(50):",n.setMinutes(50));//! 1899895800000
-console.log("date4-->setMinutes(50): ",n);//! Sat Mar 16 2030 14:50:00 GMT+0200 (Восточная Европа, стандартное время)
-console.log(". . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .  . . . . . . . . . . . . . . .");console.log("date4.setFullYear(2040, 4, 8):",n.setFullYear(2040,4,8));//! 2220090600000
-console.log("date4-->setFullYear(2040, 4, 8): ",n);//! Tue May 08 2040 14:50:00 GMT+0300 (Восточная Европа, летнее время)
-console.log(". . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .  . . . . . . . . . . . . . . .");console.log("date4.setTime():",n.setTime(33300906e5));//! 3330090600000
-console.log("date4-->date.setTime(3330090600000): ",n);//! Thu Jul 11 2075 20:10:00 GMT+0300 (Восточная Европа, летнее время)
-console.log("----------------------------------------------------------------------------------------------------------------------------");
+    `,"color: blue; font-size: 18px");const a=new Date("March 16, 2030 14:25:00");console.log("date4: ",a);//! Sat Mar 16 2030 14:25:00 GMT+0200 (Восточная Европа, стандартное время)
+console.log(". . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .  . . . . . . . . . . . . . . .");console.log("date4.setMinutes(50):",a.setMinutes(50));//! 1899895800000
+console.log("date4-->setMinutes(50): ",a);//! Sat Mar 16 2030 14:50:00 GMT+0200 (Восточная Европа, стандартное время)
+console.log(". . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .  . . . . . . . . . . . . . . .");console.log("date4.setFullYear(2040, 4, 8):",a.setFullYear(2040,4,8));//! 2220090600000
+console.log("date4-->setFullYear(2040, 4, 8): ",a);//! Tue May 08 2040 14:50:00 GMT+0300 (Восточная Европа, летнее время)
+console.log(". . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .  . . . . . . . . . . . . . . .");console.log("date4.setTime():",a.setTime(33300906e5));//! 3330090600000
+console.log("date4-->date.setTime(3330090600000): ",a);//! Thu Jul 11 2075 20:10:00 GMT+0300 (Восточная Европа, летнее время)
+console.log("----------------------------------------------------------------------------------------------------------------------------");const g=new Date;console.log("newNowDay1:",g);const D=new Date;console.log("newNowDay2:",D);console.log("newNowDay1.getTime():",g.getTime());console.log("newNowDay2.getTime():",D.getTime());//! створення дати тайм-штамп
+const P=Date.now();console.log("newNowDayUnix:",P);//! Форматування дати
+const n=new Date;console.log("date6: ",n);//! Sat Mar 16 2030 14:25:00 GMT+0200 (Восточная Европа, стандартное время)
+console.log("date6.toString():",n.toString());//! "Sat Mar 16 2030 14:25:00 GMT+0200 (Восточная Европа, стандартное время)"
+console.log("date6.toTimeString():",n.toTimeString());//! "14:25:00 GMT+0200 (Восточная Европа, стандартное время)"
+console.log("date6.toLocaleTimeString():",n.toLocaleTimeString());//! "14:25:00"
+console.log("date6.toUTCString():",n.toUTCString());//! "Sat, 16 Mar 2030 12:25:00 GMT"
+console.log("date6.todateString():",n.toDateString());//! "Sat Mar 16 2030"
+console.log("date6.toISOString():",n.toISOString());//! "2030-03-16T12:25:00.000Z"
+console.log("date6.toLocaleString():",n.toLocaleString());//! "16.03.2030, 14:25:00"
+console.log("date6.getTime():",n.getTime());//! 1899894300000
+console.log("-------------------------------------------------------------------------------------------");
