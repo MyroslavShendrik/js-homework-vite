@@ -1,4 +1,4 @@
-/******************** TASK 1 ********************/
+/************* TASK 1 *************/
 
 const hInput = document.getElementById("h");
 const mInput = document.getElementById("m");
@@ -11,13 +11,12 @@ const start1 = document.getElementById("start1");
 const stop1 = document.getElementById("stop1");
 const reset1 = document.getElementById("reset1");
 
-const alarm = document.getElementById("alarm"); // <audio id="alarm">
-
 let id1;
 let total1 = 0;
 let running1 = false;
+let paused1 = false;
 
-/* обмеження input */
+/* обмеження 0–59 */
 [hInput, mInput, sInput].forEach(inp => {
   inp.addEventListener("input", () => {
     if (inp.value > 59) inp.value = 59;
@@ -29,23 +28,40 @@ function lockInputs(state) {
   [hInput, mInput, sInput].forEach(inp => inp.disabled = state);
 }
 
-function setButtons1(start, stop, reset) {
-  start1.disabled = !start;
-  stop1.disabled = !stop;
-  reset1.disabled = !reset;
-}
-
-function updateDisplay1(sec) {
+function updateDisplay(sec) {
   let h = Math.floor(sec / 3600);
   let m = Math.floor((sec % 3600) / 60);
   let s = sec % 60;
 
   timer1.textContent =
-    `${String(h).padStart(2,"0")}:` +
-    `${String(m).padStart(2,"0")}:` +
-    `${String(s).padStart(2,"0")}`;
+    `${String(h).padStart(2, "0")}:` +
+    `${String(m).padStart(2, "0")}:` +
+    `${String(s).padStart(2, "0")}`;
 }
 
+function runTimer() {
+  id1 = setInterval(() => {
+    total1--;
+    updateDisplay(total1);
+
+    if (total1 === halfTime) {
+      msg.textContent = "Менше половини часу!";
+    }
+
+    if (total1 <= 0) {
+      clearInterval(id1);
+      running1 = false;
+      paused1 = false;
+      stop1.textContent = "STOP";
+      lockInputs(false);
+      msg.textContent = "Час вийшов!";
+    }
+  }, 1000);
+}
+
+let halfTime = 0;
+
+/* START */
 start1.onclick = () => {
   if (running1) return;
 
@@ -57,48 +73,49 @@ start1.onclick = () => {
   if (total1 <= 0) return;
 
   running1 = true;
+  paused1 = false;
   msg.textContent = "";
 
+  halfTime = Math.floor(total1 / 2);
+
   lockInputs(true);
-  setButtons1(false, true, true);
-
-  let half = Math.floor(total1 / 2);
-
-  id1 = setInterval(() => {
-    total1--;
-    updateDisplay1(total1);
-
-    if (total1 === half) {
-      msg.textContent = "Менше половини часу!";
-    }
-
-    if (total1 <= 0) {
-      clearInterval(id1);
-      running1 = false;
-      lockInputs(false);
-      setButtons1(true, false, true);
-      msg.textContent = "Час вийшов!";
-      alarm?.play();
-    }
-  }, 1000);
+  runTimer();
 };
 
+/* STOP / CONTINUE */
 stop1.onclick = () => {
-  clearInterval(id1);
-  running1 = false;
-  lockInputs(false);
-  setButtons1(true, false, true);
+  if (!running1) return;
+
+  if (!paused1) {
+    clearInterval(id1);
+    paused1 = true;
+    stop1.textContent = "CONTINUE";
+    msg.textContent = "Пауза";
+  } else {
+    paused1 = false;
+    stop1.textContent = "STOP";
+    msg.textContent = "";
+    runTimer();
+  }
 };
 
+/* RESET */
 reset1.onclick = () => {
   clearInterval(id1);
   running1 = false;
+  paused1 = false;
   total1 = 0;
-  updateDisplay1(0);
+
+  updateDisplay(0);
   msg.textContent = "";
+  stop1.textContent = "STOP";
+
   lockInputs(false);
-  setButtons1(true, false, false);
 };
+
+/* початковий стан */
+updateDisplay(0);
+
 
 
 /******************** TASK 2 ********************/
