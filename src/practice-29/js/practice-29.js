@@ -460,3 +460,51 @@ console.log(". . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
 console.log("date4.setTime():", date4.setTime(3330090600000)); //! 3330090600000
 console.log("date4-->date.setTime(3330090600000): ", date4); //! Thu Jul 11 2075 20:10:00 GMT+0300 (Восточная Европа, летнее время)
 console.log("----------------------------------------------------------------------------------------------------------------------------");
+const newNowDay1= new Date();
+ console.log("newNowDay1:",newNowDay1);
+const newNowDay2= new Date();
+  console.log("newNowDay2:",newNowDay2);
+console.log("newNowDay1.getTime():",newNowDay1.getTime());
+console.log("newNowDay2.getTime():",newNowDay2.getTime());
+//! створення дати тайм-штамп
+const newNowDayUnix = Date.now();
+console.log("newNowDayUnix:",newNowDayUnix);
+
+
+//! Форматування дати
+//? ✴️ Об'єкт дати може бути представлений
+//? у різних рядкових і числових форматах.
+//? Для цього існує цілий набір методів.
+
+//?   📌 Наприклад:
+//? 🔸 toString(),
+//? 🔸 toDateString(),
+//? 🔸 toTimeString()
+//?  - повертають стандартне рядкове відображення,
+//? що не задане жорстко у стандарті,
+//? а залежить від браузера.
+//? Єдина вимога до нього - читабельність для людини.
+
+//? ✳️ Метод toString() повертає дату повністю,
+//? а toDateString() і toTimeString() - тільки дату і час відповідно.
+
+// const date6 = new Date("March 16, 2030 14:25:00");
+const date6 = new Date();
+console.log("date6: ", date6); //! Sat Mar 16 2030 14:25:00 GMT+0200 (Восточная Европа, стандартное время)
+
+console.log("date6.toString():", date6.toString()); //! "Sat Mar 16 2030 14:25:00 GMT+0200 (Восточная Европа, стандартное время)"
+
+console.log("date6.toTimeString():", date6.toTimeString()); //! "14:25:00 GMT+0200 (Восточная Европа, стандартное время)"
+
+console.log("date6.toLocaleTimeString():", date6.toLocaleTimeString()); //! "14:25:00"
+
+console.log("date6.toUTCString():", date6.toUTCString()); //! "Sat, 16 Mar 2030 12:25:00 GMT"
+
+console.log("date6.todateString():", date6.toDateString()); //! "Sat Mar 16 2030"
+
+console.log("date6.toISOString():", date6.toISOString()); //! "2030-03-16T12:25:00.000Z"
+
+console.log("date6.toLocaleString():", date6.toLocaleString()); //! "16.03.2030, 14:25:00"
+
+console.log("date6.getTime():", date6.getTime()); //! 1899894300000
+console.log("-------------------------------------------------------------------------------------------");
