@@ -92,3 +92,15 @@ button {
     opacity: 0.3;
   }
 }
+
+.block.running {
+  border-color: orange;
+}
+
+.block.finished {
+  border-color: red;
+}
+
+.block.ready {
+  border-color: green;
+}
