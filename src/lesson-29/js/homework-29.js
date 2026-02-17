@@ -1,33 +1,22 @@
-//todo: Завдання-1 (task-1)
-//* Завдання "Годинний таймер зворотного відліку":
-//? Створити таймер, який буде починати відлік
-//? з 1 години та зменшувати час кожну хвилину.
-//? При досягненні 30 хвилин, таймер повинен
-//? відправляти повідомлення екран про те,
-//? що залишилось менше половини часу.
-
-
-
-
-//todo: Завдання-2 (task-2)
-//* Завдання "Таймер зворотного відліку з блокуванням кнопки старту":
-//? Створити таймер, який буде починати відлік 
-//? з 30 секунд та зменшувати час кожну мілісекунду. 
-//? При досягненні 10 секунд, таймер повинен 
-//? відтворювати якусь анімацію, 
-//? а при досягненні 0 секунд — виконувати певну дію, 
-//? наприклад, робити кнопку почати знову активною.
-/* ---------- TASK 1 ---------- */
+/************* TASK 1 *************/
 
 const hInput = document.getElementById("h");
 const mInput = document.getElementById("m");
 const sInput = document.getElementById("s");
+
 const timer1 = document.getElementById("timer1");
 const msg = document.getElementById("msg");
-const reset1 = document.getElementById("reset1");
-let id1;
 
-// обмеження 0–59
+const start1 = document.getElementById("start1");
+const stop1 = document.getElementById("stop1");
+const reset1 = document.getElementById("reset1");
+
+let id1;
+let total1 = 0;
+let running1 = false;
+let paused1 = false;
+
+/* обмеження 0–59 */
 [hInput, mInput, sInput].forEach(inp => {
   inp.addEventListener("input", () => {
     if (inp.value > 59) inp.value = 59;
@@ -35,91 +24,171 @@ let id1;
   });
 });
 
-document.getElementById("start1").onclick = () => {
-  clearInterval(id1);
+function lockInputs(state) {
+  [hInput, mInput, sInput].forEach(inp => inp.disabled = state);
+}
 
-  let total =
+function updateDisplay(sec) {
+  let h = Math.floor(sec / 3600);
+  let m = Math.floor((sec % 3600) / 60);
+  let s = sec % 60;
+
+  timer1.textContent =
+    `${String(h).padStart(2, "0")}:` +
+    `${String(m).padStart(2, "0")}:` +
+    `${String(s).padStart(2, "0")}`;
+}
+
+function runTimer() {
+  id1 = setInterval(() => {
+    total1--;
+    updateDisplay(total1);
+
+    if (total1 === halfTime) {
+      msg.textContent = "Менше половини часу!";
+    }
+
+    if (total1 <= 0) {
+      clearInterval(id1);
+      running1 = false;
+      paused1 = false;
+      stop1.textContent = "STOP";
+      lockInputs(false);
+      msg.textContent = "Час вийшов!";
+    }
+  }, 1000);
+}
+
+let halfTime = 0;
+
+/* START */
+start1.onclick = () => {
+  if (running1) return;
+
+  total1 =
     +hInput.value * 3600 +
     +mInput.value * 60 +
     +sInput.value;
 
-  let half = Math.floor(total / 2);
+  if (total1 <= 0) return;
+
+  running1 = true;
+  paused1 = false;
   msg.textContent = "";
 
-  id1 = setInterval(() => {
-    if (total <= 0) return clearInterval(id1);
+  halfTime = Math.floor(total1 / 2);
 
-    total--;
-
-    let h = Math.floor(total / 3600);
-    let m = Math.floor((total % 3600) / 60);
-    let s = total % 60;
-
-    timer1.textContent =
-      `${String(h).padStart(2,"0")}:` +
-      `${String(m).padStart(2,"0")}:` +
-      `${String(s).padStart(2,"0")}`;
-
-    if (total === half)
-      msg.textContent = "Менше половини часу!";
-  }, 1000);
+  lockInputs(true);
+  runTimer();
 };
 
-document.getElementById("stop1").onclick = () => {
+/* STOP / CONTINUE */
+stop1.onclick = () => {
+  if (!running1) return;
+
+  if (!paused1) {
+    clearInterval(id1);
+    paused1 = true;
+    stop1.textContent = "CONTINUE";
+    msg.textContent = "Пауза";
+  } else {
+    paused1 = false;
+    stop1.textContent = "STOP";
+    msg.textContent = "";
+    runTimer();
+  }
+};
+
+/* RESET */
+reset1.onclick = () => {
   clearInterval(id1);
+  running1 = false;
+  paused1 = false;
+  total1 = 0;
+
+  updateDisplay(0);
+  msg.textContent = "";
+  stop1.textContent = "STOP";
+
+  lockInputs(false);
 };
 
-/* ---------- TASK 2 ---------- */
+/* початковий стан */
+updateDisplay(0);
+
+
+
+/******************** TASK 2 ********************/
 
 const startBtn = document.getElementById("start2");
 const stopBtn = document.getElementById("stop2");
 const resetBtn = document.getElementById("reset2");
+
 const timer2 = document.getElementById("timer2");
 const stateMsg = document.getElementById("stateMsg");
 
 let id2;
 let time = 30000;
-let running = false;
+let running2 = false;
 
-function updateTimer() {
+function updateTimer2() {
   timer2.textContent = (time / 1000).toFixed(2);
 }
 
-startBtn.onclick = () => {
-  if (running) return;
+function setButtons2(start, stop, reset) {
+  startBtn.disabled = !start;
+  stopBtn.disabled = !stop;
+  resetBtn.disabled = !reset;
+}
 
+startBtn.onclick = () => {
+  if (running2) return;
+
+  running2 = true;
   stateMsg.textContent = "";
-  running = true;
+  setButtons2(false, true, true);
 
   id2 = setInterval(() => {
     time -= 10;
-    updateTimer();
+    updateTimer2();
 
     if (time === 10000) {
       timer2.classList.add("warning");
+      alarm?.play();
     }
 
     if (time <= 0) {
       clearInterval(id2);
-      running = false;
+      running2 = false;
       timer2.textContent = "0";
       timer2.classList.remove("warning");
       stateMsg.textContent = "Час вийшов!";
+      setButtons2(true, false, true);
+      alarm?.play();
     }
   }, 10);
 };
 
 stopBtn.onclick = () => {
   clearInterval(id2);
-  running = false;
+  running2 = false;
   stateMsg.textContent = "Таймер зупинено";
+  setButtons2(true, false, true);
 };
 
 resetBtn.onclick = () => {
   clearInterval(id2);
-  running = false;
+  running2 = false;
   time = 30000;
-  updateTimer();
+  updateTimer2();
   timer2.classList.remove("warning");
   stateMsg.textContent = "";
+  setButtons2(true, false, false);
 };
+
+
+/* Початковий стан */
+updateDisplay1(0);
+updateTimer2();
+setButtons1(true, false, false);
+setButtons2(true, false, false);
