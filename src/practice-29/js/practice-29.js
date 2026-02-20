@@ -508,3 +508,171 @@ console.log("date6.toLocaleString():", date6.toLocaleString()); //! "16.03.2030,
 
 console.log("date6.getTime():", date6.getTime()); //! 1899894300000
 console.log("-------------------------------------------------------------------------------------------");
+
+
+
+
+//! Новий стандарт форматування дати
+console.warn("Новий стандарт форматування дати:");
+//? ✴️ У всіх браузерах, крім IE10-, підтримується новий стандарт,
+//? який додає спеціальні методи для форматування дат.
+
+//? ✴️ Це робиться викликом date.toLocaleString (locale, opts),
+//? в якому можна задати багато налаштувань.
+//? Він дозволяє вказати, які параметри дати потрібно вивести,
+//? і ряд налаштувань виведення, після чого інтерпретатор сам сформує рядок.
+
+// const newStandardDateFormatting = new Date();
+const newStandardDateFormatting = new Date("March 16, 2030 14:25:00");
+console.log("date: ", date); //! Sat Mar 16 2030 14:25:00 GMT+0200 (Восточная Европа, стандартное время)
+console.log(". . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .  . . . . . . . . . . . . . . .");
+
+//? Формат виведення:
+const options = {
+    weekday: 'long',
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+};
+
+//! Україна
+const localeUk = newStandardDateFormatting.toLocaleString('Uk-uk', options);
+console.log("localeUk_Україна:", localeUk); //! суботу, 16 бер. 2030 р., 14:25
+console.log(". . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .  . . . . . . . . . . . . . . .");
+
+//! USA
+const localeUs = newStandardDateFormatting.toLocaleString('en-US', options);
+console.log("localeUs_Україна:", localeUs); //! Saturday, Mar 16, 2030, 02:25 PM
+console.log("-------------------------------------------------------------------------------------------");
+
+
+//! Вимірювання часу за допомогою new Date()
+console.warn("Вимірювання часу за допомогою new Date():");
+//? ✴️ Для вимірювання часу можна використовувати
+//? екземпляр класу new Date():
+const start1 = new Date(); //todo: Початок вимірювання часу
+console.log("start1:", start1);
+console.log("start1:",typeof start1);
+console.log("+start1:", +start1);
+console.log("start1:",typeof +start1);
+
+
+//todo: процес виконання циклу
+for (let i = 0; i < 100000; i++) {
+    let doSomething1 = i * i * i;
+    // console.log("doSomething1:", doSomething1); //!
+};
+
+const end1 = new Date(); //todo: Кінець вимірювання часу
+console.log("end1:", end1);
+console.log("+end1:", +end1);
+
+//? ---------------- пригадаємо ----------------
+console.log(`"9" - "6" = ${"9" - "6"}`); //! 3
+//? --------------------------------------------
+
+//todo: Результат вимірювання часу
+// alert(`Цикл-1 зайняв ${end1 - start1} мс`);
+console.log(`Цикл-1 зайняв ${end1 - start1} мс`);
+console.log("---------------------------------------------------------------------------");
+
+//! Вимірювання часу за допомогою Date.now()
+console.warn("Вимірювання часу за допомогою Date.now():");
+//? ✴️ Для вимірювання часу краще використовувати
+//? спеціальний метод Date.now(),
+//? що повертає поточний timestamp:
+const start2 = Date.now(); //todo: Початок вимірювання часу
+console.log("start2:", start2);
+
+
+//todo: Процес виконання циклу
+for (let i = 0; i < 100000; i++) {
+    let doSomething2 = i * i * i;
+    // console.log("doSomething2:", doSomething2); //!
+};
+
+const end2 = Date.now(); //todo: Кінець вимірювання часу
+console.log("end2:", end2);
+
+//todo: Результат вимірювання часу
+// alert(`Цикл-2 зайняв ${end1 - end1} мс`);
+console.log(`Цикл-2 зайняв ${end2 - start2} мс`);
+console.log("---------------------------------------------------------------------------");
+
+
+//todo: Завдання-1 (task-1)
+//* Завдання: "Таймер зворотного відліку від майбутньої дати".
+//? Створи плагін налаштовуваного таймера, який веде зворотний відлік
+//? до попередньо визначеної дати.
+//? Такий плагін може використовуватися в блогах і інтернет-магазинах
+//? та на сторінках реєстрації подій, під час технічного обслуговування і т. д.
+
+//? HTML-розмітка має інпут для введення майбутньої дати:
+//! <label class="input-label">
+//!     Введіть майбутню дату<i>(більше від сьогоднішньої дати на 1 день)</i> :
+//!     <input id="target-date" type="datetime-local">
+//! </label>
+
+//? Плагін очікує наступну HTML-розмітку і показує чотири цифри:
+//? дні,
+//? години,
+//? хвилини
+//? секунди
+//? в форматі XX:XX:XX:XX.
+//? Кількість днів може складатися з більш ніж двох цифр.
+//!<div class="timer" id="timer-1">
+//!    <div class="field">
+//!        <span class="label">Days</span>
+//!        <span class="value" data-value="days">--</span>
+//!
+//!    </div>
+//!    <div class="field">
+//!        <span class="label">Hours</span>
+//!        <span class="value" data-value="hours">--</span>
+//!    </div>
+//!    <div class="field">
+//!        <span class="label">Minutes</span>
+//!        <span class="value" data-value="mins">--</span>
+//!    </div>
+//!    <div class="field">
+//!        <span class="label">Seconds</span>
+//!        <span class="value" data-value="secs">--</span>
+//!
+//!    </div>
+//!</div>
+
+//? Плагін — це клас CountdownTimer,
+//? екземпляр якого створює новий таймер з налаштуваннями:
+//! new CountdownTimer({
+//!     selector: '#timer-1',
+//!     targetDate: new Date('Jul 17, 2019'),
+//! });
+
+//? Для підрахунку значень використовуй такі готові формули,
+//? де time — різниця між targetDate і поточною датою nowDate:
+/*
+ * Дні, що залишилися: ділимо значення UTC на 1000 * 60 * 60 * 24, кількість
+ * мілісекунд в один день (мілісекунди * секунди * хвилини * години)
+ */
+const days = Math.floor(time / (1000 * 60 * 60 * 24));
+
+/*
+ * Решта годин: отримуємо залишок від попереднього розрахунку за допомогою оператора
+ * залишку% і ділимо його на кількість мілісекунд в одній годині
+ * (1000 * 60 * 60 = мілісекунди * хвилини * секунди)
+ */
+const hours = Math.floor((time % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+
+/*
+ * Решта хвилин: отримуємо хвилини, що залишилися і ділимо їх на кількість
+ * мілісекунд в одній хвилині (1000 * 60 = мілісекунди * секунди)
+ */
+const mins = Math.floor((time % (1000 * 60 * 60)) / (1000 * 60));
+
+/*
+ * Решта секунд: отримуємо секунди, які залишилися і ділимо їх на кількість
+ * миллисекунд в одной секунде (1000)
+ */
+const secs = Math.floor((time % (1000 * 60)) / 1000);
