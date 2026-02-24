@@ -45,8 +45,14 @@ const startBtn = document.getElementById('start-btn');
 let timer;
 
 startBtn.addEventListener('click', () => {
+    console.log("input.value:",input.value);
   const selectedDate = new Date(input.value);
-  const now = new Date();
+  // const selectedDate = Date.now(input.value); //! ERROR
+//  const selectedDate = input.value.getTime();
+  console.log("selectedDate:", selectedDate);
+  // const now = new Date();
+   const now = Date.now();
+   console.log("now:",now);
 
   if (!input.value) {
     alert("Оберіть дату!");
@@ -68,4 +74,5 @@ startBtn.addEventListener('click', () => {
   });
 
   timer.start();
+
 });
