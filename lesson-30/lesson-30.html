@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <title>таймер</title>
+  
+  <script type="module" crossorigin src="/js-homework-vite/assets/lesson-30-56624e10.js"></script>
+  <link rel="modulepreload" crossorigin href="/js-homework-vite/assets/modulepreload-polyfill-3cfb730f.js">
+  <link rel="stylesheet" href="/js-homework-vite/assets/lesson-30-05f74ca9.css">
+</head>
+<body>
+  <div class="container">
+    <h1>Таймер зворотного відліку</h1>
+
+    <label class="input-label">
+      Введіть майбутню дату (мінімум +1 день):
+      <input id="target-date" type="datetime-local">
+    </label>
+
+    <button id="start-btn">START</button>
+
+    <div class="timer" id="timer-1">
+      <div class="field">
+        <span class="label">Days</span>
+        <span class="value" data-value="days">--</span>
+      </div>
+
+      <div class="field">
+        <span class="label">Hours</span>
+        <span class="value" data-value="hours">--</span>
+      </div>
+
+      <div class="field">
+        <span class="label">Minutes</span>
+        <span class="value" data-value="mins">--</span>
+      </div>
+
+      <div class="field">
+        <span class="label">Seconds</span>
+        <span class="value" data-value="secs">--</span>
+      </div>
+    </div>
+  </div>
+
+  
+    <!-- <script type="module" src="./js/homework-27-teacher.js"></script> -->
+</body>
+</html>
