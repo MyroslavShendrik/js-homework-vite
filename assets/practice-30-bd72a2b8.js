@@ -16,6 +16,14 @@ console.warn("Створення промісу:");console.warn(`Створен�
     const promise = new Promise((resolve, reject) => {
         // Asynchronous operation
     });
-    `,"color: blue; font-size: 18px");const n=new Promise((o,e)=>{setTimeout(()=>{o("✅ Success! Value passed to resolve function")},2e3)});console.log("promise ⏳:",n);//! Promise {<pending>}
+    `,"color: blue; font-size: 18px");const n=new Promise((o,e)=>{setTimeout(()=>{e("❌ Error! Error passed to reject function")},2e3)});console.log("promise ⏳:",n);//! Promise {<pending>}
 setTimeout(()=>{console.log("promise_setTimeout:",n);//! Promise {<rejected>: '❌ Error! Error passed to reject function'}
-},2500);console.log("-----------------------------------------------------------------------------------");
+},2500);console.log("-----------------------------------------------------------------------------------");//! Метод then()
+console.warn(`Метод then()​​: 
+ ${window.location.href.split("/").slice(0,-2).join("/")+"/"}lesson-FE4_13/images/method-then.png`);console.log(`%c
+    const promise = new Promise((resolve, reject) => {
+      // Asynchronous operation
+    });
+
+    promise.then(onResolve, onReject);
+    `,"color: blue; font-size: 18px");console.log("-----------------------------------------------------------------------------------");
