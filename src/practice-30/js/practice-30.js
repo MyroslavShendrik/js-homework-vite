@@ -127,17 +127,17 @@ console.log(
 
 //todo: Змініть значення змінної isSuccess, щоб викликати resolve або reject:
 // const isSuccess = true; //* ✅
-const isSuccess = false; //! ❌
+// const isSuccess = false; //! ❌
 
-const promise = new Promise((resolve, reject) => {
-    setTimeout(() => {
-        if (isSuccess) {
-            resolve("✅ Success! Value passed to resolve function");
-        } else {
-            reject("❌ Error! Error passed to reject function");
-        }
-    }, 2000);
-});
+// const promise = new Promise((resolve, reject) => {
+//     setTimeout(() => {
+//         if (isSuccess) {
+//             resolve("✅ Success! Value passed to resolve function");
+//         } else {
+//             reject("❌ Error! Error passed to reject function");
+//         }
+//     }, 2000);
+// });
 
 //todo ⏳
 console.log("promise ⏳:", promise); //! Promise {<pending>}
@@ -188,4 +188,40 @@ console.log(
 //? ✳️ Якщо функції onResolve і onReject містять складну логіку,
 //? їх, для зручності, оголошують як зовнішні функції
 //? і передають в метод then() за ім'ям.
+console.log("-----------------------------------------------------------------------------------");
+
+//! ПРИКЛАД використання методу then()
+console.warn("ПРИКЛАД використання методу then():");
+//todo: Змініть значення змінної isSuccess, щоб викликати resolve або reject:
+const isSuccess = true; //* ✅
+// const isSuccess = false; //! ❌
+
+const promise = new Promise((resolve, reject) => {
+    setTimeout(() => {
+        if (isSuccess) {
+            resolve("✅ Success! Value passed to resolve function");
+        } else {
+            reject("❌ Error! Error passed to reject function");
+        }
+    }, 2000);
+});
+
+//todo ⏳
+console.log("promise ⏳:", promise); //! Promise {<pending>}
+console.log(". . . . . . . . . . . . . . . . . .");
+
+promise.then(
+    //todo: onResolve виконається третім етапом або не виконається взагалі
+    value => {
+        console.log("Виклик onResolve всередині promise.then():");
+        console.log("promise_onResolve:", promise); //* Promise {<fulfilled>: '✅ Success! Value passed to resolve function'}
+        console.log("✅ value:", value); //* "✅ Success! Value passed to resolve function"
+    },
+    //todo: onReject виконається третім етапом або не виконається взагалі
+    error => {
+        console.log("Виклик onReject всередині promise.then():");
+        console.log("promise_onReject:", promise); //! Promise {<rejected>: '❌ Error! Error passed to reject function'}
+        console.log("❌ error:", error); //! "❌ Error! Error passed to reject function"
+    }
+);
 console.log("-----------------------------------------------------------------------------------");
