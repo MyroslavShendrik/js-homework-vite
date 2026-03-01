@@ -73,29 +73,55 @@
 //  */
 // const secs = Math.floor((time % (1000 * 60)) / 1000);
 
-
-
-
-
-
-
-
 class CountdownTimer {
-  constructor({ selector, targetDate }) {
+  constructor({ selector, targetDateInput, startBtn }) {
+
     this.container = document.querySelector(selector);
-    this.targetDate = targetDate; // UNIX (number)
+    this.input = document.querySelector(targetDateInput);
+    this.startBtn = document.querySelector(startBtn);
+
+    this.targetDate = null;
     this.intervalId = null;
 
     this.daysEl = this.container.querySelector('[data-value="days"]');
     this.hoursEl = this.container.querySelector('[data-value="hours"]');
     this.minsEl = this.container.querySelector('[data-value="mins"]');
     this.secsEl = this.container.querySelector('[data-value="secs"]');
+
+    //* слухач кнопки всередині класу
+    this.startBtn.addEventListener('click', () => {
+      this.handleStart();
+    });
+  }
+
+  handleStart() {
+
+    if (!this.input.value) {
+      alert("Оберіть дату!");
+      return;
+    }
+
+    const selectedDate = new Date(this.input.value).getTime();
+    const now = Date.now();
+
+    if (selectedDate - now < 86400000) {
+      alert("Дата повинна бути мінімум на 1 день більше!");
+      return;
+    }
+
+    this.targetDate = selectedDate;
+
+    if (this.intervalId) {
+      clearInterval(this.intervalId);
+    }
+
+    this.start();
   }
 
   start() {
     this.intervalId = setInterval(() => {
 
-      const now = Date.now(); // ✅ UNIX
+      const now = Date.now();
       const time = this.targetDate - now;
 
       if (time <= 0) {
@@ -128,43 +154,10 @@ class CountdownTimer {
 }
 
 
-// =======================
-// ЛОГІКА КНОПКИ
-// =======================
+// запуск таймера
 
-const input = document.getElementById('target-date');
-const startBtn = document.getElementById('start-btn');
-
-let timer = null;
-
-startBtn.addEventListener('click', () => {
-
-  if (!input.value) {
-    alert("Оберіть дату!");
-    return;
-  }
-
-  // ✅ Перетворення input.value у UNIX (мілісекунди)
-  const selectedDate = new Date(input.value).getTime();
-  const now = Date.now();
-
-  // Мінімум +1 день
-  if (selectedDate - now < 86400000) {
-    alert("Дата повинна бути мінімум на 1 день більше!");
-    return;
-  }
-
-  // Якщо таймер вже існує — зупиняємо
-  if (timer) {
-    clearInterval(timer.intervalId);
-  }
-
-  // Створюємо новий таймер
-  timer = new CountdownTimer({
-    selector: '#timer-1',
-    targetDate: selectedDate, // число (UNIX)
-  });
-
-  timer.start();
-
+new CountdownTimer({
+  selector: '#timer-1',
+  targetDateInput: '#target-date',
+  startBtn: '#start-btn',
 });
