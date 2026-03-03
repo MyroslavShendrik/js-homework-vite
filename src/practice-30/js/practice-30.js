@@ -139,16 +139,16 @@ console.log(
 //     }, 2000);
 // });
 
-//todo ⏳
-console.log("promise ⏳:", promise); //! Promise {<pending>}
+// //todo ⏳
+// console.log("promise ⏳:", promise); //! Promise {<pending>}
 
 //* ✅ або ❌
-setTimeout(() => {
-        console.log("promise_setTimeout:", promise);
-    //* Promise {<fulfilled>: '✅ Success! Value passed to resolve function'}
-    //? або
-    //! Promise {<rejected>: '❌ Error! Error passed to reject function'}
-}, 2500);
+// setTimeout(() => {
+//         console.log("promise_setTimeout:", promise);
+//     //* Promise {<fulfilled>: '✅ Success! Value passed to resolve function'}
+//     //? або
+//     //! Promise {<rejected>: '❌ Error! Error passed to reject function'}
+// }, 2500);
 
 //? ✳️ У змінну promise буде записаний проміс (об'єкт) у стані pending, 
 //? а через дві секунди, щойно буде викликаний resolve() або reject(), 
@@ -191,37 +191,195 @@ console.log(
 console.log("-----------------------------------------------------------------------------------");
 
 //! ПРИКЛАД використання методу then()
-console.warn("ПРИКЛАД використання методу then():");
+// console.warn("ПРИКЛАД використання методу then():");
+// //todo: Змініть значення змінної isSuccess, щоб викликати resolve або reject:
+// const isSuccess = true; //* ✅
+// // const isSuccess = false; //! ❌
+
+// const promise = new Promise((resolve, reject) => {
+//     setTimeout(() => {
+//         if (isSuccess) {
+//             resolve("✅ Success! Value passed to resolve function");
+//         } else {
+//             reject("❌ Error! Error passed to reject function");
+//         }
+//     }, 2000);
+// });
+
+// //todo ⏳
+// console.log("promise ⏳:", promise); //! Promise {<pending>}
+// console.log(". . . . . . . . . . . . . . . . . .");
+
+// promise.then(
+//     //todo: onResolve виконається третім етапом або не виконається взагалі
+//     value => {
+//         console.log("Виклик onResolve всередині promise.then():");
+//         console.log("promise_onResolve:", promise); //* Promise {<fulfilled>: '✅ Success! Value passed to resolve function'}
+//         console.log("✅ value:", value); //* "✅ Success! Value passed to resolve function"
+//     },
+//     //todo: onReject виконається третім етапом або не виконається взагалі
+//     error => {
+//         console.log("Виклик onReject всередині promise.then():");
+//         console.log("promise_onReject:", promise); //! Promise {<rejected>: '❌ Error! Error passed to reject function'}
+//         console.log("❌ error:", error); //! "❌ Error! Error passed to reject function"
+//     }
+// );
+console.log("-----------------------------------------------------------------------------------");
+
+
+//! Метод catch()
+console.warn(`Метод catch()​​: \n ${((window.location.href).split('/')).slice(0, -2).join('/') + '/'}${"lesson-FE4_13/images/method-catch.png"}`);
+//? ✴️ На практиці в методі then() обробляють
+//? тільки успішне виконання промісу,
+//? а помилку його виконання у спеціальному
+//? методі catch() для «відловлювання» помилок.
+//? ✴️ Колбек-функція буде викликана у разі виконання
+//? промісу з помилкою, і отримає її як аргумент.
+console.log(
+    `%c
+    const promise = new Promise((resolve, reject) => {
+      // Asynchronous operation
+    });
+
+    promise.catch(error => {
+      // Promise rejected
+    });
+    `,
+    'color: blue; font-size: 18px',
+);
+console.log("-----------------------------------------------------------------------------------");
+
+
+//! ПРИКЛАД використання методу catch()
+// console.warn("ПРИКЛАД використання методу catch():");
+// //todo: Змініть значення змінної isSuccess, щоб викликати resolve або reject:
+// const isSuccess  = true; //* ✅
+// // const isSuccess = false; //! ❌
+
+// const promise = new Promise((resolve, reject) => {
+//     setTimeout(() => {
+//         if (isSuccess) {
+//             resolve("✅ Success! Value passed to resolve function");
+//         } else {
+//             reject("❌ Error! Error passed to reject function");
+//         }
+//     }, 2000);
+// });
+
+// //todo ⏳
+// console.log("promise ⏳:", promise); //! Promise {<pending>}
+//     //todo: Виконається третім етапом якщо буде стан "Виконано (fulfilled)" або не виконається взагалі
+// promise.then(value => {
+//         console.log("Спрацював метод then():");
+//         console.log("promise_then():", promise); //* Promise {<fulfilled>: '✅ Success! Value passed to resolve function'}
+//         console.log("✅ value:", value); //* "✅ Success! Value passed to resolve function"
+//     });
+//     //todo: Виконається третім етапом якщо буде стан "Відхилено (rejected)" або не виконається взагалі
+//     promise.catch(error => {
+//         console.log("Спрацював метод catch():");
+//         console.log("promise_catch():", promise); //! Promise {<rejected>: '❌ Error! Error passed to reject function'}
+//         console.log("❌ error:", error); //! "❌ Error! Error passed to reject function"
+//     });
+// console.log("-----------------------------------------------------------------------------------");
+
+
+//! Метод finally()
+console.warn(`Метод finally()​​: \n ${((window.location.href).split('/')).slice(0, -2).join('/') + '/'}${"lesson-FE4_13/images/method-finally.png"}`);
+//? ✴️ Цей метод може бути корисним,
+//? якщо необхідно виконати код після того,
+//? як обіцянка буде дозволена (fulfilled або rejected),
+//? незалежно від результату.
+//? Дозволяє уникнути дублювання коду в обробниках then() і catch().
+//? ✴️ Колбек-функція не отримає жодних аргументів, 
+//? оскільки неможливо визначити - виконана чи відхилена обіцянка. 
+//? Тут буде виконуватися код, який необхідно запустити в будь-якому разі.
+console.log(
+    `%c
+    const promise = new Promise((resolve, reject) => {
+      // Asynchronous operation
+    });
+
+    promise.finally(() => {
+      // Promise fulfilled or rejected
+    });
+    `,
+    'color: blue; font-size: 18px',
+);
+console.log("-------------------------------------------------------------------------------------");
+
+
+//! ПРИКЛАД використання методу finally()
+console.warn("ПРИКЛАД використання методу finally():");
 //todo: Змініть значення змінної isSuccess, щоб викликати resolve або reject:
-const isSuccess = true; //* ✅
+// const isSuccess = true; //* ✅
 // const isSuccess = false; //! ❌
 
+// const promise = new Promise((resolve, reject) => {
+//     setTimeout(() => {
+//         if (isSuccess) {
+//             resolve("✅ Success! Value passed to resolve function");
+//         } else {
+//             reject("❌ Error! Error passed to reject function");
+//         }
+//     }, 2000);
+// });
+
+// //todo ⏳
+// console.log("promise ⏳:", promise); //! Promise {<pending>}
+//  //todo: Виконається третім етапом якщо буде стан "Виконано (fulfilled)" або не виконається взагалі
+// promise.then(value => {
+//         console.log("Спрацював метод then():");
+//         console.log("promise_then():", promise); //* Promise {<fulfilled>: '✅ Success! Value passed to resolve function'}
+//         console.log("✅ value:", value); //* "✅ Success! Value passed to resolve function"
+//         console.log("⚠️ Promise settled...")
+//     })
+//     //todo: Виконається третім етапом якщо буде стан "Відхилено (rejected)" або не виконається взагалі
+//     promise.catch(error => {
+//         console.log("Спрацював метод catch():");
+//         console.log("promise_catch():", promise); //! Promise {<rejected>: '❌ Error! Error passed to reject function'}
+//         console.log("❌ error:", error); //! "❌ Error! Error passed to reject function"
+//         console.log("⚠️ Promise settled...")
+//     })
+//     //todo: Виконається ОБОВ'ЯЗКОВО четвертим етапом незалежно від стану (fulfilled або rejected)
+//     // promise.finally(() => console.log("⚠️ Promise settled...")); //todo: "⚠️ Promise settled..."
+// console.log("-------------------------------------------------------------------------------------");
+
+//! Ланцюжки промісів
+console.warn(`Ланцюжки промісів​​: \n ${((window.location.href).split('/')).slice(0, -2).join('/') + '/'}${"lesson-FE4_13/images/promise-chain.png"}`);
+//? ✴️ Метод then() результатом свого виконання повертає
+//? ще один проміс, значенням якого буде те,
+//? що поверне його callback-функція onResolve.
+//? Це дозволяє будувати асинхронні ланцюжки з промісів.
+//? ✴️ Оскільки метод then() повертає проміс,
+//? перед його виконанням може минути деякий час,
+//? тому ❗️ЧАСТИНА ЛАНЦЮЖКА, ЩО ЗАЛИШИЛАСЯ, БУДЕ ЧЕКАТИ❗️.
+//? У разі виникнення помилки в будь-якому місці ланцюжка,
+//? виконання всіх наступних then() скасовується,
+//? а ❗️управління передається методу catch()❗️. 
+//? Тому він знаходиться в кінці ланцюжка промісів.
 const promise = new Promise((resolve, reject) => {
     setTimeout(() => {
-        if (isSuccess) {
-            resolve("✅ Success! Value passed to resolve function");
-        } else {
-            reject("❌ Error! Error passed to reject function");
-        }
+        resolve(5);
     }, 2000);
 });
 
-//todo ⏳
-console.log("promise ⏳:", promise); //! Promise {<pending>}
-console.log(". . . . . . . . . . . . . . . . . .");
-
-promise.then(
-    //todo: onResolve виконається третім етапом або не виконається взагалі
-    value => {
-        console.log("Виклик onResolve всередині promise.then():");
-        console.log("promise_onResolve:", promise); //* Promise {<fulfilled>: '✅ Success! Value passed to resolve function'}
-        console.log("✅ value:", value); //* "✅ Success! Value passed to resolve function"
-    },
-    //todo: onReject виконається третім етапом або не виконається взагалі
-    error => {
-        console.log("Виклик onReject всередині promise.then():");
-        console.log("promise_onReject:", promise); //! Promise {<rejected>: '❌ Error! Error passed to reject function'}
-        console.log("❌ error:", error); //! "❌ Error! Error passed to reject function"
-    }
-);
-console.log("-----------------------------------------------------------------------------------");
+promise
+    .then(value => {
+        console.log("value_then-1:", value); //! 5
+        return value * 2;
+    })
+    .then(value => {
+        console.log("value_then-2:", value); //! 10
+        return value * 3;
+    })
+    .then(value => {
+        console.log("value_then-3:", value); //! 30
+    })
+    .catch(error => {
+        console.log(error);
+    })
+    .finally(() => {
+        console.log("Final task_метод finally()");
+        console.log("--------------------------------------------------------------");
+    });
+// console.log("--------------------------------------------------------------");
