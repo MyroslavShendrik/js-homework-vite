@@ -109,7 +109,10 @@
 
 // makeTransaction({ id: 73, amount: 100 })
 //     .then(logSuccess)
-//     .catch(logError);
+//     .catch(logError);є
+
+
+
 // //todo: Завдання-1 (task-1)
 // Напиши функцію delay(ms), яка повертає проміс,
 // що переходить в resolved через ms мілісекунд.
