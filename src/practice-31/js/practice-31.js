@@ -237,7 +237,8 @@ const makeGreeting = guestName => {
 //* ✅
 setTimeout(() => {
     console.warn("Код до рефакторингу:");
-    const result = makeGreeting("Mango");
+    const resultNull = makeGreeting;
+    const result = resultNull("Mango");
     console.log("result:", result); //! {success: true, message: '✅ Welcome Mango'}
 
     if (result.success) {
@@ -260,3 +261,122 @@ setTimeout(() => {
     };
 }, 0);
 // console.log("------------------------------------------------------------------------");
+
+
+//! Код після рефакторингу (крок-1)
+//? ✳️ Використовуючи колбек, відпадає необхідність
+//? повертати складні об'єкти зі статусом операції
+//? і перевіряти його у зовнішньому коді.
+const makeGreeting1 = (guestName, onSuccess, onError) => {
+    if (guestName === "" || guestName === undefined) {
+        return onError("❌1️⃣ Guest name must not be empty");
+    }
+    onSuccess(`✅1️⃣ Welcome ${guestName}`);
+};
+
+//* ✅1️⃣
+setTimeout(() => {
+    console.warn("Код після рефакторингу (крок-1):");
+    makeGreeting1(
+        "Mango",
+        greeting => console.log(greeting), //* ✅1️⃣ Welcome Mango
+        error => console.error(error)
+    );
+}, 0);
+
+//! ❌1️⃣
+setTimeout(() => {
+    makeGreeting1(
+        "",
+        greeting => console.log(greeting),
+        error => {
+            console.error(error); //! ❌1️⃣ Guest name must not be empty
+            console.log("------------------------------------------------------------------------");
+        }
+    );
+}, 0);
+// console.log("------------------------------------------------------------------------");
+
+//! Код після рефакторингу (крок-2)
+//? ✳️ Останнім кроком буде промісифікація функції makeGreeting()
+//? для того, щоб повністю усунути її залежність від зовнішнього коду:
+const makeGreeting2 = guestName => {
+    if (guestName === "" || guestName === undefined) {
+        return Promise.reject("❌2️⃣ Guest name must not be empty");
+    }
+
+    return Promise.resolve(`✅2️⃣ Welcome ${guestName}`);
+};
+
+//* ✅2️⃣
+setTimeout(() => {
+    console.warn("Код після рефакторингу (крок-2):");
+    makeGreeting2("Mango")
+        .then(greeting => console.log(greeting)) //* ✅2️⃣ Welcome Mango
+        .catch(error => console.error(error));
+}, 0);
+
+//! ❌2️⃣
+setTimeout(() => {
+    makeGreeting2("")
+        .then(greeting => console.log(greeting))
+        .catch(error => {
+            console.error(error); //! ❌2️⃣ Guest name must not be empty
+            console.log("------------------------------------------------------------------------");
+        });
+}, 0);
+// console.log("------------------------------------------------------------------------");
+
+//! Promise.allSettled(promises)
+//? ✴️ Метод Promise.allSettled(promises)
+//? виконує всі проміси з переданого масиву
+//? і повертає масив результатів кожного промісу
+//? — навіть якщо деякі з них завершилися з помилкою.
+
+//? ✴️ На відміну від Promise.all,
+//? який припиняє роботу при першому відхиленому промісі,
+//? allSettled чекає завершення всіх
+//? і для кожного повертає об'єкт з:
+//? 🔸 status - "fulfilled" (успішно виконаний) або "rejected" (відхилений);
+//? 🔸 value - результат (якщо успішний);
+//? 🔸 reason - причина помилки (якщо відхилено).
+
+//? ✅ Де корисний Promise.allSettled:
+//? 🔸 Коли потрібно дочекатися завершення всіх завдань,
+//?    навіть якщо деякі з них впадуть.
+//? 🔸 При паралельному завантаженні кількох ресурсів,
+//?    де помилки деяких файлів не повинні переривати процес.
+console.log(
+    `%c
+    const promiseA = makePromise("promiseA value", 1000); 
+    const promiseB = makePromise("promiseB value", 3000); 
+    const promiseC = makePromise("promiseС value", 2000);
+    
+    Promise.allSettled([promiseA, promiseB, promiseC])
+    .then(value => console.log(value));
+    `,
+    'color: blue; font-size: 18px',
+);
+console.log(". . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .");
+const delayTime = 2500; 
+
+const makePromise = (text, delay) => {
+    return new Promise((resolve, reject) => {
+        setTimeout(() => {
+            if (delay <= delayTime) {
+                resolve(text);
+            } else {
+                reject("❌ Error!");
+            };
+        }, delay)
+    });
+};
+
+const promiseA = makePromise("promiseA value", 1000); //* ✅
+const promiseB = makePromise("promiseB value", 3000); //! ❌
+const promiseC = makePromise("promiseС value", 2000); //* ✅
+
+Promise.allSettled([promiseA, promiseB, promiseC])
+    .then(value => console.log("Promise.allSettled([promiseA, promiseB, promiseC]).then(value):\n", value))
+    // .catch(error => console.log(error)) 
+    .finally(() => { console.log("-------------------------------------------------------------------------------------");});
