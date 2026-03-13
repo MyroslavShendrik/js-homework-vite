@@ -17,6 +17,7 @@
 //* Порівняння кількох промісів
 
 //? Функція яка повертає проміс із затримкою
+setTimeout(()=>{
 function delayedPromise(value, delay) {
   return new Promise((resolve) => {
     setTimeout(() => {
@@ -46,7 +47,7 @@ Promise.all(promises)
   .finally(() => {
     console.log("Всі проміси завершили роботу");
   });
-
+})
 
 
   //todo: Завдання-2 (task-2)
@@ -69,7 +70,8 @@ Promise.all(promises)
 //* Змагання промісів
 
 //? Функція з випадковою затримкою
-function randomDelay(value) {
+setTimeout(()=>{
+  function randomDelay(value) {
   const delay = Math.floor(Math.random() * 4000) + 1000;
 
   return new Promise((resolve) => {
@@ -99,3 +101,5 @@ Promise.race(racePromises)
   .finally(() => {
     console.log("Змагання завершено");
   });
+},3000);
+
