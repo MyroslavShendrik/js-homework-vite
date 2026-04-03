@@ -1,11 +1,15 @@
-const postsContainer = document.getElementById('data-list');
-const buttonLoadPosts = document.getElementById('get-data');
-const inputCount = document.getElementById('count');
+const postsContainer = document.getElementById('posts');
+const buttonLoadPosts = document.getElementById('loadPosts');
+
+const BaseURL = 'https://jsonplaceholder.typicode.com/';
+const endPoint = 'posts'
+const params = {
+  _limit: 9,
+  _sort: 'title'
+}
 
 buttonLoadPosts.addEventListener('click', getAllPosts);
 
-const BaseURL = 'https://jsonplaceholder.typicode.com/';
-const endPoint = 'posts';
 
 function getAllPosts() {
   fetchAllPosts()
@@ -29,14 +33,13 @@ function renderPosts(posts) {
 }
 
 function fetchAllPosts() {
-  return fetch(createSearchParams(BaseURL, endPoint, {
-    _limit: inputCount.value,
-    _sort: 'title',
-  }))
+  return fetch(createSearchParams(BaseURL, endPoint, params))
     .then(response => response.json());
 }
 
-function createSearchParams(BaseURL, endPoint, params) {
-  const searchParams = new URLSearchParams(params);
-  return `${BaseURL}${endPoint}?${searchParams}`;
+function createSearchParams(baseURL, endpoint, par) {
+  const searchParams = new URLSearchParams(par);
+  const url = `${baseURL}${endpoint}?${searchParams}`; 
+  console.log ("url:",url);
+  return url;
 }
