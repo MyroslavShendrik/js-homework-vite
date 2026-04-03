@@ -1,65 +1,42 @@
-const postsContainer = document.getElementById('posts');
-const buttonLoadPosts = document.getElementById('loadPosts')
+const postsContainer = document.getElementById('data-list');
+const buttonLoadPosts = document.getElementById('get-data');
+const inputCount = document.getElementById('count');
+
 buttonLoadPosts.addEventListener('click', getAllPosts);
-// fetch('https://jsonplaceholder.typicode.com/posts')
-//   .then(response => response.json())
-//   .then(posts => {
-//     const markup = posts
-//       .map(post => {
-//         return `
-//           <div class="post-card">
-//             <h2>${post.title}</h2>
-//             <p>${post.body}</p>
-//           </div>
-//         `;
-//       })
-//       .join('');
 
-//     postsContainer.innerHTML = markup;
-//   })
-//   .catch(error => {
-//     console.log('Помилка:', error);
-//   });
+const BaseURL = 'https://jsonplaceholder.typicode.com/';
+const endPoint = 'posts';
 
-function getAllPosts(){
-fetchAllPosts()
-.then(posts => renderPosts(posts))
-.catch(error => console.log(error));
-};
-function renderPosts(posts){
-   const markup = posts
-       .map(post => {
-         return `
-           <div class="post-card">
-             <h2>${post.title}</h2>
-             <p>${post.body}</p>
-           </div>
-         `;
-       })
-       .join('');
+function getAllPosts() {
+  fetchAllPosts()
+    .then(posts => renderPosts(posts))
+    .catch(error => console.log(error));
+}
 
-    postsContainer.innerHTML = markup;
-};
-function fetchAllPosts(){
-//  return fetch('https://jsonplaceholder.typicode.com/posts?_limit=9&_sort=title')
- return fetch(createSearchParams(BaseURL,endPoint,params))
-   .then(response => response.json());
+function renderPosts(posts) {
+  const markup = posts
+    .map(post => {
+      return `
+        <li>
+          <h3>${post.title}</h3>
+          <p>${post.body}</p>
+        </li>
+      `;
+    })
+    .join('');
 
-};
-// getAllPosts();
-    const BaseURL = "https://jsonplaceholder.typicode.com/";
-      const endPoint = "posts";
-  const params = {
-            _limit: 9,
-            _sort: "title",
-        };
-function createSearchParams( BaseURL, endPoint, params) {
-    console.warn("Клас URLSearchParams:");
-    // const BaseURL = "https://jsonplaceholder.typicode.com/";
-    // const endPoint = "posts"
-    const searchParams = new URLSearchParams(params);
-    const url = `${BaseURL}${endPoint}?${searchParams}`;
-    console.log("url:", url); //! "https://jsonplaceholder.typicode.com/users?_limit=5&_sort=name"
-    console.log("--------------------------------------------------------------------------------------------------------------------------");
-    return url;
-};
+  postsContainer.innerHTML = markup;
+}
+
+function fetchAllPosts() {
+  return fetch(createSearchParams(BaseURL, endPoint, {
+    _limit: inputCount.value,
+    _sort: 'title',
+  }))
+    .then(response => response.json());
+}
+
+function createSearchParams(BaseURL, endPoint, params) {
+  const searchParams = new URLSearchParams(params);
+  return `${BaseURL}${endPoint}?${searchParams}`;
+}
