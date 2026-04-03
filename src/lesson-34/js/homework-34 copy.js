@@ -13,6 +13,7 @@ button.addEventListener('click', () => {
     pageSize: count,
     apiKey: '639ac27a9d1f4a569d7448e2fa14c42d',
   });
+  console.log("url:",`${BASE_URL}?${searchParams}`);
 
   fetch(`${BASE_URL}?${searchParams}`)
     .then(response => {
