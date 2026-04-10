@@ -94,6 +94,8 @@ function createSearchParams() {
     return url;
 };
 createSearchParams();
+
+
 //? ✳️ У рядковому вигляді властивості об'єкта 
 //? стануть параметрами та їх значеннями. 
 //? Параметри будуть розділені символом &. 
@@ -102,4 +104,148 @@ createSearchParams();
 //? тому не потрібно викликати метод toString() 
 //? під час складання URL. 
 //? Не забувайте вказувати початок рядка запиту символом ?.
-// console.log("--------------------------------------------------------------------------------------------------------------------------");
+console.log("--------------------------------------------------------------------------------------------------------------------------");
+//! HTTP-заголовки
+//? ✴️ Клас Headers дозволяє виконувати різні дії 
+//? в заголовках HTTP-запиту і відповіді. 
+//? До цих дій належать діставання, налаштування, 
+//? додавання і видалення заголовків.
+console.log(
+    `%c
+    const headers = new Headers(
+        {
+            "Content-Type": "application/json",
+            "X-Custom-Header": "custom value",
+        }
+    );
+
+    headers.append("Content-Type", "text/bash");
+    headers.append("X-Custom-Header", "custom value");
+    headers.has("Content-Type"); //! true
+    headers.get("Content-Type"); //! "text/bash"
+    headers.set("Content-Type", "application/json");
+    headers.delete("X-Custom-Header");
+    `,
+    'color: blue; font-size: 18px',
+);
+
+const headers = new Headers({
+    "Content-Type": "application/json",
+    "X-Custom-Header": "custom value",
+});
+
+headers.append("Content-Type", "text/bash");
+headers.append("X-Custom-Header", "custom value");
+headers.has("Content-Type"); //! true
+headers.get("Content-Type"); //! "text/bash"
+headers.set("Content-Type", "application/json");
+headers.delete("X-Custom-Header");
+console.log("----------------------------------------------------------------------------------");
+
+
+
+
+//? ✳️ На практиці для складання заголовків запиту,
+//? як правило, використовують просто літерал об'єкта
+//? з властивостями. У такому разі методів не буде,
+//? що найчастіше і не потрібно:
+const headersNext = {
+    "Content-Type": "application/json",
+    "X-Custom-Header": "custom value",
+};
+
+//? ✳️ Запит з використанням заголовків буде виглядати наступним чином:
+console.log(
+    `%c
+    fetch(
+        "https://jsonplaceholder.typicode.com/users",
+        {
+            headers: {
+                Accept: "application/json",
+            },
+        }
+    )
+    .then(response => {
+        //! логіка обробки відповіді
+    });
+    `,
+    'color: blue; font-size: 18px',
+);
+
+fetch(
+    "https://jsonplaceholder.typicode.com/users", 
+    {
+        headers: {
+            Accept: "application/json",
+        },
+    }
+)
+.then(response => {
+    //! логіка обробки відповіді
+});
+
+//? ✳️ Сучасні браузери додають багато заголовків за замовчуванням, 
+//? залежно від операції і тіла запиту, тому немає потреби 
+//? явно вказувати стандартні заголовки.
+console.log("----------------------------------------------------------------------------------");
+
+
+
+
+
+//! Крос-доменні запити
+console.warn(`Крос-доменні запити: \n ${((window.location.href).split('/')).slice(0, -2).join('/') + '/'}${"lesson-FE4_16/images/cors.png"}`);
+//? ✴️ За замовчуванням HTTP-запит можна робити тільки
+//? в рамках поточного сайту.
+//? При спробі запиту на інший домен, порт або протокол,
+//? тобто виконати крос-доменний запит - браузер видає помилку.
+//? Це зроблено з міркувань безпеки
+//? і права доступу налаштовуються на бекенді.
+//? Якщо бекенд не підтримує крос-доменні запити,
+//? фронтенд-розробник нічого не зможе з цим зробити у своєму коді.
+
+//? ✳️ Ця політика браузерів називається CORS
+//? і розшифровується як Cross-Origin Resource Sharing,
+//? де Origin - це і є домен, порт або протокол.
+//? Дослівний переклад звучить як
+//? «спільне використання ресурсів між різними джерелами».
+
+//? ✴️ На кожному запиті браузер сам додає HTTP-заголовок Origin,
+//? де вказує адресу веб-сторінки, яка хоче зробити HTTP-запит.
+//? Наприклад, якщо ми робимо fetch-запит з веб-сторінки
+//? http://127.0.0.1:5500 на https://jsonplaceholder.typicode.com/users,
+//? то заголовки будуть наступними:
+console.warn(`Request Headers: \n ${((window.location.href).split('/')).slice(0, -2).join('/') + '/'}${"lesson-FE4_16/images/cors-request-headers.jpg"}`);
+console.log(
+    `%c
+    GET /users
+    Host: jsonplaceholder.typicode.com
+    Origin: http://127.0.0.1:5500
+    `,
+    'color: blue; font-size: 18px',
+);
+
+//? ✴️ Сервер перевіряє заголовок Origin і, якщо він підтримує крос-доменні запити,
+//? додає у відповідь спеціальний HTTP-заголовок Access-Control-Allow-Origin:
+console.warn(`Response Headers: \n ${((window.location.href).split('/')).slice(0, -2).join('/') + '/'}${"lesson-FE4_16/images/cors-response-headers.jpg"}`);
+console.log(
+    `%c
+    # Private API
+    Access-Control-Allow-Origin: http://127.0.0.1:5500
+
+    # Public API
+    Access-Control-Allow-Origin: *
+    `,
+    'color: blue; font-size: 18px',
+);
+//? ✴️ Значенням цього заголовка буде дозволене джерело (Origin).
+//? У нашому випадку це повинен бути один сайт http://127.0.0.1:5500,
+//? якщо бекенд приватний, або спецсимвол *, якщо бекенд публічний
+//? - дозволяє робити запити кому завгодно.
+
+//? ✳️ Тобто браузер - це певний посередник між JavaScript-кодом і бекендом. 
+//? Він додає кожному запиту заголовок Origin з правильним значенням 
+//? і перевіряє наявність заголовка Access-Control-Allow-Origin у відповіді. 
+//? Якщо заголовок є і його значення підходить, виконається оригінальний запит 
+//? і JavaScript-код отримає його результат, в іншому випадку буде помилка CORS.
+console.log("-----------------------------------------------------------------------------------");
