@@ -8,43 +8,53 @@ const EndPoints = '/people';
 button.addEventListener('click', getAllPosts);
 
 function getAllPosts() {
-  const nNews = parseInt(inputNews.value);
-
-  const params = {
-    q: 'bitcoin',
-    pageSize: nNews,
-    apiKey: '639ac27a9d1f4a569d7448e2fa14c42d'
-  };
-
   fetchAllPosts()
     .then(persons => renderPosts(persons))
-    // .then(persons => console.log(persons))
     .catch(error => console.log(error));
 }
 
-function fetchAllPosts(params) {
-  return fetch(createURL(BaseURL, EndPoints, params))
-    .then(response => response.json())
-    .then(data => data.results);
+// 🔥 Головна логіка (з підстановкою планет)
+async function fetchAllPosts() {
+  const res = await fetch(createURL(BaseURL, EndPoints));
+  const data = await res.json();
+
+  const persons = data.results;
+
+  // обмеження (наприклад скільки ввів користувач)
+  const limit = parseInt(inputNews.value) || persons.length;
+  const limitedPersons = persons.slice(0, limit);
+
+  const updatedPersons = await Promise.all(
+    limitedPersons.map(async (person) => {
+      const planetRes = await fetch(person.homeworld);
+      const planetData = await planetRes.json();
+
+      return {
+        ...person,
+        homeworld: planetData.name // ✅ тепер тут назва планети
+      };
+    })
+  );
+
+  return updatedPersons;
 }
 
-function createURL(baseURL, endpoint, par) {
-  // const searchParams = new URLSearchParams(par);
-  // const url = `${baseURL}${endpoint}?${searchParams}`;
-    const url = `${baseURL}${endpoint}`;
+function createURL(baseURL, endpoint) {
+  const url = `${baseURL}${endpoint}`;
   console.log("url:", url);
   return url;
 }
 
+// 🔽 Відображення
 function renderPosts(persons) {
   dataList.innerHTML = '';
 
-  const markup = persons.map(({name, gender, birth_year, homeworld}) =>`
+  const markup = persons.map(({ name, gender, birth_year, homeworld }) => `
     <li>
       <h3>${name}</h3>
-      <p>${gender}</p>
-      <p>${birth_year}</p>
-      <p>${homeworld}</p>
+      <p>Gender: ${gender}</p>
+      <p>Birth year: ${birth_year}</p>
+      <p>Planet: ${homeworld}</p>
     </li>
   `).join('');
 
