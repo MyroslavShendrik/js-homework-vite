@@ -1,4 +1,3 @@
-
 const inputNews = document.getElementById('count');
 const button = document.getElementById('get-data');
 const dataList = document.getElementById('data-list');
@@ -8,50 +7,57 @@ const EndPoints = '/people';
 
 button.addEventListener('click', getAllPosts);
 
+// 🔹 Клік
 function getAllPosts() {
-
   fetchAllPosts()
     .then(persons => renderPosts(persons))
     .catch(error => console.log(error));
 }
-// function getAllPosts() {
-// fetchPlanet()
-// .then(planet => console.log("planet:", planet))
-// .catch(error => console.log(error))
-// }
-function fetchAllPosts (){
+
+// 🔹 Отримання людей (з query string)
+function fetchAllPosts() {
   return fetch(createURL(BaseURL, EndPoints))
-  .then(res => res.json())
-  .then(data => data.results)
-
-
+    .then(res => res.json())
+    .then(data => data.results);
 }
 
+// 🔹 Тут головна зміна
 function createURL(baseURL, endpoint) {
-  const url = `${baseURL}${endpoint}`;
+  const page = inputNews.value || 1; // беремо значення з input
+  const url = `${baseURL}${endpoint}/?page=${page}`;
+
   console.log("url:", url);
   return url;
 }
 
-// 🔽 Відображення
+// 🔹 Отримання планети
+function fetchPlanet(url) {
+  return fetch(url)
+    .then(res => res.json())
+    .then(planet => planet.name);
+}
+
+// 🔹 Рендер
 function renderPosts(persons) {
   dataList.innerHTML = '';
 
-  const markup = persons.map(({ name, gender, birth_year, homeworld }) => `
-    <li>
-      <h3>${name}</h3>
-      <p>Gender: ${gender}</p>
-      <p>Birth year: ${birth_year}</p>
-      <p>Planet: ${fetchPlanet(homeworld)}</p>
-    </li>
-  `).join('');
+  const promises = persons.map(person => {
+    return fetchPlanet(person.homeworld)
+      .then(planetName => {
+        return `
+          <li>
+            <h3>${person.name}</h3>
+            <p>Gender: ${person.gender}</p>
+            <p>Birth year: ${person.birth_year}</p>
+            <p>Planet: ${planetName}</p>
+          </li>
+        `;
+      });
+  });
 
-  dataList.innerHTML = markup;
-
-}
-
-function fetchPlanet (url){
- return fetch(url)
- .then(res => res.json())
- .then(planet=> planet.name);
+  Promise.all(promises)
+    .then(items => {
+      dataList.innerHTML = items.join('');
+    })
+    .catch(error => console.log(error));
 }
