@@ -8,17 +8,17 @@ const EndPoints = '/people';
 
 button.addEventListener('click', getAllPosts);
 
-// function getAllPosts() {
-
-//   fetchAllPosts()
-//     .then(persons => renderPosts(persons))
-//     .catch(error => console.log(error));
-// }
 function getAllPosts() {
-fetchPlanet()
-.then(planet => console.log("planet:", planet))
-.catch(error => console.log(error))
+
+  fetchAllPosts()
+    .then(persons => renderPosts(persons))
+    .catch(error => console.log(error));
 }
+// function getAllPosts() {
+// fetchPlanet()
+// .then(planet => console.log("planet:", planet))
+// .catch(error => console.log(error))
+// }
 function fetchAllPosts (){
   return fetch(createURL(BaseURL, EndPoints))
   .then(res => res.json())
@@ -34,30 +34,24 @@ function createURL(baseURL, endpoint) {
 }
 
 // 🔽 Відображення
-// function renderPosts(persons) {
-//   dataList.innerHTML = '';
-
-//   const markup = persons.map(({ name, gender, birth_year, homeworld }) => `
-//     <li>
-//       <h3>${name}</h3>
-//       <p>Gender: ${gender}</p>
-//       <p>Birth year: ${birth_year}</p>
-//       <p>Planet: ${homeworld}</p>
-//     </li>
-//   `).join('');
-
-//   dataList.innerHTML = markup;
-
-// }
-function renderPosts(planet) {
+function renderPosts(persons) {
   dataList.innerHTML = '';
- console.log("planet:",planet);
+
+  const markup = persons.map(({ name, gender, birth_year, homeworld }) => `
+    <li>
+      <h3>${name}</h3>
+      <p>Gender: ${gender}</p>
+      <p>Birth year: ${birth_year}</p>
+      <p>Planet: ${fetchPlanet(homeworld)}</p>
+    </li>
+  `).join('');
 
   dataList.innerHTML = markup;
 
 }
+
 function fetchPlanet (url){
-  fetch('https://swapi.dev/api/planets/1/')
- .then(res => console.log("res.json:", res.json))
- .then(planet=> console.log("planet:",planet));
+ return fetch(url)
+ .then(res => res.json())
+ .then(planet=> planet.name);
 }
