@@ -1,0 +1,29 @@
+
+#posts-list{
+    background-color: goldenrod;
+display: flex;
+flex-direction: column;
+align-items: center;
+gap: 20px;
+}
+.list-title{
+    text-align: center;
+    color: black;
+    font-size: 30px;
+}
+.list-id{
+    font-size: 20px;
+    color: blueviolet;
+    
+}
+.list-text{
+    color: cadetblue;
+    font-size: 15px;
+}
+.list-item{
+
+ width: 50%;
+    outline: solid 1px red; 
+padding: 15px 15px;
+
+}

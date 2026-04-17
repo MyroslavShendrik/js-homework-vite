@@ -9,6 +9,8 @@
 //? у відповіді від бекенду,
 //? тим довше вона передається мережею.
 
+
+
 //? ✳️ До того ж, необхідно думати про користувачів
 //? - навряд чи їм потрібні усі мільйони записів відразу.
 //? Обробка такої великої кількості даних у відповіді
@@ -48,10 +50,41 @@ console.log(totalArrayElements(aray3));
 
 //!робимо пагінацію 
 const BaseURL = "https://jsonplaceholder.typicode.com/";
-const EndPoints = "posts";
+const EndPoint = "posts";
 const perPage = 4;
 const page = 10 ;
 //!GET /posts?_page=1&_limit=25 - приклад запиту з урахуванням номера сторінки та кількості елементів на сторінці 
 const params ={
-    я
+    
 }
+//! загальна кількість елементів / на кількість елементів на сторінці = кількість сторінок 
+const postsList = document.getElementById("posts-list");
+//!Головна функція 
+//? Викликає функцію, яка робить запит і передає дані на функцію, яка робить рендер 
+function getAllPosts(){
+fetchPosts()
+.then(posts => renderPosts(posts))
+.catch(error => console.log(error));
+}
+//? Функція робить запит на сервер 
+function fetchPosts (){
+return fetch(createSearchParams(BaseURL, EndPoint))
+.then(response => response.json());
+} 
+//? відображення постів в розмітці
+function renderPosts (posts){
+const markup = posts.map(post =>{ return `
+    <li class="list-item">
+    <h3 class="list-title">${post.title}</h3>
+    <p class="list-id"> id:${post.id} </p>
+    <p class=list-text> ${post.body}</p>
+    </li>
+`}).join('')
+postsList.innerHTML = markup;
+}
+//? Створує URL з параметрами
+function createSearchParams(baseURL, endpoint){
+    const url = `${baseURL}${endpoint}`
+    return url; 
+}
+getAllPosts()
