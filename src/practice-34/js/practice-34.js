@@ -47,18 +47,24 @@ return arr.length;
 console.log(totalArrayElements(aray1));
 console.log(totalArrayElements(aray2));
 console.log(totalArrayElements(aray3));
-
+const input1 = document.getElementById("input-elements");
+const input2 = document.getElementById("input-pages");
 //!робимо пагінацію 
 const BaseURL = "https://jsonplaceholder.typicode.com/";
 const EndPoint = "posts";
-const perPage = 4;
-const page = 10 ;
+const perPage = 5;
+const page = 3 ;
 //!GET /posts?_page=1&_limit=25 - приклад запиту з урахуванням номера сторінки та кількості елементів на сторінці 
 const params ={
-    
+
+_page:input2.value  || 1,
+_limit:input1.value || 1
+
 }
 //! загальна кількість елементів / на кількість елементів на сторінці = кількість сторінок 
 const postsList = document.getElementById("posts-list");
+const buttonFetch = document.getElementById("button-fetch")
+buttonFetch.addEventListener('click', getAllPosts);
 //!Головна функція 
 //? Викликає функцію, яка робить запит і передає дані на функцію, яка робить рендер 
 function getAllPosts(){
@@ -68,7 +74,7 @@ fetchPosts()
 }
 //? Функція робить запит на сервер 
 function fetchPosts (){
-return fetch(createSearchParams(BaseURL, EndPoint))
+return fetch(createSearchParams(BaseURL, EndPoint,params))
 .then(response => response.json());
 } 
 //? відображення постів в розмітці
@@ -83,8 +89,9 @@ const markup = posts.map(post =>{ return `
 postsList.innerHTML = markup;
 }
 //? Створує URL з параметрами
-function createSearchParams(baseURL, endpoint){
-    const url = `${baseURL}${endpoint}`
+function createSearchParams(baseURL, endpoint,params){
+      const searchParams = new URLSearchParams(params);
+      console.log("searckParams:",searchParams);
+    const url = `${baseURL}${endpoint}?${searchParams}`
     return url; 
 }
-getAllPosts()
