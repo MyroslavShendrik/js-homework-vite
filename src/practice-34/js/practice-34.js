@@ -90,8 +90,12 @@ postsList.innerHTML = markup;
 }
 //? Створує URL з параметрами
 function createSearchParams(baseURL, endpoint,params){
-      const searchParams = new URLSearchParams(params);
-      console.log("searckParams:",searchParams);
-    const url = `${baseURL}${endpoint}?${searchParams}`
+const searchParams = new URLSearchParams(params);
+console.log("searchParams:",searchParams);
+const page =  input2.value || 1
+const limit = input1.value || 1
+    // const url = `${baseURL}${endpoint}?_page=${page}&_limit=${limit}`
+        const url = `${baseURL}${endpoint}?${searchParams}`
+        console.log("url:",url);
     return url; 
 }
