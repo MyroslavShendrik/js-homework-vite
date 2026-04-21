@@ -57,8 +57,8 @@ const page = 3 ;
 //!GET /posts?_page=1&_limit=25 - приклад запиту з урахуванням номера сторінки та кількості елементів на сторінці 
 const params ={
 
-_page:input2.value  || 1,
-_limit:input1.value || 1
+_page:input2.value  || 2,
+_limit:input1.value || 2
 
 }
 //! загальна кількість елементів / на кількість елементів на сторінці = кількість сторінок 
@@ -90,6 +90,8 @@ postsList.innerHTML = markup;
 }
 //? Створує URL з параметрами
 function createSearchParams(baseURL, endpoint,params){
+params._page = input2.value;
+params._limit = input1.value;
 const searchParams = new URLSearchParams(params);
 console.log("searchParams:",searchParams);
 const page =  input2.value || 1
