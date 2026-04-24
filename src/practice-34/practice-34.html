@@ -15,6 +15,7 @@
        <link rel="stylesheet" href="./css/reset.css" />
   </head>
   <body>
+    <div class="container-input">
     <label>
       кількість елементів на сторінці
        <input id="input-elements" type="number">
@@ -23,8 +24,13 @@
   номер сторінки
   <input id="input-pages" type="number">
 </label>
+    </div>
+    <!-- <div class="container-fetch-btn"> -->
     <button id="button-fetch" type="button">Fetch</button>
+    <!-- </div> -->
     <ul id="posts-list"></ul>
+    <button class="prev-btn"> ⇐ Prev</button>
+    <button class="next-btn"> Next ⇒</button>
   </body>
     <!-- суворий режим  -->
     <script src="./js/practice-34.js" type="module" defer></script>
