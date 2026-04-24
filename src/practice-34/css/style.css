@@ -31,7 +31,7 @@ padding: 15px 15px;
     width: max-content;
     height: 82px;
     padding: 15px;
-    margin: 0 auto;
+    /* margin: 0 auto; */
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -42,7 +42,9 @@ padding: 15px 15px;
 #button-fetch{
   display: block;  
   outline: solid 1px blue;
-  height: 82px;
+  height: 112px;
+  width: 100px;
+
 }
 .container-fetch-btn{
     width: max-content;
@@ -52,5 +54,22 @@ padding: 15px 15px;
     display: flex;
     height: 150px;
     outline: solid 1px darkred;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
     
+}
+.box-parent-flex{
+    display: flex;
+    /* flex-direction: column; */
+    width: 350px;
+    height: 350px;
+    background-color: yellow;
+}
+.box{
+    /* display: inline-block; */
+    width: 100px;
+    /* height: 100px; */
+font-size: 20px;
+    background-color: red;
 }
