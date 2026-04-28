@@ -49,6 +49,12 @@ console.log(totalArrayElements(aray2));
 console.log(totalArrayElements(aray3));
 const input1 = document.getElementById("input-elements");
 const input2 = document.getElementById("input-pages");
+console.log("input2:",input2);
+const prevBtn = document.querySelector('.prev-btn');
+console.log("prevBtn:",prevBtn);
+const nextBtn = document.querySelector('.next-btn')
+console.log("nextBtn:",nextBtn);
+
 //!робимо пагінацію 
 const BaseURL = "https://jsonplaceholder.typicode.com/";
 const EndPoint = "posts";
@@ -64,10 +70,18 @@ _limit:input1.value || 2
 //! загальна кількість елементів / на кількість елементів на сторінці = кількість сторінок 
 const postsList = document.getElementById("posts-list");
 const buttonFetch = document.getElementById("button-fetch")
+//! блокуємо кнопку 
+buttonFetch.setAttribute("disabled" , "");
+//! розблокуємо кнопку 
+buttonFetch.removeAttribute("disabled");
 buttonFetch.addEventListener('click', getAllPosts);
 //!Головна функція 
 //? Викликає функцію, яка робить запит і передає дані на функцію, яка робить рендер 
 function getAllPosts(){
+if(input1.value < 1 || input2.value < 1 ){
+    alert("введіть коректні значення в полях вводу")
+    return;
+}
 fetchPosts()
 .then(posts => renderPosts(posts))
 .catch(error => console.log(error));
@@ -101,3 +115,28 @@ const limit = input1.value || 1
         console.log("url:",url);
     return url; 
 }
+//! надати на кнопку слухача
+//! при натисканні на кнопку value в input буде зменшуватися на 1
+//! відати збільшені або зменьшині параметри в парамс 
+//! сформувати новий URL з новими парамс 
+//! зробити запит з новим URl
+//! отримати дані у відповідь
+//! відмалювати ці дані 
+prevBtn.addEventListener("click", ()=>{
+console.log("click in btn prev");
+let currentPage = Number(input2.value)
+
+if (currentPage > 1){
+    currentPage--;
+    input2.value = currentPage;
+    getAllPosts()
+}
+});
+nextBtn.addEventListener("click", ()=> {
+    let currentPage = Number(input2.value)
+    currentPage++;
+    input2.value = currentPage;
+    getAllPosts()
+})
+//! робота з кнопкою fetch
+//! якщо один з input немає значень,кнопка fetch не робить запит і виводить повідомлення, що некоректно вод даних
