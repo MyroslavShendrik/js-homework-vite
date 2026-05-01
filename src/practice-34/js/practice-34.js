@@ -55,7 +55,7 @@ function getAllPosts() {
       renderPosts(posts);
 
       // 🔥 після першого запиту
-      buttonFetch.setAttribute("disabled", "");
+      // buttonFetch.setAttribute("disabled", "");
       nextBtn.removeAttribute("disabled");
 
       // prev тільки якщо сторінка > 1
