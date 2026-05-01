@@ -30,6 +30,7 @@
 //? Бекенд, після отримання запиту, обробить його
 //? і у відповіді поверне необхідні ресурси.
 const EndPoint = "posts"
+// const EndPoint = "users"
 
 //? ✳️ Отримаємо масив усіх постів. 
 //? З цією метою, звертаємося до ресурсу /posts, 
@@ -128,3 +129,101 @@ fetch(`https://jsonplaceholder.typicode.com/${EndPoint}`, options)
 //? або задати інший тип (дивись вище).
 //? Не забуваємо вказати заголовок Content-Type,
 //? який уточнює для бекенду тип переданих даних.
+
+
+//! Meтоди PUT і PATCH. Операція UPDATE. Оновлення
+//? ✴️ Методи PUT і PATCH використовуються для оновлення існуючих даних.
+//? Який метод використовувати, буде написано в документації бекенду.
+//? Метод fetch() повинен відправити на сервер запит, в тілі якого
+//? необхідно вказати об'єкт з полями для зміни. Шлях вказує,
+//? в якій колекції і який елемент ми хочемо оновити.
+//? Бекенд, після отримання запиту, обробить його і у відповіді
+//? поверне оновлений ресурс.
+
+//? 📌 Метод PATCH ЗАМІНЯЄ в існуючому ресурсі ТІЛЬКИ ТІ
+//?     значення і властивості, які передані в тілі запиту.
+//? 📌 Метод PUT ПОВНІСТЮ ЗАМІНЯЄ ВЕСЬ РЕСУРС
+//?    переданими даними в тілі запиту.
+
+//? ✳️ У відповідь, якщо все добре, отримаємо JSON з оновленим об'єктом:
+console.log(
+    `%c
+        📌 Відповідь сервера на PATCH:
+    {
+        "id": 9,
+        "author": "Fay Rodis",
+        "title": "Treatise on Inferno",
+        userId: 1,
+        body: "consectetur animi nesciunt iure dolore\nenim quia ad\nveniam autem ut quam aut nobis\net est aut quod aut provident voluptas autem voluptas"
+    }
+    `,
+    'color: blue; font-size: 18px',
+);
+console.log(". . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .");
+
+console.log(
+    `%c
+        📌 Відповідь сервера на PUT:
+    {
+        "id": 9,
+        "author": "Fay Rodis",
+        "title": "Treatise on Inferno"
+    }
+    `,
+    'color: blue; font-size: 18px',
+);
+console.log(". . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .");
+
+
+const requestBody2 = {
+    id: 9,
+    author: "Fay Rodis",
+    title: "Treatise on Inferno",
+};
+
+//? PATCH  або PUT:
+const options2 = {
+    // method: "PATCH", //! операція UPDATE, оновлення
+    method: "PUT", //! операція UPDATE, оновлення
+    body: JSON.stringify(requestBody2), //! конвертація даних у JSON-формат
+    headers: {
+        "Content-Type": "application/json; charset=UTF-8",
+    },
+};
+
+fetch(`https://jsonplaceholder.typicode.com/posts/${requestBody2.id}`, options2)
+    .then(response => response.json())
+    .then(post => console.log(`Відповідь сервера на ${options2.method}:`, post))
+    .catch(error => console.log(error))
+    .finally(() => console.log("-----------------------------------------------------------------------------------------------------"));
+
+
+    //! Meтод DELETE. Операція DELETE. Видалення
+//? ✴️ Метод DELETE використовується для видалення існуючих даних. 
+//? Метод fetch() повинен відправити на сервер DELETE-запит без тіла. 
+//? Шлях вказує, в якій колекції і який елемент ми хочемо видалити. 
+//? Бекенд, після отримання запиту, обробить його, 
+//? видалить ресурс з колекції і у відповіді поверне статус результату.
+
+//? ✳️ У відповідь, якщо все добре, отримаємо JSON з оновленим об'єктом:
+console.log(
+    `%c
+        📌 Відповідь сервера на DELETE:
+    Post deleted
+    Status: 200
+    `,
+    'color: blue; font-size: 18px',
+);
+console.log(". . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .");
+
+const postIdToDelete = 9;
+
+const options3 = {
+    method: "DELETE", //! операція DELETE, видалення
+};
+
+fetch(`https://jsonplaceholder.typicode.com/posts/${postIdToDelete}`, options3)
+    // .then(response => console.log("Відповідь сервера на DELETE:", response))
+    .then(response => console.log("Відповідь response.status на DELETE:", response.status))
+    .catch(error => console.log(error))
+    .finally(() => console.log("-----------------------------------------------------------------------------------------------------------------------------"));
