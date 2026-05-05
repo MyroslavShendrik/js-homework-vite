@@ -1,7 +1,0 @@
-import"./modulepreload-polyfill-3cfb730f.js";const t="https://jsonplaceholder.typicode.com",e="albums";//! ================= READ (GET всі) =================
-fetch(`${t}/${e}`).then(o=>o.json()).then(o=>console.log("GET all albums:",o)).catch(o=>console.log(o));//! ================= READ (GET один) =================
-const n=1;fetch(`${t}/${e}/${n}`).then(o=>o.json()).then(o=>console.log("GET one album:",o)).catch(o=>console.log(o));//! ================= CREATE (POST) =================
-const s={userId:1,title:"My new album"};fetch(`${t}/${e}`,{method:"POST",body:JSON.stringify(s),headers:{"Content-Type":"application/json; charset=UTF-8"}}).then(o=>o.json()).then(o=>console.log("POST:",o)).catch(o=>console.log(o));//! ================= UPDATE (PUT) =================
-const c={userId:1,title:"Updated album (PUT)"};fetch(`${t}/${e}/${n}`,{method:"PUT",body:JSON.stringify(c),headers:{"Content-Type":"application/json; charset=UTF-8"}}).then(o=>o.json()).then(o=>console.log("PUT:",o)).catch(o=>console.log(o));//! ================= UPDATE (PATCH) =================
-const l={title:"Updated only title (PATCH)"};fetch(`${t}/${e}/${n}`,{method:"PATCH",body:JSON.stringify(l),headers:{"Content-Type":"application/json; charset=UTF-8"}}).then(o=>o.json()).then(o=>console.log("PATCH:",o)).catch(o=>console.log(o));//! ================= DELETE =================
-fetch(`${t}/${e}/${n}`,{method:"DELETE"}).then(o=>console.log("DELETE status:",o.status)).catch(o=>console.log(o));
