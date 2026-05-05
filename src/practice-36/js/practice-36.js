@@ -1,12 +1,11 @@
 const BASE_URL = "http://localhost:3000/";
 const EndPoint = "users";
-const url = `${BASE_URL}/${EndPoint}`
+const url = `${BASE_URL}${EndPoint}`
 //! ================= READ (GET всі) =================
 fetch(url)
   .then(res => res.json())
   .then(data => console.log("GET all users:", data))
   .catch(err => console.log(err));
-
 
 //! ================= READ (GET один) =================
 // const albumId = 1;
