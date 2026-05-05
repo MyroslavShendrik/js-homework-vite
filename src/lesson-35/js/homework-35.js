@@ -76,3 +76,12 @@ fetch(`${BASE_URL}/${EndPoint}/${albumId}`, {
 })
   .then(res => console.log("DELETE status:", res.status))
   .catch(err => console.log(err));
+
+//! 2 
+setTimeout(() => {
+ fetch(`${BASE_URL}/${EndPoint}/${albumId}`)
+  .then(res => res.json())
+  .then(data => console.log("GET one album:", data))
+  .catch(err => console.log(err));
+}, 1000);
+
