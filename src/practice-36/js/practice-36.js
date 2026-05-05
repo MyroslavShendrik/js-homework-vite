@@ -8,79 +8,83 @@ fetch(url)
   .catch(err => console.log(err));
 
 //! ================= READ (GET один) =================
-// const albumId = 1;
+const userId = 1;
 
-// fetch(`${BASE_URL}/${EndPoint}/${albumId}`)
-//   .then(res => res.json())
-//   .then(data => console.log("GET one album:", data))
-//   .catch(err => console.log(err));
+fetch(`${url}/${userId}`)
+  .then(res => res.json())
+  .then(data => console.log("GET one user:", data))
+  .catch(err => console.log(err));
 
 
 // //! ================= CREATE (POST) =================
-// const newAlbum = {
-//   userId: 1,
-//   title: "My new album"
-// };
+const newUser = {
+  name: "Albert",
+  address:"Kyiv",
+  phone: "11111111"
+};
 
-// fetch(`${BASE_URL}/${EndPoint}`, {
-//   method: "POST",
-//   body: JSON.stringify(newAlbum),
-//   headers: {
-//     "Content-Type": "application/json; charset=UTF-8"
-//   }
-// })
-//   .then(res => res.json())
-//   .then(data => console.log("POST:", data))
-//   .catch(err => console.log(err));
+fetch(url, {
+  method: "POST",
+  body: JSON.stringify(newUser),
+  headers: {
+    "Content-Type": "application/json; charset=UTF-8"
+  }
+})
+  .then(res => res.json())
+  .then(data => console.log("POST:", data))
+  .catch(err => console.log(err));
 
 
 // //! ================= UPDATE (PUT) =================
-// const updatedAlbumPUT = {
-//   userId: 1,
-//   title: "Updated album (PUT)"
-// };
+const updatedUserPUT = {
+name: "Albert2",
+  address:"Kyiv2",
+  phone: "22222222"
+};
 
-// fetch(`${BASE_URL}/${EndPoint}/${albumId}`, {
-//   method: "PUT",
-//   body: JSON.stringify(updatedAlbumPUT),
-//   headers: {
-//     "Content-Type": "application/json; charset=UTF-8"
-//   }
-// })
-//   .then(res => res.json())
-//   .then(data => console.log("PUT:", data))
-//   .catch(err => console.log(err));
+fetch(`${url}/hcTSSfzo8bo`, {
+  method: "PUT",
+  body: JSON.stringify(updatedUserPUT),
+  headers: {
+    "Content-Type": "application/json; charset=UTF-8"
+  }
+})
+  .then(res => res.json())
+  .then(data => console.log("PUT:", data))
+  .catch(err => console.log(err));
 
 
 // //! ================= UPDATE (PATCH) =================
-// const updatedAlbumPATCH = {
-//   title: "Updated only title (PATCH)"
-// };
+const updatedUsersPATCH = {
+ name2: "Albert3",
+  address2:"Kyiv3",
+  phone: "33333333"
+};
 
-// fetch(`${BASE_URL}/${EndPoint}/${albumId}`, {
-//   method: "PATCH",
-//   body: JSON.stringify(updatedAlbumPATCH),
-//   headers: {
-//     "Content-Type": "application/json; charset=UTF-8"
-//   }
-// })
-//   .then(res => res.json())
-//   .then(data => console.log("PATCH:", data))
-//   .catch(err => console.log(err));
+fetch(`${url}/hcTSSfzo8bo`, {
+  method: "PATCH",
+  body: JSON.stringify(updatedUsersPATCH),
+  headers: {
+    "Content-Type": "application/json; charset=UTF-8"
+  }
+})
+  .then(res => res.json())
+  .then(data => console.log("PATCH:", data))
+  .catch(err => console.log(err));
 
 
 // //! ================= DELETE =================
-// fetch(`${BASE_URL}/${EndPoint}/${albumId}`, {
-//   method: "DELETE"
-// })
-//   .then(res => console.log("DELETE status:", res.status))
-//   .catch(err => console.log(err));
+fetch(`${url}/WJWwouerQys`, {
+  method: "DELETE"
+})
+  .then(res => console.log("DELETE status:", res.status))
+  .catch(err => console.log(err));
 
 // //! 2 
-// setTimeout(() => {
-//  fetch(`${BASE_URL}/${EndPoint}/${albumId}`)
-//   .then(res => res.json())
-//   .then(data => console.log("GET one album:", data))
-//   .catch(err => console.log(err));
-// }, 1000);
+setTimeout(() => {
+ fetch(`${url}/WJWwouerQys`)
+  .then(res => res.json())
+  .then(data => console.log("GET one album:", data))
+  .catch(err => console.log(err));
+}, 1000);
 
