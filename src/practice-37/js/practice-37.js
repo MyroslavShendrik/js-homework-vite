@@ -225,3 +225,60 @@ console.log(
   'color: blue; font-size: 18px',
 );
 console.log("--------------------------------------------------------------------------------------------------------------------------");
+
+
+//! ✳️ Синтаксис async/await:
+const fetchUsers = async () => {
+  const response = await fetch("https://jsonplaceholder.typicode.com/users");
+  const users = await response.json();
+  return users;
+};
+
+fetchUsers()
+  .then(users => console.log("users:", users))
+  .finally(() => console.log("--------------------------------------------------------------------------------------------------------------------------"));
+
+//! users: (10)[{… }, {… }, {… }, {… }, {… }, {… }, {… }, {… }, {… }, {… }]
+// console.log("--------------------------------------------------------------------------------------------------------------------------");
+
+
+
+
+//! Обробка помилок в async/await. Варіант №1.
+console.warn(`Варіант №1✅. \n  Якщо результат асинхронної функції (проміс) \n  НЕ використовується у зовнішньому коді:`);
+//? ✴️ Якщо результат асинхронної функції (проміс) 
+//? не використовується у зовнішньому коді, 
+//? помилки обробляються в тілі функції конструкцією try...catch. 
+//? Значення параметра error в блоці catch - це помилка, 
+//? яку згенерує await, якщо проміс буде відхилений.
+//? ✳️ 
+console.log(
+    `%c
+    const fetchUsers = async () => {
+        try {
+            const response = await fetch("https://jsonplaceholder.typicode.com/users");
+            const users = await response.json();
+            console.log("users:", users);
+        } catch (error) {
+            console.log(error.message);
+        }
+    };
+
+    fetchUsers();
+    `,
+    'color: blue; font-size: 18px',
+);
+const fetchUsers2 = async () => {
+    try {
+        const response = await fetch("https://jsonplaceholder.typicode.com/users");
+        const users = await response.json();
+        console.log("users:", users);
+        console.log("----------------------------------------------------------------------------------------------------------------------------------");
+
+    } catch (error) {
+        console.log(error.message);
+    };
+};
+
+fetchUsers2();
+// console.log("----------------------------------------------------------------------------------------------------------------------------------");
