@@ -59,7 +59,7 @@ console.warn("Використання синтаксису async/await:");conso
     🔸 Якщо проміс був відхилений з помилкою (rejected), оператор await викине помилку.
     🔸 Асинхронна функція завжди повертає проміс, тому будь-яке значення, що повертається, буде його значенням.
     🔸 Якщо не вказати значення, що повертається, повернеться проміс зі значенням undefined.
-    `,"color: blue; font-size: 18px");console.log("--------------------------------------------------------------------------------------------------------------------------");s();function s(){console.log("HELLO!!!")}const c=function(){console.log("Hello2!!!")};c();const t=o=>o;console.log("test3:",t("HELLO3!!!"));const r=o=>o+"!!!";console.log("test4:",r("HELLO4"));//! Приклади використання синтаксису async/await
+    `,"color: blue; font-size: 18px");console.log("--------------------------------------------------------------------------------------------------------------------------");c();function c(){console.log("HELLO!!!")}const t=function(){console.log("Hello2!!!")};t();const r=o=>o;console.log("test3:",r("HELLO3!!!"));const l=o=>o+"!!!";console.log("test4:",l("HELLO4"));//! Приклади використання синтаксису async/await
 console.warn("Приклади використання синтаксису async/await:");console.log(`%c
     //! Function declaration
     async function foo() {
@@ -93,4 +93,21 @@ console.warn("Приклади використання синтаксису asy
         // ...
       }
     }
-    `,"color: blue; font-size: 18px");console.log("--------------------------------------------------------------------------------------------------------------------------");
+    `,"color: blue; font-size: 18px");console.log("--------------------------------------------------------------------------------------------------------------------------");//! ✳️ Синтаксис async/await:
+const a=async()=>await(await fetch("https://jsonplaceholder.typicode.com/users")).json();a().then(o=>console.log("users:",o)).finally(()=>console.log("--------------------------------------------------------------------------------------------------------------------------"));//! users: (10)[{… }, {… }, {… }, {… }, {… }, {… }, {… }, {… }, {… }, {… }]
+//! Обробка помилок в async/await. Варіант №1.
+console.warn(`Варіант №1✅. 
+  Якщо результат асинхронної функції (проміс) 
+  НЕ використовується у зовнішньому коді:`);console.log(`%c
+    const fetchUsers = async () => {
+        try {
+            const response = await fetch("https://jsonplaceholder.typicode.com/users");
+            const users = await response.json();
+            console.log("users:", users);
+        } catch (error) {
+            console.log(error.message);
+        }
+    };
+
+    fetchUsers();
+    `,"color: blue; font-size: 18px");const i=async()=>{try{const s=await(await fetch("https://jsonplaceholder.typicode.com/users")).json();console.log("users:",s),console.log("----------------------------------------------------------------------------------------------------------------------------------")}catch(o){console.log(o.message)}};i();
