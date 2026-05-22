@@ -230,12 +230,12 @@ console.log("-------------------------------------------------------------------
 //! ✳️ Синтаксис async/await:
 const fetchUsers = async () => {
   const response = await fetch("https://jsonplaceholder.typicode.com/users");
-  const users = await response.json();
-  return users;
+  const users1 = await response.json();
+  return users1;
 };
 
 fetchUsers()
-  .then(users => console.log("users:", users))
+  .then(users1 => console.log("users1:", users1))
   .finally(() => console.log("--------------------------------------------------------------------------------------------------------------------------"));
 
 //! users: (10)[{… }, {… }, {… }, {… }, {… }, {… }, {… }, {… }, {… }, {… }]
@@ -276,9 +276,326 @@ const fetchUsers2 = async () => {
         console.log("----------------------------------------------------------------------------------------------------------------------------------");
 
     } catch (error) {
-        console.log(error.message);
+      // console.log("додатковий консоль лог ")
+      console.log("error:",error);
     };
 };
 
 fetchUsers2();
+console.log("----------------------------------------------------------------------------------------------------------------------------------");
+
+console.log("1");
+console.log("2");
+console.log("3");
+console.log("4");
+
+
+
+//! Обробка помилок в async/await. Варіант №2.
+//? ✴️ Якщо результат асинхронної функції (проміс) 
+//? використовується у зовнішньому (глобальному) коді, 
+//? тобто за межами інших асинхронних функцій, 
+//? помилки обробляються колбеком методом catch(). 
+//? Значення параметра error в методі catch() 
+//? - це помилка, яку згенерує await, якщо проміс буде відхилений.
+setTimeout(() => {
+    console.warn(`Варіант №2✅. \n  Якщо результат асинхронної функції (проміс) \n  використовується у зовнішньому коді:`);
+    console.log(
+        `%c
+    const fetchUsers = async () => {
+        const response = await fetch("https://jsonplaceholder.typicode.com/users");
+        const users = await response.json();
+        return users;
+    };
+
+    fetchUsers()
+        .then(users => console.log("users:", users))
+        .catch(error => console.log(error));
+    `,
+        'color: blue; font-size: 18px',
+    );
+    const fetchUsers = async () => {
+        const response = await fetch("https://jsonplaceholder.typicode.com/users1");
+        const users2 = await response.json();
+        return users2;
+    };
+
+    fetchUsers()
+        .then(users2 => console.log("users2:", users2))
+        .catch(error => console.log(error))
+        .finally(() => console.log("----------------------------------------------------------------------------------------------------------------------------------"));
+}, 200);
 // console.log("----------------------------------------------------------------------------------------------------------------------------------");
+
+
+//! Обробка помилок в async/await. Варіант №2-1❌.
+//? ✴️ Так працювати не буде 
+//? - await можна використовувати 
+//? тільки в тілі асинхронної функції.
+setTimeout(() => {
+    console.warn(`Варіант №2-1❌. \n  Так працювати не буде \n  - await можна використовувати \n  тільки в тілі асинхронної функції:`);
+    console.error(
+        `%c
+    const fetchUsers = async () => {
+        const response = await fetch("https://jsonplaceholder.typicode.com/users");
+        const users = await response.json();
+        return users;
+    };
+
+    //! ❌ SyntaxError: await is only valid in async function
+    const users = await fetchUsers();
+    `,
+        'color: blue; font-size: 18px',
+    );
+    const fetchUsers = async () => {
+        const response = await fetch("https://jsonplaceholder.typicode.com/users");
+        const users = await response.json();
+        return users;
+    };
+
+    //! ❌ SyntaxError: await is only valid in async function
+    // const users = await fetchUsers();
+    console.log("----------------------------------------------------------------------------------------------------------------------------------");
+}, 500);
+// console.log("----------------------------------------------------------------------------------------------------------------------------------");
+
+
+
+
+//! Обробка помилок в async/await. Варіант №3.
+//? ✴️ Якщо результат асинхронної функції 
+//? використовується в іншій асинхронній функції, 
+//? помилки обробляються конструкцією try...catch. 
+//? Значення параметра error в блоці catch - це помилка, 
+//? яку згенерує await, якщо проміс буде відхилений.
+setTimeout(() => {
+    console.warn(`Варіант №3✅. \n  Якщо результат асинхронної функції (проміс) \n  використовується в іншій асинхронній функції:`);
+    console.log(
+        `%c
+    const fetchUsers = async () => {
+        const response = await fetch("https://jsonplaceholder.typicode.com/users");
+        const users = await response.json();
+        return users;
+    };
+
+    const doStuff = async () => {
+        try {
+            const users = await fetchUsers();
+            console.log(users);
+        } catch (error) {
+            console.log(error.message);
+        }
+    };
+
+    doStuff();
+    `,
+        'color: blue; font-size: 18px',
+    );
+    const fetchUsers = async () => {
+        const response = await fetch("https://jsonplaceholder.typicode.com/users");
+        const users3 = await response.json();
+        return users3;
+    };
+
+    const doStuff = async () => {
+        try {
+            const users3 = await fetchUsers();
+            console.log("users:", users3);
+            console.log("----------------------------------------------------------------------------------------------------------------------------------");
+        } catch (error) {
+            console.log(error.message);
+        };
+    };
+
+    doStuff();
+}, 1000);
+// console.log("----------------------------------------------------------------------------------------------------------------------------------");
+
+
+//! Послідовні запити з async/await
+console.warn(`Послідовні запити з async/await​​: \n ${((window.location.href).split('/')).slice(0, -2).join('/') + '/'}${"lesson-FE4_19/images/sequential-queries.jpg"}`);
+//? ✴️ Якщо одночасно необхідно зробити декілька запитів, 
+//? використовувати синтаксис async/await потрібно дуже обережно. 
+//? У наступному прикладі будуть виконані три послідовних запити, 
+//? тому що виконання асинхронної функції призупиняється, 
+//? коли інтерпретатор зустрічає await. 
+//? Крім того, парс результатів запитів 
+//? також буде послідовний, що забере більше часу.
+const fetchUsers1 = async () => {
+    const baseUrl = "https://jsonplaceholder.typicode.com";
+    const firstResponse = await fetch(`${baseUrl}/users/1`);
+    const secondResponse = await fetch(`${baseUrl}/users/2`);
+    const thirdResponse = await fetch(`${baseUrl}/users/3`);
+
+    const firstUser = await firstResponse.json();
+    const secondUser = await secondResponse.json();
+    const thirdUser = await thirdResponse.json();
+
+    // console.log(firstUser, secondUser, thirdUser);
+    console.log("firstUser  1️⃣:", firstUser);
+    console.log("secondUser 2️⃣:", secondUser);
+    console.log("thirdUser  3️⃣:", thirdUser);
+    console.log("------------------------------------------------------------------------------------------------------------------------");
+};
+fetchUsers1();
+// console.log("----------------------------------------------------------------------------------------------------------");
+
+
+
+//! Паралельні запити з async/await
+//? ✴️ У попередньому прикладі всі запити робляться послідовно,
+//? тому спробуємо запустити їх паралельно.
+//? Для цього створюється масив промісів,
+//? після чого використовується метод Promise.all(),
+//? для очікування їх виконання.
+//? Масив промісів створюється методами map(),
+//? filter() тощо, залежно від завдання.
+//? ✴️ За такого підходу, запити запускаються паралельно, 
+//? що економить час очікування їх виконання, 
+//? який дорівнює тривалості «найповільнішого» з них. 
+//? Такий прийом підходить тільки у разі, 
+//? якщо запити не залежать один від одного.
+setTimeout(() => {
+    console.warn(`Паралельні запити з async/await​​: \n ${((window.location.href).split('/')).slice(0, -2).join('/') + '/'}${"lesson-FE4_19/images/parallel-queries.jpg"}`);
+    const fetchUsers = async () => {
+        const baseUrl = "https://jsonplaceholder.typicode.com";
+        const userIds = [1, 2, 3];
+
+        //! 1.Створюємо масив промісів
+        const arrayOfPromises = userIds.map(async userId => {
+            const response = await fetch(`${baseUrl}/users/${userId}`);
+            return response.json();
+        });
+        console.log("arrayOfPromises:", arrayOfPromises);
+
+        //! 2.Запускаємо усі проміси паралельно і чекаємо на їх завершення
+        const users = await Promise.all(arrayOfPromises);
+        console.log("All users 1️⃣2️⃣3️⃣:", users);
+        console.log("------------------------------------------------------------------------------------------------------------------------");
+    };
+    fetchUsers();
+}, 500);
+// console.log("----------------------------------------------------------------------------------------------------------");
+
+
+//! Приклад паралельних запитів з async/await та конструкцією try...catch
+//? ✴️ Створимо приклад з кнопкою, клікаючи на яку, виконується запит,
+//? і обробляє можливу помилку конструкцією try...catch. 
+//? Це стандартний AJAX-код з використанням асинхронних функцій.
+// setTimeout(() => {
+//     console.warn("Приклад паралельних запитів з async/await та конструкцією try...catch:");
+//     const fetchUsersBtn = document.querySelector(".btn");
+//     const userList = document.querySelector(".user-list");
+
+//     fetchUsersBtn.addEventListener(
+//         "click",
+//         async () => {
+//             try {
+//                 const users = await fetchUsers();
+//                 renderUserListItems(users);
+//             } catch (error) {
+//                 console.log(error.message);
+//             }
+//     });
+    
+//     //! Функція робить запити та повертає відповідь сервера
+//     async function fetchUsers() {
+//         const baseUrl = "https://jsonplaceholder.typicode.com";
+//         const userIds = [1, 2, 3, 4, 5];
+//         //! 1.Створюємо масив промісів
+//         const arrayOfPromises = userIds.map(async (userId) => {
+//             const response = await fetch(`${baseUrl}/users/${userId}`);
+//             return response.json();
+//         });
+//         //! 2.Запускаємо усі проміси паралельно і чекаємо на їх завершення
+//         const users = await Promise.all(arrayOfPromises);
+//         console.log("All users 1️⃣2️⃣3️⃣4️⃣5️⃣:", users);
+//         return users;
+//     };
+
+//     //! Функція будує розмітку
+//     function renderUserListItems(users) {
+//         const markup = users
+//             .map(
+//                 (user) =>
+//                     `
+//                         <li class="item">
+//                             <p><b>Name</b>: ${user.name}</p>
+//                             <p><b>Email</b>: ${user.email}</p>
+//                             <p><b>Company</b>: ${user.company.name}</p>
+//                         </li>
+//                     `
+//             )
+//             .join("");
+//         userList.innerHTML = markup;
+//         console.log("------------------------------------------------------------------------------------------------------------------------");
+//     }
+// }, 700);
+
+//! 1. додати цифровий input з обмеження введення чисел від 1 до 10
+//! 2. після введення даних в цей input, при натисканні на кнопку fetch users 
+//! буде відображено кількість елементів відповідно веденого input числа 
+setTimeout(() => {
+    console.warn("Приклад паралельних запитів з async/await та конструкцією try...catch:");
+    const fetchUsersBtn = document.querySelector(".btn");
+    const userList = document.querySelector(".user-list");
+    const input = document.querySelector(".count-users");
+
+    fetchUsersBtn.addEventListener(
+        "click",
+        async () => {
+            try {
+                const users = await fetchUsers32();
+                renderUserListItems(users);
+            } catch (error) {
+                console.log(error.message);
+            }
+    });
+    
+    //! Функція робить запити та повертає відповідь сервера
+    async function fetchUsers32() {
+        const baseUrl = "https://jsonplaceholder.typicode.com";
+        // const userIds = [1, 2, 3, 4, 5];
+        //!1.1 отримуэмо значення з input
+        const inputValue =Number(input.value);
+        console.log("inputValue:",inputValue);
+        //! 1.2 стоворити масив userIds
+        const userIds = []
+        //! 1.3 створити довжину масиву відповідно значенню input 
+        // userIds.length = inputValue
+        console.log("userIds:",userIds);
+        //! 1.4 я беру масив [userIds] у якого є довжина(inputValue) треба замінити значення кожного
+        //! елементу на числа починаючи з 1 до (inputValue)
+        for (let i = 1; i <= inputValue; i++){
+          userIds.push(i);
+        }
+        console.log("userIds:",userIds);
+        //! 1.Створюємо масив промісів
+        const arrayOfPromises = userIds.map(async (userId) => {
+            const response = await fetch(`${baseUrl}/users/${userId}`);
+            return response.json();
+        });
+        //! 2.Запускаємо усі проміси паралельно і чекаємо на їх завершення
+        const users = await Promise.all(arrayOfPromises);
+        console.log("All users 1️⃣2️⃣3️⃣4️⃣5️⃣:", users);
+        return users;
+    };
+
+    //! Функція будує розмітку
+    function renderUserListItems(users) {
+        const markup = users
+            .map(
+                (user) =>
+                    `
+                        <li class="item">
+                            <p><b>Name</b>: ${user.name}</p>
+                            <p><b>Email</b>: ${user.email}</p>
+                            <p><b>Company</b>: ${user.company.name}</p>
+                        </li>
+                    `
+            )
+            .join("");
+        userList.innerHTML = markup;
+        console.log("------------------------------------------------------------------------------------------------------------------------");
+    }
+}, 700);
