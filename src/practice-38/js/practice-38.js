@@ -54,3 +54,52 @@ setTimeout(() => {
 // setTimeout(() => {
 //   createUser();
 // }, 200);
+//! PUT (заміна всього ресурсу (користувача)):
+async function updateUserPUT() {
+    try{
+        const updateUser = { id: 1, name: 'New name', email: 'new@example.com' };
+   const response = await fetch("http://localhost:3000/users/1",
+   {
+   method: "PUT",
+   body: JSON.stringify(updateUser),
+   headers: {
+     "Content-Type": "application/json; charset=UTF-8"
+   }
+   }
+   );
+   const data = await response.json();
+   console.log("PUT(заміна всього ресурсу):", data);
+    console.log("---------------------------------------------------------------------------------------------------------------",)
+    } catch (error) {
+        console.log("Помилка:", error);
+    }
+}
+setTimeout(() => { updateUserPUT() }, 400);
+
+
+// fetch(`${url}/hcTSSfzo8bo`, {
+//   method: "PUT",
+//   body: JSON.stringify(updatedUserPUT),
+//   headers: {
+//     "Content-Type": "application/json; charset=UTF-8"
+//   }
+// })
+//   .then(res => res.json())
+//   .then(data => console.log("PUT:", data))
+//   .catch(err => console.log(err));
+async function deleteUser()  {
+    try{
+        const response = await fetch("http://localhost:3000/users/1",
+        {
+            method: "DELETE" ,
+        }
+    );
+    console.log("Delete(видалення користувача)");
+    console.log("---------------------------------------------------------------------------------------------------------------",)
+    } catch (error) {
+        console.log("Error:",error)
+    }
+}
+setTimeout(() =>{
+    deleteUser();
+}, 800);
