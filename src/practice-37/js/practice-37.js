@@ -536,66 +536,101 @@ setTimeout(() => {
 //! 2. після введення даних в цей input, при натисканні на кнопку fetch users 
 //! буде відображено кількість елементів відповідно веденого input числа 
 setTimeout(() => {
-    console.warn("Приклад паралельних запитів з async/await та конструкцією try...catch:");
+
+    console.warn("Приклад паралельних запитів з async/await та try...catch");
+
     const fetchUsersBtn = document.querySelector(".btn");
     const userList = document.querySelector(".user-list");
     const input = document.querySelector(".count-users");
 
-    fetchUsersBtn.addEventListener(
-        "click",
-        async () => {
-            try {
-                const users = await fetchUsers32();
-                renderUserListItems(users);
-            } catch (error) {
-                console.log(error.message);
-            }
-    });
-    
-    //! Функція робить запити та повертає відповідь сервера
-    async function fetchUsers32() {
-        const baseUrl = "https://jsonplaceholder.typicode.com";
-        // const userIds = [1, 2, 3, 4, 5];
-        //!1.1 отримуэмо значення з input
-        const inputValue =Number(input.value);
-        console.log("inputValue:",inputValue);
-        //! 1.2 стоворити масив userIds
-        const userIds = []
-        //! 1.3 створити довжину масиву відповідно значенню input 
-        // userIds.length = inputValue
-        console.log("userIds:",userIds);
-        //! 1.4 я беру масив [userIds] у якого є довжина(inputValue) треба замінити значення кожного
-        //! елементу на числа починаючи з 1 до (inputValue)
-        for (let i = 1; i <= inputValue; i++){
-          userIds.push(i);
+    //! Зміна тексту кнопки
+    input.addEventListener("input", () => {
+
+        const inputValue = input.value;
+
+        if (inputValue === "") {
+            fetchUsersBtn.textContent = "Fetch users";
+            return;
         }
-        console.log("userIds:",userIds);
-        //! 1.Створюємо масив промісів
+
+        fetchUsersBtn.textContent = `Fetch ${inputValue} users`;
+    });
+
+    //! Клік по кнопці
+    fetchUsersBtn.addEventListener("click", async () => {
+
+        try {
+
+            const inputValue = Number(input.value);
+
+            //! Перевірка значення
+            if (inputValue < 1 || inputValue > 10 || !inputValue) {
+
+                alert("Введіть число від 1 до 10");
+
+                return;
+            }
+
+            const users = await fetchUsers32(inputValue);
+
+            renderUserListItems(users);
+
+        } catch (error) {
+
+            console.log(error.message);
+        }
+    });
+
+    //! Функція отримує користувачів
+    async function fetchUsers32(countUsers) {
+
+        const baseUrl = "https://jsonplaceholder.typicode.com";
+
+        //! Масив id
+        const userIds = [];
+
+        //! Заповнення масиву числами
+        for (let i = 1; i <= countUsers; i++) {
+
+            userIds.push(i);
+        }
+
+        console.log("userIds:", userIds);
+
+        //! Масив промісів
         const arrayOfPromises = userIds.map(async (userId) => {
+
             const response = await fetch(`${baseUrl}/users/${userId}`);
+
             return response.json();
         });
-        //! 2.Запускаємо усі проміси паралельно і чекаємо на їх завершення
-        const users = await Promise.all(arrayOfPromises);
-        console.log("All users 1️⃣2️⃣3️⃣4️⃣5️⃣:", users);
-        return users;
-    };
 
-    //! Функція будує розмітку
+        //! Чекаємо всі запити
+        const users = await Promise.all(arrayOfPromises);
+
+        console.log("Users:", users);
+
+        return users;
+    }
+
+    //! Рендер розмітки
     function renderUserListItems(users) {
+
         const markup = users
             .map(
-                (user) =>
-                    `
-                        <li class="item">
-                            <p><b>Name</b>: ${user.name}</p>
-                            <p><b>Email</b>: ${user.email}</p>
-                            <p><b>Company</b>: ${user.company.name}</p>
-                        </li>
-                    `
+                (user) => `
+                    <li class="item">
+                        <p><b>Name</b>: ${user.name}</p>
+                        <p><b>Email</b>: ${user.email}</p>
+                        <p><b>Company</b>: ${user.company.name}</p>
+                    </li>
+                `
             )
             .join("");
+
         userList.innerHTML = markup;
-        console.log("------------------------------------------------------------------------------------------------------------------------");
+
+        console.log("--------------------------------------------------");
     }
+
 }, 700);
