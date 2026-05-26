@@ -157,29 +157,29 @@ setTimeout(()=>{console.warn(`Варіант №3✅.
     };
 
     doStuff();
-    `,"color: blue; font-size: 18px");const s=async()=>await(await fetch("https://jsonplaceholder.typicode.com/users")).json();(async()=>{try{const e=await s();console.log("users:",e),console.log("----------------------------------------------------------------------------------------------------------------------------------")}catch(e){console.log(e.message)}})()},1e3);//! Послідовні запити з async/await
+    `,"color: blue; font-size: 18px");const s=async()=>await(await fetch("https://jsonplaceholder.typicode.com/users")).json();(async()=>{try{const n=await s();console.log("users:",n),console.log("----------------------------------------------------------------------------------------------------------------------------------")}catch(n){console.log(n.message)}})()},1e3);//! Послідовні запити з async/await
 console.warn(`Послідовні запити з async/await​​: 
- ${window.location.href.split("/").slice(0,-2).join("/")+"/"}lesson-FE4_19/images/sequential-queries.jpg`);const j=async()=>{const s="https://jsonplaceholder.typicode.com",o=await fetch(`${s}/users/1`),e=await fetch(`${s}/users/2`),c=await fetch(`${s}/users/3`),l=await o.json(),n=await e.json(),r=await c.json();console.log("firstUser  1️⃣:",l),console.log("secondUser 2️⃣:",n),console.log("thirdUser  3️⃣:",r),console.log("------------------------------------------------------------------------------------------------------------------------")};j();//! Паралельні запити з async/await
+ ${window.location.href.split("/").slice(0,-2).join("/")+"/"}lesson-FE4_19/images/sequential-queries.jpg`);const j=async()=>{const s="https://jsonplaceholder.typicode.com",o=await fetch(`${s}/users/1`),n=await fetch(`${s}/users/2`),c=await fetch(`${s}/users/3`),l=await o.json(),e=await n.json(),t=await c.json();console.log("firstUser  1️⃣:",l),console.log("secondUser 2️⃣:",e),console.log("thirdUser  3️⃣:",t),console.log("------------------------------------------------------------------------------------------------------------------------")};j();//! Паралельні запити з async/await
 setTimeout(()=>{console.warn(`Паралельні запити з async/await​​: 
- ${window.location.href.split("/").slice(0,-2).join("/")+"/"}lesson-FE4_19/images/parallel-queries.jpg`),(async()=>{const o="https://jsonplaceholder.typicode.com",e=[1,2,3];//! 1.Створюємо масив промісів
-const c=e.map(async n=>(await fetch(`${o}/users/${n}`)).json());console.log("arrayOfPromises:",c);//! 2.Запускаємо усі проміси паралельно і чекаємо на їх завершення
+ ${window.location.href.split("/").slice(0,-2).join("/")+"/"}lesson-FE4_19/images/parallel-queries.jpg`),(async()=>{const o="https://jsonplaceholder.typicode.com",n=[1,2,3];//! 1.Створюємо масив промісів
+const c=n.map(async e=>(await fetch(`${o}/users/${e}`)).json());console.log("arrayOfPromises:",c);//! 2.Запускаємо усі проміси паралельно і чекаємо на їх завершення
 const l=await Promise.all(c);console.log("All users 1️⃣2️⃣3️⃣:",l),console.log("------------------------------------------------------------------------------------------------------------------------")})()},500);//! Приклад паралельних запитів з async/await та конструкцією try...catch
 //! 1. додати цифровий input з обмеження введення чисел від 1 до 10
 //! 2. після введення даних в цей input, при натисканні на кнопку fetch users 
 //! буде відображено кількість елементів відповідно веденого input числа 
-setTimeout(()=>{console.warn("Приклад паралельних запитів з async/await та конструкцією try...catch:");const s=document.querySelector(".btn"),o=document.querySelector(".user-list"),e=document.querySelector(".count-users");s.addEventListener("click",async()=>{try{const n=await c();l(n)}catch(n){console.log(n.message)}});//! Функція робить запити та повертає відповідь сервера
-async function c(){const n="https://jsonplaceholder.typicode.com";//!1.1 отримуэмо значення з input
-const r=Number(e.value);console.log("inputValue:",r);//! 1.2 стоворити масив userIds
-const t=[];//! 1.3 створити довжину масиву відповідно значенню input 
-console.log("userIds:",t);//! 1.4 я беру масив [userIds] у якого є довжина(inputValue) треба замінити значення кожного
-//! елементу на числа починаючи з 1 до (inputValue)
-for(let a=1;a<=r;a++)t.push(a);console.log("userIds:",t);//! 1.Створюємо масив промісів
-const p=t.map(async a=>(await fetch(`${n}/users/${a}`)).json());//! 2.Запускаємо усі проміси паралельно і чекаємо на їх завершення
-const u=await Promise.all(p);return console.log("All users 1️⃣2️⃣3️⃣4️⃣5️⃣:",u),u}//! Функція будує розмітку
-function l(n){const r=n.map(t=>`
-                        <li class="item">
-                            <p><b>Name</b>: ${t.name}</p>
-                            <p><b>Email</b>: ${t.email}</p>
-                            <p><b>Company</b>: ${t.company.name}</p>
-                        </li>
-                    `).join("");o.innerHTML=r,console.log("------------------------------------------------------------------------------------------------------------------------")}},700);
+setTimeout(()=>{console.warn("Приклад паралельних запитів з async/await та try...catch");const s=document.querySelector(".btn"),o=document.querySelector(".user-list"),n=document.querySelector(".count-users");//! Зміна тексту кнопки
+n.addEventListener("input",()=>{const e=n.value;if(e===""){s.textContent="Fetch users";return}s.textContent=`Fetch ${e} users`});//! Клік по кнопці
+s.addEventListener("click",async()=>{try{const e=Number(n.value);//! Перевірка значення
+if(e<1||e>10||!e){alert("Введіть число від 1 до 10");return}const t=await c(e);l(t)}catch(e){console.log(e.message)}});//! Функція отримує користувачів
+async function c(e){const t="https://jsonplaceholder.typicode.com";//! Масив id
+const r=[];//! Заповнення масиву числами
+for(let a=1;a<=e;a++)r.push(a);console.log("userIds:",r);//! Масив промісів
+const p=r.map(async a=>(await fetch(`${t}/users/${a}`)).json());//! Чекаємо всі запити
+const u=await Promise.all(p);return console.log("Users:",u),u}//! Рендер розмітки
+function l(e){const t=e.map(r=>`
+                    <li class="item">
+                        <p><b>Name</b>: ${r.name}</p>
+                        <p><b>Email</b>: ${r.email}</p>
+                        <p><b>Company</b>: ${r.company.name}</p>
+                    </li>
+                `).join("");o.innerHTML=t,console.log("--------------------------------------------------")}},700);
