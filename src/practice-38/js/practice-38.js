@@ -106,3 +106,32 @@ setTimeout(() =>{
 
 
 
+//! PATCH (часткове оновлення користувача):
+async function updateUserPATCH() {
+  try {
+    const updatedUser = {
+      name: "Miroslav Updated",
+    };
+
+    const response = await fetch("http://localhost:3000/users/1", {
+      method: "PATCH",
+      body: JSON.stringify(updatedUser),
+      headers: {
+        "Content-Type": "application/json; charset=UTF-8",
+      },
+    });
+
+    const data = await response.json();
+
+    console.log("PATCH(часткове оновлення користувача):", data);
+    console.log(
+      "---------------------------------------------------------------------------------------------------------------"
+    );
+  } catch (error) {
+    console.log("Помилка:", error);
+  }
+}
+
+setTimeout(() => {
+  updateUserPATCH();
+}, 600);
