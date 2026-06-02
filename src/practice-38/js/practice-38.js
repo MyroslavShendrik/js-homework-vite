@@ -29,31 +29,31 @@ setTimeout(() => {
 }, 0);
 
 //! POST (створити нового користувача):
-// async function createUser() {
-//   try {
-//     const newUser = {
-//       name: "Miroslav",
-//       email: "miroslavsendrik276@gmail.com",
-//     };
-//     const response = await fetch("http://localhost:3000/users", {
-//       method: "POST",
-//       body: JSON.stringify(newUser),
-//       headers: {
-//         "Content-Type": "application/json; charset=UTF-8",
-//       },
-//     });
-//     const data = await response.json();
-//     console.log("POST(створити нового коритсувача):", data);
-//     console.log(
-//       "---------------------------------------------------------------------------------------------------------------",
-//     );
-//   } catch (error) {
-//     console.log("Помилка:", error);
-//   }
-// }
-// setTimeout(() => {
-//   createUser();
-// }, 200);
+async function createUser() {
+  try {
+    const newUser = {
+      name: "Miroslav",
+      email: "miroslavsendrik276@gmail.com",
+    };
+    const response = await fetch("http://localhost:3000/users", {
+      method: "POST",
+      body: JSON.stringify(newUser),
+      headers: {
+        "Content-Type": "application/json; charset=UTF-8",
+      },
+    });
+    const data = await response.json();
+    console.log("POST(створити нового коритсувача):", data);
+    console.log(
+      "---------------------------------------------------------------------------------------------------------------",
+    );
+  } catch (error) {
+    console.log("Помилка:", error);
+  }
+}
+setTimeout(() => {
+  createUser();
+}, 200);
 //! PUT (заміна всього ресурсу (користувача)):
 async function updateUserPUT() {
     try{
@@ -89,7 +89,7 @@ setTimeout(() => { updateUserPUT() }, 400);
 //   .catch(err => console.log(err));
 async function deleteUser()  {
     try{
-        const response = await fetch("http://localhost:3000/users/1",
+        const response = await fetch("http://localhost:3000/users/2",
         {
             method: "DELETE" ,
         }
@@ -113,7 +113,7 @@ async function updateUserPATCH() {
       name: "Miroslav Updated",
     };
 
-    const response = await fetch("http://localhost:3000/users/1", {
+    const response = await fetch("http://localhost:3000/users/3", {
       method: "PATCH",
       body: JSON.stringify(updatedUser),
       headers: {

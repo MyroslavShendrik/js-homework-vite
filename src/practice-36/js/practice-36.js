@@ -1,5 +1,6 @@
 const BASE_URL = "http://localhost:3000/";
-const EndPoint = "users";
+// const EndPoint = "users";
+const EndPoint = "posts";
 const url = `${BASE_URL}${EndPoint}`
 //! ================= READ (GET всі) =================
 fetch(url)
