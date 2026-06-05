@@ -1,7 +1,7 @@
-const BaseURL = "https://jsonplaceholder.typicode.com/";
+const BaseURL = "http://localhost:3000/";
 const EndPoint = "posts";
 
-//? ================= INPUTS =================
+//? ================= INPUTS     =================
 const inputLimit = document.querySelector(".limit-input");
 const inputPage = document.querySelector(".page-input");
 
@@ -17,14 +17,15 @@ const totalPagesEl = document.querySelector(".total-pages");
 let currentPage = 1;
 let allPosts = [];
 
-//? ================= LISTENER =================
-fetchBtn.addEventListener("click", getAllPosts);
-
 //! ================= INIT =================
 getCollectionInfo();
 
+//? ================= LISTENER =================
+fetchBtn.addEventListener("click", getAllPosts);
+
 //! ================= MAIN FUNCTION =================
-function getAllPosts() {
+async function getAllPosts() {
+  
   const limit = Number(inputLimit.value) || 5;
   const page = Number(inputPage.value) || 1;
 
@@ -36,39 +37,48 @@ function getAllPosts() {
   currentPage = page;
 
   updateInfo();
-
-  fetchPosts(page, limit)
-    .then(renderPosts)
-    .catch((err) => {
+try{
+ const posts= await fetchPosts(page, limit)
+ 
+    renderPosts(posts.data);
+}catch(err)  {
       console.error(err);
       postsList.innerHTML = "<li>Помилка завантаження</li>";
-    });
+    };
 }
 
 //! ================= FETCH POSTS =================
-function fetchPosts(page, limit) {
-  return fetch(
-    `${BaseURL}${EndPoint}?_page=${page}&_limit=${limit}`
-  ).then((res) => {
-    if (!res.ok) {
-      throw new Error("Network error");
-    }
+async function fetchPosts(page, limit) {
+  // console.log(`${BaseURL}${EndPoint}?_page=${page}&_per_page=${limit}`)
+  // return fetch(
+  //   `${BaseURL}${EndPoint}?_page=${page}&_per_page=${limit}`
+  //   //* pagination /posts?_page=1&_per_page=10 
+  // ).then((res) => {
+    
+  //   if (!res.ok) {
+  //     throw new Error("Network error");
+  //   }
 
-    return res.json();
-  });
+  //   return res.json();
+  // });
+  const response = await fetch(`${BaseURL}${EndPoint}?_page=${page}&_per_page=${limit}`);
+  const dataObject = await response.json()
+  console.log("dataObject:",dataObject);
+  return dataObject
 }
 
 //! ================= GET ALL POSTS =================
 async function getCollectionInfo() {
   try {
-    const response = await fetch(`${BaseURL}${EndPoint}`);
+const response = await fetch(`${BaseURL}${EndPoint}`);
+
 
     if (!response.ok) {
       throw new Error("Network error");
     }
 
     allPosts = await response.json();
-
+   console.log("allPosts:",allPosts);
     updateInfo();
   } catch (error) {
     console.error(error);
@@ -90,6 +100,7 @@ function updateInfo() {
 
 //! ================= RENDER =================
 function renderPosts(posts) {
+  console.log("posts:",posts);
   if (!Array.isArray(posts) || posts.length === 0) {
     postsList.innerHTML = "<li>Немає постів</li>";
     return;
