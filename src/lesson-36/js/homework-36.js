@@ -1,24 +1,27 @@
 const BaseURL = "https://jsonplaceholder.typicode.com/";
 const EndPoint = "posts";
 
-
 //? ================= INPUTS =================
 const inputLimit = document.querySelector(".limit-input");
 const inputPage = document.querySelector(".page-input");
-
 
 //? ================= ELEMENTS =================
 const fetchBtn = document.querySelector(".fetch-btn");
 const postsList = document.querySelector(".posts-list");
 
+const totalPostsEl = document.querySelector(".total-posts");
+const currentPageEl = document.querySelector(".current-page");
+const totalPagesEl = document.querySelector(".total-pages");
 
 //? ================= STATE =================
 let currentPage = 1;
-
+let allPosts = [];
 
 //? ================= LISTENER =================
 fetchBtn.addEventListener("click", getAllPosts);
 
+//! ================= INIT =================
+getCollectionInfo();
 
 //! ================= MAIN FUNCTION =================
 function getAllPosts() {
@@ -32,6 +35,8 @@ function getAllPosts() {
 
   currentPage = page;
 
+  updateInfo();
+
   fetchPosts(page, limit)
     .then(renderPosts)
     .catch((err) => {
@@ -40,7 +45,7 @@ function getAllPosts() {
     });
 }
 
-//! ================= FETCH =================
+//! ================= FETCH POSTS =================
 function fetchPosts(page, limit) {
   return fetch(
     `${BaseURL}${EndPoint}?_page=${page}&_limit=${limit}`
@@ -48,8 +53,39 @@ function fetchPosts(page, limit) {
     if (!res.ok) {
       throw new Error("Network error");
     }
+
     return res.json();
   });
+}
+
+//! ================= GET ALL POSTS =================
+async function getCollectionInfo() {
+  try {
+    const response = await fetch(`${BaseURL}${EndPoint}`);
+
+    if (!response.ok) {
+      throw new Error("Network error");
+    }
+
+    allPosts = await response.json();
+
+    updateInfo();
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+//! ================= INFO =================
+function updateInfo() {
+  const limit = Number(inputLimit.value) || 5;
+
+  const totalPosts = allPosts.length;
+
+  const totalPages = Math.ceil(totalPosts / limit);
+
+  totalPostsEl.textContent = totalPosts;
+  currentPageEl.textContent = currentPage;
+  totalPagesEl.textContent = totalPages;
 }
 
 //! ================= RENDER =================
