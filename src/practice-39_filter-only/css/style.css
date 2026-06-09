@@ -1,0 +1,33 @@
+body{
+    background-color: lightblue;
+}
+.title{
+  color: #212121;
+  font-family: 30px;
+  text-align: center;
+  margin-bottom:15px ;
+}
+#search{
+    display: block;
+    margin: 0 auto;
+
+}
+#cards{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin:50px auto;
+    
+
+}
+.card{
+    width: 250px;
+    border:1px solid #212121 ;
+border-radius:8px ;
+background-color: white;
+padding: 5px;
+}
+.card h3 {
+    color: blue;
+    text-align: center;
+}
