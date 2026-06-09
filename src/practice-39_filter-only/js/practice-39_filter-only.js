@@ -32,27 +32,53 @@ function filterCards(keyword) {
 item.title.toLowerCase().includes(keyword)
     );
     updateCounter(filtered.length);
-    renderCards(filtered);
+    renderCards(filtered, keyword);
     
 
 }
 //! Функція оновлення лічильника
 function updateCounter(count) {
-    counterEl.textContent = `Знайдено: ${count}`;
+    counterEl.textContent = `Знайдено: ${count} ${getWordForm(count, ['картка', 'картки', 'карток'])}`;
 };
+
 //! Функція для відображення карток після ДО та ПІСЛЯ фільтрації
-function renderCards(items) {
+function renderCards(items, keyword = '') {
  cardsContainer.innerHTML = ""
+
+ if (items.length === 0) {
+        cardsContainer.innerHTML = '<p class="empty">Нічого не знайдено... 😕</p>';
+        updateCounter(0);
+        return;
+    };
+
  items.forEach(item => {
     const card = document.createElement("li")
     card.classList.add("card")
     card.innerHTML =`
-    <h3>${item.title}</h3>
+   <h3>${highlightText(item.title, keyword)}</h3>
     <p>${item.body}</p>
     `;
     cardsContainer.appendChild(card);
     
  });
+};
+
+//! Функція підсвічування тексту
+function highlightText(text, keyword) {
+    if (!keyword) return text;
+    const regex = new RegExp(`(${keyword})`, 'gi');
+    return text.replace(regex, `<span class="highlight">$1</span>`);
+};
+
+
+//! Функція для відмінювання слова “картка”
+function getWordForm(number, words) {
+    const n = Math.abs(number) % 100;
+    const n1 = n % 10;
+    if (n > 10 && n < 20) return words[2];
+    if (n1 > 1 && n1 < 5) return words[1];
+    if (n1 === 1) return words[0];
+    return words[2];
 };
 
 
