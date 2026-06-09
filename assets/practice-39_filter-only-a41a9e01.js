@@ -1,4 +1,4 @@
-import"./modulepreload-polyfill-3cfb730f.js";const a=[{userId:10,id:91,title:"aut amet sed",body:`libero voluptate eveniet aperiam sed
+import"./modulepreload-polyfill-3cfb730f.js";const u=[{userId:10,id:91,title:"aut amet sed",body:`libero voluptate eveniet aperiam sed
 sunt placeat suscipit molestias
 similique fugit nam natus
 expedita consequatur consequatur dolores quia eos et placeat`},{userId:10,id:92,title:"ratione ex tenetur perferendis",body:`aut et excepturi dicta laudantium sint rerum nihil
@@ -28,17 +28,19 @@ molestias et officia quis nihil
 itaque dolorem quia`},{userId:10,id:100,title:"at nam consequatur ea labore ea harum",body:`cupiditate quo est a modi nesciunt soluta
 ipsa voluptas error itaque dicta in
 autem qui minus magnam et distinctio eum
-accusamus ratione error aut`}];console.log("%c Пошук ПОСТІВ (карток) ","color: white; background-color: #D33F49");console.log("data:",a);//! пошук необхідних елементів 
-const o=document.getElementById("search"),u=document.getElementById("cards"),s=document.getElementById("counter");//! Первинне відображення всіх карток
-n(a);//! Cлухаємо введення даних в інпут
-o.addEventListener("input",d);//! без debounce
+accusamus ratione error aut`}];console.log("%c Пошук ПОСТІВ (карток) ","color: white; background-color: #D33F49");console.log("data:",u);//! пошук необхідних елементів 
+const r=document.getElementById("search"),n=document.getElementById("cards"),l=document.getElementById("counter");//! Первинне відображення всіх карток
+o(u);//! Cлухаємо введення даних в інпут
+r.addEventListener("input",d);//! без debounce
 //! блок функцій 
 //! отримуэ дані з інпуту та передає їх далі 
-function d(t){const e=t.target.value.toLowerCase().trim();console.log("value:",e),r(e)}//! Функція фільтрації карток
-function r(t){//! отримати дані з фукції filtersInputData = keyword ✅
-const e=a.filter(i=>i.title.toLowerCase().includes(t));l(e.length),n(e)}//! Функція оновлення лічильника
-function l(t){s.textContent=`Знайдено: ${t}`}//! Функція для відображення карток після ДО та ПІСЛЯ фільтрації
-function n(t){u.innerHTML="",t.forEach(e=>{const i=document.createElement("li");i.classList.add("card"),i.innerHTML=`
-    <h3>${e.title}</h3>
-    <p>${e.body}</p>
-    `,u.appendChild(i)})}
+function d(e){const t=e.target.value.toLowerCase().trim();console.log("value:",t),c(t)}//! Функція фільтрації карток
+function c(e){//! отримати дані з фукції filtersInputData = keyword ✅
+const t=u.filter(i=>i.title.toLowerCase().includes(e));s(t.length),o(t,e)}//! Функція оновлення лічильника
+function s(e){l.textContent=`Знайдено: ${e} ${p(e,["картка","картки","карток"])}`}//! Функція для відображення карток після ДО та ПІСЛЯ фільтрації
+function o(e,t=""){if(n.innerHTML="",e.length===0){n.innerHTML='<p class="empty">Нічого не знайдено... 😕</p>',s(0);return}e.forEach(i=>{const a=document.createElement("li");a.classList.add("card"),a.innerHTML=`
+   <h3>${m(i.title,t)}</h3>
+    <p>${i.body}</p>
+    `,n.appendChild(a)})}//! Функція підсвічування тексту
+function m(e,t){if(!t)return e;const i=new RegExp(`(${t})`,"gi");return e.replace(i,'<span class="highlight">$1</span>')}//! Функція для відмінювання слова “картка”
+function p(e,t){const i=Math.abs(e)%100,a=i%10;return i>10&&i<20?t[2]:a>1&&a<5?t[1]:a===1?t[0]:t[2]}
