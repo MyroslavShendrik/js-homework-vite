@@ -31,9 +31,15 @@ function filterCards(keyword) {
     const filtered = data.filter(item =>
 item.title.toLowerCase().includes(keyword)
     );
+    updateCounter(filtered.length);
     renderCards(filtered);
-    counterEl.textContent = `знайдено ${filtered.length}`;
+    
+
 }
+//! Функція оновлення лічильника
+function updateCounter(count) {
+    counterEl.textContent = `Знайдено: ${count}`;
+};
 //! Функція для відображення карток після ДО та ПІСЛЯ фільтрації
 function renderCards(items) {
  cardsContainer.innerHTML = ""
