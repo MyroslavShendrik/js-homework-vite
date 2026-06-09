@@ -34,9 +34,10 @@ n(a);//! Cлухаємо введення даних в інпут
 o.addEventListener("input",d);//! без debounce
 //! блок функцій 
 //! отримуэ дані з інпуту та передає їх далі 
-function d(t){const e=t.target.value.toLowerCase().trim();console.log("value:",e),l(e)}//! Функція фільтрації карток
-function l(t){//! отримати дані з фукції filtersInputData = keyword ✅
-const e=a.filter(i=>i.title.toLowerCase().includes(t));n(e),s.textContent=`знайдено ${e.length}`}//! Функція для відображення карток після ДО та ПІСЛЯ фільтрації
+function d(t){const e=t.target.value.toLowerCase().trim();console.log("value:",e),r(e)}//! Функція фільтрації карток
+function r(t){//! отримати дані з фукції filtersInputData = keyword ✅
+const e=a.filter(i=>i.title.toLowerCase().includes(t));l(e.length),n(e)}//! Функція оновлення лічильника
+function l(t){s.textContent=`Знайдено: ${t}`}//! Функція для відображення карток після ДО та ПІСЛЯ фільтрації
 function n(t){u.innerHTML="",t.forEach(e=>{const i=document.createElement("li");i.classList.add("card"),i.innerHTML=`
     <h3>${e.title}</h3>
     <p>${e.body}</p>
