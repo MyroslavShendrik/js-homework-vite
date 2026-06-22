@@ -2,12 +2,13 @@
 <html lang="uk">
 <head>
   <meta charset="UTF-8">
-  <title>ДЗ-35</title>
+  <title>ДЗ-36</title>
   <link rel="stylesheet" href="./css/style.css">
 </head>
 <body>
 
   <div class="pagination-box">
+    <button class="open-modal-btn">Створити пост</button>
   <label>
     Кількість постів:
     <input type="number" class="limit-input" min="1" max="10" value="4" />
@@ -20,11 +21,40 @@
 
   <button class="fetch-btn">Fetch Posts</button>
 </div>
-
+<div class="info-box">
+  <p>Кількість елементів у колекції: <span class="total-posts">0</span></p>
+  <p>Сторінка № <span class="current-page">1</span> з <span class="total-pages">0</span></p>
+</div>
 <ul class="posts-list"></ul>
-
   <script type="module" src="./js/homework-36.js"></script>
     <!-- <script type="module" src="./js/homework-34 copy 2.js"></script> -->
     <!-- <script type="module" src="./js/homework-27-teacher.js"></script> -->
+     <div class="backdrop is-hidden">
+  <div class="modal">
+    <button type="button" class="close-modal-btn">✖</button>
+
+    <form class="create-post-form">
+      <input
+        type="number"
+        class="user-id-input"
+        placeholder="Ідентифікатор автора"
+        min="1"
+      />
+
+      <input
+        type="text"
+        class="title-input"
+        placeholder="Заголовок"
+      />
+
+      <textarea
+        class="body-input"
+        placeholder="Текст поста"
+      ></textarea>
+
+      <button type="submit">Save</button>
+    </form>
+  </div>
+</div>
 </body>
 </html>
