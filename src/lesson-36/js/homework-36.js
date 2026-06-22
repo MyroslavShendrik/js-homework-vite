@@ -22,8 +22,8 @@ fetchBtn.addEventListener("click", getAllPosts);
 
 //! ================= MAIN FUNCTION =================
 function getAllPosts() {
-  const limit = Number(inputLimit.value) || 5;
-  const page = Number(inputPage.value) || 1;
+  const limit = Number(inputLimit.value);
+  const page = Number(inputPage.value) ;
 
   if (limit < 1 || page < 1) {
     alert("Введіть коректні значення");
