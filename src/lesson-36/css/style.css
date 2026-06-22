@@ -60,3 +60,166 @@ input {
 .posts-list p {
   line-height: 1.5;
 }
+
+/* ================= MODAL ================= */
+
+.backdrop,
+.confirm-backdrop {
+  position: fixed;
+  inset: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background-color: rgba(0, 0, 0, 0.55);
+
+  z-index: 100;
+
+  opacity: 1;
+  visibility: visible;
+
+  transition: opacity 250ms ease, visibility 250ms ease;
+}
+
+.backdrop.is-hidden,
+.confirm-backdrop.is-hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.modal,
+.confirm-modal {
+  position: relative;
+
+  width: 420px;
+  max-width: calc(100% - 30px);
+
+  padding: 35px;
+
+  background-color: white;
+  border-radius: 12px;
+
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+
+  transform: scale(1);
+
+  transition: transform 250ms ease;
+}
+
+.backdrop.is-hidden .modal,
+.confirm-backdrop.is-hidden .confirm-modal {
+  transform: scale(0.8);
+}
+
+.modal h2,
+.confirm-modal h2 {
+  margin-top: 0;
+  text-align: center;
+}
+
+.confirm-modal p {
+  text-align: center;
+  margin-bottom: 25px;
+}
+
+.close-modal-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+
+  width: 32px;
+  height: 32px;
+
+  border: none;
+  border-radius: 50%;
+
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.create-post-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.create-post-form label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+
+  font-weight: 600;
+}
+
+.create-post-form input,
+.create-post-form textarea {
+  padding: 10px;
+
+  border: 1px solid #aaa;
+  border-radius: 6px;
+
+  font-size: 16px;
+}
+
+.create-post-form textarea {
+  min-height: 100px;
+  resize: vertical;
+}
+
+.modal-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+
+  margin-top: 15px;
+}
+
+.save-btn,
+.cancel-btn,
+.confirm-btn,
+.reject-btn {
+  padding: 10px 20px;
+
+  border: none;
+  border-radius: 6px;
+
+  cursor: pointer;
+
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.save-btn,
+.confirm-btn {
+  background-color: #1f9d8b;
+  color: white;
+}
+
+.cancel-btn,
+.reject-btn {
+  background-color: #d9d9d9;
+}
+
+/* ================= SEARCH ================= */
+
+.search-box {
+  margin: 25px auto;
+  text-align: center;
+}
+
+.search-input {
+  width: 300px;
+  max-width: 90%;
+  padding: 10px;
+
+  border: 1px solid #aaa;
+  border-radius: 6px;
+
+  font-size: 16px;
+}
+
+.search-counter {
+  font-weight: bold;
+}

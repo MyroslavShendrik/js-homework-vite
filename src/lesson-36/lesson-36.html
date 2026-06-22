@@ -6,55 +6,110 @@
   <link rel="stylesheet" href="./css/style.css">
 </head>
 <body>
-
   <div class="pagination-box">
     <button class="open-modal-btn">Створити пост</button>
-  <label>
-    Кількість постів:
-    <input type="number" class="limit-input" min="1" max="10" value="4" />
-  </label>
 
-  <label>
-    Номер сторінки:
-    <input type="number" class="page-input" min="1" value="1" />
-  </label>
+    <label>
+      Кількість постів:
+      <input type="number" class="limit-input" min="1" max="10" value="4" />
+    </label>
 
-  <button class="fetch-btn">Fetch Posts</button>
-</div>
-<div class="info-box">
-  <p>Кількість елементів у колекції: <span class="total-posts">0</span></p>
-  <p>Сторінка № <span class="current-page">1</span> з <span class="total-pages">0</span></p>
-</div>
-<ul class="posts-list"></ul>
-  <script type="module" src="./js/homework-36.js"></script>
-    <!-- <script type="module" src="./js/homework-34 copy 2.js"></script> -->
-    <!-- <script type="module" src="./js/homework-27-teacher.js"></script> -->
-     <div class="backdrop is-hidden">
-  <div class="modal">
-    <button type="button" class="close-modal-btn">✖</button>
+    <label>
+      Номер сторінки:
+      <input type="number" class="page-input" min="1" value="1" />
+    </label>
 
-    <form class="create-post-form">
-      <input
-        type="number"
-        class="user-id-input"
-        placeholder="Ідентифікатор автора"
-        min="1"
-      />
-
-      <input
-        type="text"
-        class="title-input"
-        placeholder="Заголовок"
-      />
-
-      <textarea
-        class="body-input"
-        placeholder="Текст поста"
-      ></textarea>
-
-      <button type="submit">Save</button>
-    </form>
+    <button class="fetch-btn">Fetch Posts</button>
   </div>
-</div>
+
+  <div class="search-box">
+    <h2>🔍 Пошук постів</h2>
+
+    <input
+      type="text"
+      class="search-input"
+      placeholder="Введіть ключове слово..."
+    />
+
+    <p class="search-counter"></p>
+  </div>
+
+  <div class="info-box">
+    <p>
+      Кількість елементів у колекції:
+      <span class="total-posts">0</span>
+    </p>
+
+    <p>
+      Сторінка №
+      <span class="current-page">1</span>
+      з
+      <span class="total-pages">0</span>
+    </p>
+  </div>
+
+  <ul class="posts-list"></ul>
+
+  <!-- МОДАЛЬНЕ ВІКНО СТВОРЕННЯ ПОСТА -->
+  <div class="backdrop is-hidden">
+    <div class="modal">
+      <button type="button" class="close-modal-btn">✖</button>
+
+      <h2>Створити пост</h2>
+
+      <form class="create-post-form">
+        <label>
+          Ідентифікатор автора (від 1 до 10)
+          <input
+            type="number"
+            class="user-id-input"
+            placeholder="Наприклад: 5"
+            min="1"
+            max="10"
+            required
+          />
+        </label>
+
+        <label>
+          Заголовок
+          <input
+            type="text"
+            class="title-input"
+            placeholder="Введіть заголовок"
+            required
+          />
+        </label>
+
+        <label>
+          Текст поста
+          <textarea
+            class="body-input"
+            placeholder="Введіть текст поста"
+            required
+          ></textarea>
+        </label>
+
+        <div class="modal-buttons">
+          <button type="submit" class="save-btn">Save</button>
+          <button type="button" class="cancel-btn">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- МОДАЛЬНЕ ВІКНО ПІДТВЕРДЖЕННЯ -->
+  <div class="confirm-backdrop is-hidden">
+    <div class="confirm-modal">
+      <h2>Підтвердження</h2>
+      <p>Ви точно хочете створити цей пост?</p>
+
+      <div class="modal-buttons">
+        <button type="button" class="confirm-btn">Так, створити</button>
+        <button type="button" class="reject-btn">Скасувати</button>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="./js/homework-36.js"></script>
 </body>
 </html>
