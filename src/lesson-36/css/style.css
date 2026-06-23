@@ -223,3 +223,10 @@ input {
 .search-counter {
   font-weight: bold;
 }
+
+.highlight {
+  background-color: yellow;
+  color: black;
+  padding: 0 2px;
+  border-radius: 2px;
+}

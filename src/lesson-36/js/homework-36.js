@@ -41,7 +41,7 @@ let newPostData = null;
 //? ================= LISTENERS =================
 fetchBtn.addEventListener("click", getAllPosts);
 
-searchInput.addEventListener("input", handleSearch);
+searchInput.addEventListener("input", filtersInputData);
 
 openModalBtn.addEventListener("click", openModal);
 closeModalBtn.addEventListener("click", closeModal);
@@ -88,6 +88,9 @@ async function getAllPosts() {
 
     allPosts = await response.json();
 
+    console.log("allPosts:", allPosts);
+    console.log("Кількість постів:", allPosts.length);
+
     totalPosts = allPosts.length;
     totalPages = Math.ceil(totalPosts / limit);
 
@@ -107,10 +110,10 @@ async function getAllPosts() {
     updateInfo();
     renderPosts(postsForCurrentPage);
 
-    searchCounterEl.textContent = "";
     searchInput.value = "";
+    searchCounterEl.textContent = "";
   } catch (error) {
-    console.error(error);
+    console.error("Помилка getAllPosts:", error);
 
     postsList.innerHTML = `
       <li>
@@ -122,7 +125,6 @@ async function getAllPosts() {
 }
 
 //! ================= PAGINATION =================
-// Вирізаємо потрібні пости з масиву для поточної сторінки
 function getPostsForPage(posts) {
   const limit = Number(inputLimit.value);
 
@@ -139,33 +141,49 @@ function updateInfo() {
   totalPagesEl.textContent = totalPages;
 }
 
-//! ================= RENDER =================
-function renderPosts(posts) {
-  if (!posts.length) {
-    postsList.innerHTML = "<li>Пости не знайдені</li>";
+//! ================= RENDER POSTS =================
+function renderPosts(posts, keyword = "") {
+  postsList.innerHTML = "";
+
+  if (posts.length === 0) {
+    postsList.innerHTML = "<li>Пости не знайдені 😕</li>";
     return;
   }
 
-  postsList.innerHTML = posts
-    .map(
-      ({ id, userId, title, body }) => `
-        <li class="list-item">
-          <h3>${title}</h3>
-          <p><b>Post id:</b> ${id}</p>
-          <p><b>Author id:</b> ${userId}</p>
-          <p>${body}</p>
-        </li>
-      `
-    )
-    .join("");
+  posts.forEach(({ id, userId, title, body }) => {
+    const postItem = document.createElement("li");
+
+    postItem.classList.add("list-item");
+
+    postItem.innerHTML = `
+      <h3>${highlightText(title, keyword)}</h3>
+      <p><b>Post id:</b> ${id}</p>
+      <p><b>Author id:</b> ${userId}</p>
+      <p>${body}</p>
+    `;
+
+    postsList.appendChild(postItem);
+  });
 }
 
 //! ================= SEARCH =================
-function handleSearch(event) {
+function filtersInputData(event) {
   const keyword = event.target.value.toLowerCase().trim();
 
-  // Якщо поле пошуку пусте — повертаємо поточну сторінку
-  if (!keyword) {
+  console.log("Введене слово:", keyword);
+  console.log("Кількість постів у allPosts:", allPosts.length);
+
+  filterPosts(keyword);
+}
+
+//! Пошук 
+function filterPosts(keyword) {
+  if (allPosts.length === 0) {
+    console.warn("Пости ще не завантажені.");
+    return;
+  }
+
+  if (keyword === "") {
     const postsForCurrentPage = getPostsForPage(allPosts);
 
     renderPosts(postsForCurrentPage);
@@ -174,35 +192,57 @@ function handleSearch(event) {
     return;
   }
 
-  const filteredPosts = allPosts.filter(({ title, body }) => {
-    return (
-      title.toLowerCase().includes(keyword) ||
-      body.toLowerCase().includes(keyword)
-    );
+  const filteredPosts = allPosts.filter(({ title }) => {
+    return String(title).toLowerCase().includes(keyword);
   });
 
-  renderPosts(filteredPosts);
+  console.log("Знайдені пости:", filteredPosts);
+  console.log("Кількість знайдених:", filteredPosts.length);
 
-  searchCounterEl.textContent = `Знайдено: ${
-    filteredPosts.length
-  } ${getWordForm(filteredPosts.length, ["пост", "пости", "постів"])}`;
+  updateCounter(filteredPosts.length);
+  renderPosts(filteredPosts, keyword);
+}
+
+//! ================= SEARCH COUNTER =================
+function updateCounter(count) {
+  searchCounterEl.textContent = `Знайдено: ${count} ${getWordForm(count, [
+    "пост",
+    "пости",
+    "постів",
+  ])}`;
+}
+
+//! ================= HIGHLIGHT TITLE =================
+function highlightText(text, keyword) {
+  if (!keyword) {
+    return text;
+  }
+
+  const escapedKeyword = keyword.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+
+  const regex = new RegExp(`(${escapedKeyword})`, "gi");
+
+  return String(text).replace(
+    regex,
+    `<span class="highlight">$1</span>`
+  );
 }
 
 //! ================= WORD FORM =================
 function getWordForm(number, words) {
-  const lastDigit = number % 10;
-  const lastTwoDigits = number % 100;
+  const n = Math.abs(number) % 100;
+  const n1 = n % 10;
 
-  if (lastTwoDigits >= 11 && lastTwoDigits <= 14) {
+  if (n > 10 && n < 20) {
     return words[2];
   }
 
-  if (lastDigit === 1) {
-    return words[0];
+  if (n1 > 1 && n1 < 5) {
+    return words[1];
   }
 
-  if (lastDigit >= 2 && lastDigit <= 4) {
-    return words[1];
+  if (n1 === 1) {
+    return words[0];
   }
 
   return words[2];
@@ -280,10 +320,9 @@ async function createPost() {
 
     alert(`Пост створено. Його id: ${createdPost.id}`);
 
-
     await getAllPosts();
   } catch (error) {
-    console.error(error);
+    console.error("Помилка createPost:", error);
     alert("Не вдалося створити пост");
   }
 }
