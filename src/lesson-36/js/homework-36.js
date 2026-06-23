@@ -34,7 +34,6 @@ const rejectBtn = document.querySelector(".reject-btn");
 let currentPage = 1;
 let totalPosts = 0;
 let totalPages = 0;
-
 let allPosts = [];
 let newPostData = null;
 
@@ -81,10 +80,10 @@ async function getAllPosts() {
 
   try {
     const response = await fetch(`${BaseURL}${EndPoint}`);
-
-    if (!response.ok) {
-      throw new Error(`Помилка сервера: ${response.status}`);
-    }
+//! якщо я хочу то можу перенести код в catch
+    // if (!response.ok) {
+    //   throw new Error(`Помилка сервера: ${response.status}`);
+    // }
 
     allPosts = await response.json();
 
@@ -149,21 +148,32 @@ function renderPosts(posts, keyword = "") {
     postsList.innerHTML = "<li>Пости не знайдені 😕</li>";
     return;
   }
+//!var 1 
+  // posts.forEach(({ id, userId, title, body }) => {
+  //   const postItem = document.createElement("li");
 
-  posts.forEach(({ id, userId, title, body }) => {
-    const postItem = document.createElement("li");
+  //   postItem.classList.add("list-item");
 
-    postItem.classList.add("list-item");
+  //   postItem.innerHTML = `
+  //     <h3>${highlightText(title, keyword)}</h3>
+  //     <p><b>Post id:</b> ${id}</p>
+  //     <p><b>Author id:</b> ${userId}</p>
+  //     <p>${body}</p>
+  //   `;
 
-    postItem.innerHTML = `
-      <h3>${highlightText(title, keyword)}</h3>
-      <p><b>Post id:</b> ${id}</p>
-      <p><b>Author id:</b> ${userId}</p>
-      <p>${body}</p>
-    `;
+  //   postsList.appendChild(postItem);
 
-    postsList.appendChild(postItem);
-  });
+  // });
+  //! var 2 
+      const markup = posts.map(({ id, userId, title, body }) =>
+      `<li class="list-item">
+       <h3>${highlightText(title, keyword)}</h3>
+       <p><b>Post id:</b> ${id}</p>
+       <p><b>Author id:</b> ${userId}</p>
+       <p>${body}</p> 
+      </li>`).join("");
+
+      postsList.insertAdjacentHTML("beforeend", markup);
 }
 
 //! ================= SEARCH =================
@@ -328,4 +338,9 @@ async function createPost() {
 }
 
 //! ================= START =================
-getAllPosts();
+// getAllPosts();
+function fetchPost(){
+  const url= (`${BaseURL}${EndPoint}?_page=${Number(inputPage.value)}&_per_page=${Number(inputLimit.value)}`)
+  console.log("url:",url);
+}
+fetchPost()
