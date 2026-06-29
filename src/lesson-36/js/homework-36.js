@@ -30,12 +30,18 @@ const confirmBackdrop = document.querySelector(".confirm-backdrop");
 const confirmBtn = document.querySelector(".confirm-btn");
 const rejectBtn = document.querySelector(".reject-btn");
 
+const searchBox = document.querySelector(".search-box");
+const infoBox = document.querySelector(".info-box");
+
+searchBox.hidden = true;
+infoBox.hidden = true;
 //? ================= STATE =================
 let currentPage = 1;
 let totalPosts = 0;
 let totalPages = 0;
 let allPosts = [];
 let newPostData = null;
+let currentPosts = [];
 
 //? ================= LISTENERS =================
 fetchBtn.addEventListener("click", getAllPosts);
@@ -80,7 +86,7 @@ async function getAllPosts() {
 
   try {
     const response = await fetch(`${BaseURL}${EndPoint}`);
-//! якщо я хочу то можу перенести код в catch
+    //! якщо я хочу то можу перенести код в catch
     // if (!response.ok) {
     //   throw new Error(`Помилка сервера: ${response.status}`);
     // }
@@ -95,7 +101,7 @@ async function getAllPosts() {
 
     if (page > totalPages && totalPages > 0) {
       alert(
-        `Сторінки № ${page} не існує.\nВсього сторінок: ${totalPages}.\nБуде показана остання сторінка.`
+        `Сторінки № ${page} не існує.\nВсього сторінок: ${totalPages}.\nБуде показана остання сторінка.`,
       );
 
       page = totalPages;
@@ -104,10 +110,13 @@ async function getAllPosts() {
 
     currentPage = page;
 
-    const postsForCurrentPage = getPostsForPage(allPosts);
+    currentPosts = getPostsForPage(allPosts);
 
     updateInfo();
-    renderPosts(postsForCurrentPage);
+    renderPosts(currentPosts);
+
+    searchBox.hidden = false;
+    infoBox.hidden = false;
 
     searchInput.value = "";
     searchCounterEl.textContent = "";
@@ -148,7 +157,7 @@ function renderPosts(posts, keyword = "") {
     postsList.innerHTML = "<li>Пости не знайдені 😕</li>";
     return;
   }
-//!var 1 
+  //!var 1
   // posts.forEach(({ id, userId, title, body }) => {
   //   const postItem = document.createElement("li");
 
@@ -164,16 +173,20 @@ function renderPosts(posts, keyword = "") {
   //   postsList.appendChild(postItem);
 
   // });
-  //! var 2 
-      const markup = posts.map(({ id, userId, title, body }) =>
-      `<li class="list-item">
+  //! var 2
+  const markup = posts
+    .map(
+      ({ id, userId, title, body }) =>
+        `<li class="list-item">
        <h3>${highlightText(title, keyword)}</h3>
        <p><b>Post id:</b> ${id}</p>
        <p><b>Author id:</b> ${userId}</p>
        <p>${body}</p> 
-      </li>`).join("");
+      </li>`,
+    )
+    .join("");
 
-      postsList.insertAdjacentHTML("beforeend", markup);
+  postsList.insertAdjacentHTML("beforeend", markup);
 }
 
 //! ================= SEARCH =================
@@ -186,7 +199,7 @@ function filtersInputData(event) {
   filterPosts(keyword);
 }
 
-//! Пошук 
+//! Пошук
 function filterPosts(keyword) {
   if (allPosts.length === 0) {
     console.warn("Пости ще не завантажені.");
@@ -194,17 +207,16 @@ function filterPosts(keyword) {
   }
 
   if (keyword === "") {
-    const postsForCurrentPage = getPostsForPage(allPosts);
-
+    // const postsForCurrentPage = getPostsForPage(allPosts);
     renderPosts(postsForCurrentPage);
     searchCounterEl.textContent = "";
 
     return;
   }
 
-  const filteredPosts = allPosts.filter(({ title }) => {
-    return String(title).toLowerCase().includes(keyword);
-  });
+ const filteredPosts = currentPosts.filter(({ title }) =>
+    title.toLowerCase().includes(keyword)
+ );
 
   console.log("Знайдені пости:", filteredPosts);
   console.log("Кількість знайдених:", filteredPosts.length);
@@ -232,10 +244,7 @@ function highlightText(text, keyword) {
 
   const regex = new RegExp(`(${escapedKeyword})`, "gi");
 
-  return String(text).replace(
-    regex,
-    `<span class="highlight">$1</span>`
-  );
+  return String(text).replace(regex, `<span class="highlight">$1</span>`);
 }
 
 //! ================= WORD FORM =================
@@ -339,8 +348,8 @@ async function createPost() {
 
 //! ================= START =================
 // getAllPosts();
-function fetchPost(){
-  const url= (`${BaseURL}${EndPoint}?_page=${Number(inputPage.value)}&_per_page=${Number(inputLimit.value)}`)
-  console.log("url:",url);
+function fetchPost() {
+  const url = `${BaseURL}${EndPoint}?_page=${Number(inputPage.value)}&_per_page=${Number(inputLimit.value)}`;
+  console.log("url:", url);
 }
-fetchPost()
+fetchPost();
