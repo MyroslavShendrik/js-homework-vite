@@ -33,6 +33,8 @@ const rejectBtn = document.querySelector(".reject-btn");
 const searchBox = document.querySelector(".search-box");
 const infoBox = document.querySelector(".info-box");
 
+const prevBtn = document.querySelector(".prev-btn");
+const nextBtn = document.querySelector(".next-btn");
 searchBox.hidden = true;
 infoBox.hidden = true;
 //? ================= STATE =================
@@ -45,6 +47,9 @@ let currentPosts = [];
 
 //? ================= LISTENERS =================
 fetchBtn.addEventListener("click", getAllPosts);
+
+prevBtn.addEventListener("click", prevPage);
+nextBtn.addEventListener("click", nextPage);
 
 searchInput.addEventListener("input", filtersInputData);
 
@@ -85,13 +90,18 @@ async function getAllPosts() {
   }
 
   try {
-    const response = await fetch(`${BaseURL}${EndPoint}`);
+    const searchParams = createSearchParams();
+    const response = await fetch(
+    `${BaseURL}${EndPoint}?${searchParams}`
+);
+
     //! якщо я хочу то можу перенести код в catch
     // if (!response.ok) {
     //   throw new Error(`Помилка сервера: ${response.status}`);
     // }
 
-    allPosts = await response.json();
+    const data = await response.json();
+    allPosts = Array.isArray(data) ? data : (data.data || data.posts || []);
 
     console.log("allPosts:", allPosts);
     console.log("Кількість постів:", allPosts.length);
@@ -139,7 +149,8 @@ function getPostsForPage(posts) {
   const startIndex = (currentPage - 1) * limit;
   const endIndex = startIndex + limit;
 
-  return posts.slice(startIndex, endIndex);
+  currentPosts = allPosts;
+  renderPosts(currentPosts);
 }
 
 //! ================= UPDATE INFO =================
@@ -147,6 +158,8 @@ function updateInfo() {
   totalPostsEl.textContent = totalPosts;
   currentPageEl.textContent = currentPage;
   totalPagesEl.textContent = totalPages;
+
+  updatePaginationButtons();
 }
 
 //! ================= RENDER POSTS =================
@@ -208,11 +221,10 @@ function filterPosts(keyword) {
 
   if (keyword === "") {
     // const postsForCurrentPage = getPostsForPage(allPosts);
-    renderPosts(postsForCurrentPage);
+    renderPosts(currentPosts);
     searchCounterEl.textContent = "";
-
     return;
-  }
+  } 
 
  const filteredPosts = currentPosts.filter(({ title }) =>
     title.toLowerCase().includes(keyword)
@@ -346,6 +358,62 @@ async function createPost() {
   }
 }
 
+function prevPage() {
+
+  if (currentPage === 1) {
+    return;
+  }
+
+  currentPage--;
+
+  inputPage.value = currentPage;
+
+  currentPosts = getPostsForPage(allPosts);
+
+  updateInfo();
+
+  renderPosts(currentPosts);
+
+  searchInput.value = "";
+  searchCounterEl.textContent = "";
+}
+
+function nextPage() {
+
+  if (currentPage === totalPages) {
+    return;
+  }
+
+  currentPage++;
+
+  inputPage.value = currentPage;
+
+  currentPosts = getPostsForPage(allPosts);
+
+  updateInfo();
+
+  renderPosts(currentPosts);
+
+  searchInput.value = "";
+  searchCounterEl.textContent = "";
+}
+
+function updatePaginationButtons() {
+
+  prevBtn.disabled = currentPage === 1;
+
+  nextBtn.disabled = currentPage === totalPages || totalPages === 0;
+
+}
+
+function createSearchParams() {
+  const params = new URLSearchParams({
+    _page: inputPage.value,
+    _limit: inputLimit.value,
+  });
+
+  return params.toString();
+}
 //! ================= START =================
 // getAllPosts();
 function fetchPost() {
