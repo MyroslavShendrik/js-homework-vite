@@ -78,7 +78,7 @@ confirmBackdrop.addEventListener("click", (event) => {
 async function getAllPosts() {
   const limit = Number(inputLimit.value);
   let page = Number(inputPage.value);
-
+  console.log("limit:",limit);
   if (limit < 1 || limit > 10) {
     alert("Кількість постів на сторінці повинна бути від 1 до 10");
     return;
@@ -91,6 +91,7 @@ async function getAllPosts() {
 
   try {
     const searchParams = createSearchParams();
+    console.log("рядок запиту:",`${BaseURL}${EndPoint}?${searchParams}`)
     const response = await fetch(
     `${BaseURL}${EndPoint}?${searchParams}`
 );
@@ -101,13 +102,17 @@ async function getAllPosts() {
     // }
 
     const data = await response.json();
-    allPosts = Array.isArray(data) ? data : (data.data || data.posts || []);
-
+    console.log("data:",data);
+    console.log("!data.data!:",data.data);
+    allPosts = Array.isArray(data) ? data : (data.data || data.posts || []); 
+    
     console.log("allPosts:", allPosts);
     console.log("Кількість постів:", allPosts.length);
 
     totalPosts = allPosts.length;
+    console.log("!totalPosts!:",totalPosts);
     totalPages = Math.ceil(totalPosts / limit);
+    console.log("totalPages:",totalPages);
 
     if (page > totalPages && totalPages > 0) {
       alert(
@@ -120,11 +125,11 @@ async function getAllPosts() {
 
     currentPage = page;
 
-    currentPosts = getPostsForPage(allPosts);
-
+    // currentPosts = getPostsForPage(allPosts);
+    console.log("currentPosts:",currentPosts) //! ? 
     updateInfo();
-    renderPosts(currentPosts);
-
+    // renderPosts(currentPosts);
+    renderPosts(allPosts);
     searchBox.hidden = false;
     infoBox.hidden = false;
 
@@ -144,12 +149,14 @@ async function getAllPosts() {
 
 //! ================= PAGINATION =================
 function getPostsForPage(posts) {
-  const limit = Number(inputLimit.value);
+  console.log("posts:",posts);
+  // const limit = Number(inputLimit.value);
+  // const startIndex = (currentPage - 1) * limit;
+  // const endIndex = startIndex + limit;
 
-  const startIndex = (currentPage - 1) * limit;
-  const endIndex = startIndex + limit;
 
-  currentPosts = allPosts;
+  currentPosts = posts;
+  console.log("currentPosts:",currentPosts)
   renderPosts(currentPosts);
 }
 
@@ -164,6 +171,7 @@ function updateInfo() {
 
 //! ================= RENDER POSTS =================
 function renderPosts(posts, keyword = "") {
+  console.log("posts:",posts);
   postsList.innerHTML = "";
 
   if (posts.length === 0) {
@@ -409,7 +417,7 @@ function updatePaginationButtons() {
 function createSearchParams() {
   const params = new URLSearchParams({
     _page: inputPage.value,
-    _limit: inputLimit.value,
+    _per_page: inputLimit.value,
   });
 
   return params.toString();
