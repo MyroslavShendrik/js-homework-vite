@@ -37,8 +37,8 @@ const prevBtn = document.querySelector(".prev-btn");
 const nextBtn = document.querySelector(".next-btn");
 searchBox.hidden = true;
 infoBox.hidden = true;
-prevBtn.hidden = false;
-nextBtn.hidden = false;
+prevBtn.hidden = true;
+nextBtn.hidden = true;
 //? ================= STATE =================
 let currentPage = 1;
 let totalPosts = 0;
@@ -134,8 +134,8 @@ async function getAllPosts() {
     renderPosts(currentPosts);
     searchBox.hidden = false;
     infoBox.hidden = false;
-    prevBtn.hidden = true;
-    nextBtn.hidden = true;
+    prevBtn.hidden = false;
+    nextBtn.hidden = false;
     searchInput.value = "";
     searchCounterEl.textContent = "";
   } catch (error) {
@@ -492,8 +492,8 @@ function handlePostButtons(event) {
 }
 //! ================= START =================
 // getAllPosts();
-function fetchPost() {
-  const url = `${BaseURL}${EndPoint}?_page=${Number(inputPage.value)}&_per_page=${Number(inputLimit.value)}`;
-  console.log("url:", url);
-}
-fetchPost();
+// function fetchPost() {
+//   const url = `${BaseURL}${EndPoint}?_page=${Number(inputPage.value)}&_per_page=${Number(inputLimit.value)}`;
+//   console.log("url:", url);
+// }
+// fetchPost();
