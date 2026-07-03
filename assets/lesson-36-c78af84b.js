@@ -3,7 +3,7 @@ async function m(){const t=Number(E.value);let e=Number(l.value);if(console.log(
 const s=await o.json();console.log("data:",s),i=s.data,u=i,S=s.items,r=s.pages,console.log("allPosts:",i),console.log("totalPosts:",S),console.log("totalPages:",r),e>r&&r>0&&(alert(`Сторінки № ${e} не існує.
 Всього сторінок: ${r}.
 Буде показана остання сторінка.`),e=r,l.value=r),c=e,console.log("currentPosts:",u);//! ?
-K(),L(u),B.hidden=!1,x.hidden=!1,w.value="",q.textContent=""}catch(n){console.error("Помилка getAllPosts:",n),y.hidden=!0,P.hidden=!0,a.innerHTML=`
+K(),L(u),B.hidden=!1,x.hidden=!1,y.hidden=!0,P.hidden=!0,w.value="",q.textContent=""}catch(n){console.error("Помилка getAllPosts:",n),a.innerHTML=`
       <li>
         Помилка завантаження постів.
         Перевір, чи запущений json-server на http://localhost:3000
