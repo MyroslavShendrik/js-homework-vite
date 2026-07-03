@@ -134,13 +134,13 @@ async function getAllPosts() {
     renderPosts(currentPosts);
     searchBox.hidden = false;
     infoBox.hidden = false;
-
+    prevBtn.hidden = true;
+    nextBtn.hidden = true;
     searchInput.value = "";
     searchCounterEl.textContent = "";
   } catch (error) {
     console.error("Помилка getAllPosts:", error);
-    prevBtn.hidden = true;
-    nextBtn.hidden = true;
+
 
     postsList.innerHTML = `
       <li>
