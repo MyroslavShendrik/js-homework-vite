@@ -270,3 +270,63 @@ input {
 
     cursor:not-allowed;
 }
+
+.highlight {
+  background-color: yellow;
+  color: black;
+  font-weight: bold;
+  padding: 2px 4px;
+  border-radius: 4px;
+}
+
+/* ================= CARD BUTTONS ================= */
+
+.card-buttons {
+
+  display: flex;
+
+  justify-content: flex-end;
+
+  gap: 12px;
+
+  margin-top: 20px;
+
+}
+
+.edit-btn,
+.delete-btn {
+
+  padding: 10px 18px;
+
+  border: none;
+
+  border-radius: 6px;
+
+  cursor: pointer;
+
+  color: white;
+
+  font-weight: bold;
+
+  transition: .25s;
+
+}
+
+.edit-btn {
+
+  background: #0d9488;
+
+}
+
+.delete-btn {
+
+  background: crimson;
+
+}
+
+.edit-btn:hover,
+.delete-btn:hover {
+
+  transform: scale(1.05);
+
+}

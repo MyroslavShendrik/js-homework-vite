@@ -43,6 +43,7 @@ let totalPosts = 0;
 let totalPages = 0;
 let allPosts = [];
 let newPostData = null;
+let postIdToDelete = null;
 let currentPosts = [];
 
 //? ================= LISTENERS =================
@@ -64,8 +65,7 @@ backdrop.addEventListener("click", (event) => {
 });
 
 createPostForm.addEventListener("submit", handleCreateFormSubmit);
-
-confirmBtn.addEventListener("click", createPost);
+confirmBtn.addEventListener("click", handleConfirmAction);
 rejectBtn.addEventListener("click", closeConfirmModal);
 
 confirmBackdrop.addEventListener("click", (event) => {
@@ -73,12 +73,13 @@ confirmBackdrop.addEventListener("click", (event) => {
     closeConfirmModal();
   }
 });
+postsList.addEventListener("click", handlePostButtons);
 
 //! ================= GET ALL POSTS =================
 async function getAllPosts() {
   const limit = Number(inputLimit.value);
   let page = Number(inputPage.value);
-  console.log("limit:",limit);
+  console.log("limit:", limit);
   if (limit < 1 || limit > 10) {
     alert("Кількість постів на сторінці повинна бути від 1 до 10");
     return;
@@ -91,10 +92,8 @@ async function getAllPosts() {
 
   try {
     const searchParams = createSearchParams();
-    console.log("рядок запиту:",`${BaseURL}${EndPoint}?${searchParams}`)
-    const response = await fetch(
-    `${BaseURL}${EndPoint}?${searchParams}`
-);
+    console.log("рядок запиту:", `${BaseURL}${EndPoint}?${searchParams}`);
+    const response = await fetch(`${BaseURL}${EndPoint}?${searchParams}`);
 
     //! якщо я хочу то можу перенести код в catch
     // if (!response.ok) {
@@ -102,17 +101,18 @@ async function getAllPosts() {
     // }
 
     const data = await response.json();
-    console.log("data:",data);
-    console.log("!data.data!:",data.data);
-    allPosts = Array.isArray(data) ? data : (data.data || data.posts || []); 
-    
-    console.log("allPosts:", allPosts);
-    console.log("Кількість постів:", allPosts.length);
 
-    totalPosts = allPosts.length;
-    console.log("!totalPosts!:",totalPosts);
-    totalPages = Math.ceil(totalPosts / limit);
-    console.log("totalPages:",totalPages);
+    console.log("data:", data);
+
+    allPosts = data.data;
+    currentPosts = allPosts;
+
+    totalPosts = data.items;
+    totalPages = data.pages;
+
+    console.log("allPosts:", allPosts);
+    console.log("totalPosts:", totalPosts);
+    console.log("totalPages:", totalPages);
 
     if (page > totalPages && totalPages > 0) {
       alert(
@@ -126,10 +126,10 @@ async function getAllPosts() {
     currentPage = page;
 
     // currentPosts = getPostsForPage(allPosts);
-    console.log("currentPosts:",currentPosts) //! ? 
+    console.log("currentPosts:", currentPosts); //! ?
     updateInfo();
     // renderPosts(currentPosts);
-    renderPosts(allPosts);
+    renderPosts(currentPosts);
     searchBox.hidden = false;
     infoBox.hidden = false;
 
@@ -148,17 +148,16 @@ async function getAllPosts() {
 }
 
 //! ================= PAGINATION =================
-function getPostsForPage(posts) {
-  console.log("posts:",posts);
+// function getPostsForPage(posts) {
+//   console.log("posts:", posts);
   // const limit = Number(inputLimit.value);
   // const startIndex = (currentPage - 1) * limit;
   // const endIndex = startIndex + limit;
 
-
-  currentPosts = posts;
-  console.log("currentPosts:",currentPosts)
-  renderPosts(currentPosts);
-}
+//   currentPosts = posts;
+//   console.log("currentPosts:", currentPosts);
+//   renderPosts(currentPosts);
+// }
 
 //! ================= UPDATE INFO =================
 function updateInfo() {
@@ -171,7 +170,7 @@ function updateInfo() {
 
 //! ================= RENDER POSTS =================
 function renderPosts(posts, keyword = "") {
-  console.log("posts:",posts);
+  console.log("posts:", posts);
   postsList.innerHTML = "";
 
   if (posts.length === 0) {
@@ -195,17 +194,41 @@ function renderPosts(posts, keyword = "") {
 
   // });
   //! var 2
-  const markup = posts
-    .map(
-      ({ id, userId, title, body }) =>
-        `<li class="list-item">
-       <h3>${highlightText(title, keyword)}</h3>
-       <p><b>Post id:</b> ${id}</p>
-       <p><b>Author id:</b> ${userId}</p>
-       <p>${body}</p> 
-      </li>`,
-    )
-    .join("");
+const markup = posts
+  .map(
+    ({ id, userId, title, body }) => `
+      <li class="list-item">
+
+        <h3>${highlightText(title, keyword)}</h3>
+
+        <p><b>Post id:</b> ${id}</p>
+
+        <p><b>Author id:</b> ${userId}</p>
+
+        <p>${body}</p>
+
+        <div class="card-buttons">
+
+          <button
+            class="edit-btn"
+            data-id="${id}"
+          >
+            ✏️ Edit
+          </button>
+
+          <button
+            class="delete-btn"
+            data-id="${id}"
+          >
+            🗑 Delete
+          </button>
+
+        </div>
+
+      </li>
+    `,
+  )
+  .join("");
 
   postsList.insertAdjacentHTML("beforeend", markup);
 }
@@ -232,11 +255,11 @@ function filterPosts(keyword) {
     renderPosts(currentPosts);
     searchCounterEl.textContent = "";
     return;
-  } 
+  }
 
- const filteredPosts = currentPosts.filter(({ title }) =>
-    title.toLowerCase().includes(keyword)
- );
+  const filteredPosts = currentPosts.filter(({ title }) =>
+    title.toLowerCase().includes(keyword),
+  );
 
   console.log("Знайдені пости:", filteredPosts);
   console.log("Кількість знайдених:", filteredPosts.length);
@@ -302,8 +325,11 @@ function openConfirmModal() {
 }
 
 function closeConfirmModal() {
+
   confirmBackdrop.classList.add("is-hidden");
-  newPostData = null;
+
+  postIdToDelete = null;
+
 }
 
 //! ================= CREATE POST =================
@@ -353,8 +379,10 @@ async function createPost() {
     }
 
     const createdPost = await response.json();
-
+    newPostData = null;
+ 
     closeConfirmModal();
+
     closeModal();
 
     alert(`Пост створено. Його id: ${createdPost.id}`);
@@ -366,8 +394,54 @@ async function createPost() {
   }
 }
 
-function prevPage() {
+async function handleConfirmAction() {
 
+  if (postIdToDelete !== null) {
+
+    await deletePost(postIdToDelete);
+
+    return;
+  }
+
+  await createPost();
+
+}
+
+async function deletePost(postId) {
+
+  try {
+
+    const response = await fetch(
+      `${BaseURL}${EndPoint}/${postId}`,
+      {
+        method: "DELETE",
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error(
+        `Помилка видалення: ${response.status}`
+      );
+    }
+
+    postIdToDelete = null;
+
+    closeConfirmModal();
+
+    await getAllPosts();
+
+  } catch (error) {
+
+    console.error("Помилка deletePost:", error);
+
+    alert("Не вдалося видалити пост.");
+
+  }
+
+}
+
+
+async function prevPage() {
   if (currentPage === 1) {
     return;
   }
@@ -376,18 +450,10 @@ function prevPage() {
 
   inputPage.value = currentPage;
 
-  currentPosts = getPostsForPage(allPosts);
-
-  updateInfo();
-
-  renderPosts(currentPosts);
-
-  searchInput.value = "";
-  searchCounterEl.textContent = "";
+  await getAllPosts();
 }
 
-function nextPage() {
-
+async function nextPage() {
   if (currentPage === totalPages) {
     return;
   }
@@ -396,22 +462,13 @@ function nextPage() {
 
   inputPage.value = currentPage;
 
-  currentPosts = getPostsForPage(allPosts);
-
-  updateInfo();
-
-  renderPosts(currentPosts);
-
-  searchInput.value = "";
-  searchCounterEl.textContent = "";
+  await getAllPosts();
 }
 
 function updatePaginationButtons() {
-
   prevBtn.disabled = currentPage === 1;
 
   nextBtn.disabled = currentPage === totalPages || totalPages === 0;
-
 }
 
 function createSearchParams() {
@@ -421,6 +478,34 @@ function createSearchParams() {
   });
 
   return params.toString();
+}
+
+//! ================= CARD BUTTONS =================
+
+function handlePostButtons(event) {
+
+  const editBtn = event.target.closest(".edit-btn");
+
+  if (editBtn) {
+
+    const postId = Number(editBtn.dataset.id);
+
+    console.log("Редагувати:", postId);
+
+    return;
+  }
+
+const deleteBtn = event.target.closest(".delete-btn");
+
+if (deleteBtn) {
+
+    postIdToDelete = Number(deleteBtn.dataset.id);
+
+    openConfirmModal();
+
+    return;
+}
+
 }
 //! ================= START =================
 // getAllPosts();
