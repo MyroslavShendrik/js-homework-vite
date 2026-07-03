@@ -37,6 +37,8 @@ const prevBtn = document.querySelector(".prev-btn");
 const nextBtn = document.querySelector(".next-btn");
 searchBox.hidden = true;
 infoBox.hidden = true;
+prevBtn.hidden = false;
+nextBtn.hidden = false;
 //? ================= STATE =================
 let currentPage = 1;
 let totalPosts = 0;
@@ -81,7 +83,7 @@ async function getAllPosts() {
   let page = Number(inputPage.value);
   console.log("limit:", limit);
   if (limit < 1 || limit > 10) {
-    alert("Кількість постів на сторінці повинна бути від 1 до 10");
+    alert("Кількість постів на сторінці повАинна бути від 1 до 10");
     return;
   }
 
@@ -137,6 +139,8 @@ async function getAllPosts() {
     searchCounterEl.textContent = "";
   } catch (error) {
     console.error("Помилка getAllPosts:", error);
+    prevBtn.hidden = true;
+    nextBtn.hidden = true;
 
     postsList.innerHTML = `
       <li>
@@ -150,9 +154,9 @@ async function getAllPosts() {
 //! ================= PAGINATION =================
 // function getPostsForPage(posts) {
 //   console.log("posts:", posts);
-  // const limit = Number(inputLimit.value);
-  // const startIndex = (currentPage - 1) * limit;
-  // const endIndex = startIndex + limit;
+// const limit = Number(inputLimit.value);
+// const startIndex = (currentPage - 1) * limit;
+// const endIndex = startIndex + limit;
 
 //   currentPosts = posts;
 //   console.log("currentPosts:", currentPosts);
@@ -194,9 +198,9 @@ function renderPosts(posts, keyword = "") {
 
   // });
   //! var 2
-const markup = posts
-  .map(
-    ({ id, userId, title, body }) => `
+  const markup = posts
+    .map(
+      ({ id, userId, title, body }) => `
       <li class="list-item">
 
         <h3>${highlightText(title, keyword)}</h3>
@@ -227,8 +231,8 @@ const markup = posts
 
       </li>
     `,
-  )
-  .join("");
+    )
+    .join("");
 
   postsList.insertAdjacentHTML("beforeend", markup);
 }
@@ -325,11 +329,10 @@ function openConfirmModal() {
 }
 
 function closeConfirmModal() {
-
   confirmBackdrop.classList.add("is-hidden");
 
   postIdToDelete = null;
-
+  newPostData = null;
 }
 
 //! ================= CREATE POST =================
@@ -379,8 +382,7 @@ async function createPost() {
     }
 
     const createdPost = await response.json();
-    newPostData = null;
- 
+
     closeConfirmModal();
 
     closeModal();
@@ -395,33 +397,23 @@ async function createPost() {
 }
 
 async function handleConfirmAction() {
-
   if (postIdToDelete !== null) {
-
     await deletePost(postIdToDelete);
 
     return;
   }
 
   await createPost();
-
 }
 
 async function deletePost(postId) {
-
   try {
-
-    const response = await fetch(
-      `${BaseURL}${EndPoint}/${postId}`,
-      {
-        method: "DELETE",
-      }
-    );
+    const response = await fetch(`${BaseURL}${EndPoint}/${postId}`, {
+      method: "DELETE",
+    });
 
     if (!response.ok) {
-      throw new Error(
-        `Помилка видалення: ${response.status}`
-      );
+      throw new Error(`Помилка видалення: ${response.status}`);
     }
 
     postIdToDelete = null;
@@ -429,17 +421,12 @@ async function deletePost(postId) {
     closeConfirmModal();
 
     await getAllPosts();
-
   } catch (error) {
-
     console.error("Помилка deletePost:", error);
 
     alert("Не вдалося видалити пост.");
-
   }
-
 }
-
 
 async function prevPage() {
   if (currentPage === 1) {
@@ -483,11 +470,9 @@ function createSearchParams() {
 //! ================= CARD BUTTONS =================
 
 function handlePostButtons(event) {
-
   const editBtn = event.target.closest(".edit-btn");
 
   if (editBtn) {
-
     const postId = Number(editBtn.dataset.id);
 
     console.log("Редагувати:", postId);
@@ -495,17 +480,15 @@ function handlePostButtons(event) {
     return;
   }
 
-const deleteBtn = event.target.closest(".delete-btn");
+  const deleteBtn = event.target.closest(".delete-btn");
 
-if (deleteBtn) {
-
+  if (deleteBtn) {
     postIdToDelete = Number(deleteBtn.dataset.id);
 
     openConfirmModal();
 
     return;
-}
-
+  }
 }
 //! ================= START =================
 // getAllPosts();
