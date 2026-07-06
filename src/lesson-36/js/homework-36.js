@@ -254,12 +254,20 @@ function filterPosts(keyword) {
     return;
   }
 
-  if (keyword === "") {
-    // const postsForCurrentPage = getPostsForPage(allPosts);
-    renderPosts(currentPosts);
-    searchCounterEl.textContent = "";
-    return;
-  }
+  prevBtn.hidden = true;
+  nextBtn.hidden = true;
+
+if (keyword === "") {
+
+  renderPosts(currentPosts);
+
+  searchCounterEl.textContent = "";
+
+  prevBtn.hidden = false;
+  nextBtn.hidden = false;
+
+  return;
+}
 
   const filteredPosts = currentPosts.filter(({ title }) =>
     title.toLowerCase().includes(keyword),
