@@ -30,6 +30,9 @@ const confirmBackdrop = document.querySelector(".confirm-backdrop");
 const confirmBtn = document.querySelector(".confirm-btn");
 const rejectBtn = document.querySelector(".reject-btn");
 
+const confirmTitle = document.querySelector(".confirm-modal h2");
+const confirmText = document.querySelector(".confirm-modal p");
+
 const searchBox = document.querySelector(".search-box");
 const infoBox = document.querySelector(".info-box");
 
@@ -46,6 +49,7 @@ let totalPages = 0;
 let allPosts = [];
 let newPostData = null;
 let postIdToDelete = null;
+let postIdToEdit = null;
 let currentPosts = [];
 
 //? ================= LISTENERS =================
@@ -328,19 +332,40 @@ function openModal() {
 }
 
 function closeModal() {
-  backdrop.classList.add("is-hidden");
-  createPostForm.reset();
-}
 
-function openConfirmModal() {
+    backdrop.classList.add("is-hidden");
+
+    createPostForm.reset();
+
+    postIdToEdit = null;
+
+}
+function openConfirmModal(title, text, buttonText) {
+
+  confirmTitle.textContent = title;
+
+  confirmText.textContent = text;
+
+  confirmBtn.textContent = buttonText;
+
   confirmBackdrop.classList.remove("is-hidden");
+
 }
 
 function closeConfirmModal() {
+
   confirmBackdrop.classList.add("is-hidden");
 
+  confirmTitle.textContent = "Підтвердження";
+
+  confirmText.textContent = "Ви впевнені?";
+
+  confirmBtn.textContent = "Підтвердити";
+
   postIdToDelete = null;
+
   newPostData = null;
+
 }
 
 //! ================= CREATE POST =================
@@ -361,13 +386,29 @@ function handleCreateFormSubmit(event) {
     return;
   }
 
-  newPostData = {
+newPostData = {
     userId,
     title,
     body,
-  };
+};
 
-  openConfirmModal();
+if (postIdToEdit !== null) {
+
+    openConfirmModal(
+        "Редагування поста",
+        "Зберегти зміни?",
+        "Зберегти"
+    );
+
+} else {
+
+    openConfirmModal(
+        "Створення поста",
+        "Ви дійсно хочете створити цей пост?",
+        "Створити"
+    );
+
+}
 }
 
 //! ================= POST REQUEST =================
@@ -404,17 +445,67 @@ async function createPost() {
   }
 }
 
+async function updatePost() {
+
+    try {
+
+        const response = await fetch(
+            `${BaseURL}${EndPoint}/${postIdToEdit}`,
+            {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(newPostData),
+            }
+        );
+
+        if (!response.ok) {
+            throw new Error(`Помилка редагування: ${response.status}`);
+        }
+
+        closeConfirmModal();
+        closeModal();
+
+        postIdToEdit = null;
+
+        await getAllPosts();
+
+    } catch (error) {
+
+        console.error("Помилка updatePost:", error);
+
+        alert("Не вдалося оновити пост.");
+
+    }
+
+}
+
 async function handleConfirmAction() {
-  if (postIdToDelete !== null) {
-    await deletePost(postIdToDelete);
 
-    return;
-  }
+    if (postIdToDelete !== null) {
 
-  await createPost();
+        await deletePost(postIdToDelete);
+
+        return;
+
+    }
+
+    if (postIdToEdit !== null) {
+
+        await updatePost();
+
+        return;
+
+    }
+
+    await createPost();
+
 }
 
 async function deletePost(postId) {
+  console.log("postId:", postId);
+console.log("URL:", `${BaseURL}${EndPoint}/${postId}`);
   try {
     const response = await fetch(`${BaseURL}${EndPoint}/${postId}`, {
       method: "DELETE",
@@ -478,22 +569,43 @@ function createSearchParams() {
 //! ================= CARD BUTTONS =================
 
 function handlePostButtons(event) {
+  console.log("Edit натиснули");
   const editBtn = event.target.closest(".edit-btn");
 
-  if (editBtn) {
-    const postId = Number(editBtn.dataset.id);
+if (editBtn) {
 
-    console.log("Редагувати:", postId);
+    postIdToEdit = Number(editBtn.dataset.id);
+
+console.log(postIdToEdit);
+console.log(currentPosts);
+
+const post = currentPosts.find(
+    ({ id }) => Number(id) === postIdToEdit
+);
+
+    console.log(post);
+
+    if (!post) return;
+
+    userIdInput.value = post.userId;
+    titleInput.value = post.title;
+    bodyInput.value = post.body;
+
+    openModal();
 
     return;
-  }
+}
 
   const deleteBtn = event.target.closest(".delete-btn");
 
   if (deleteBtn) {
     postIdToDelete = Number(deleteBtn.dataset.id);
 
-    openConfirmModal();
+    openConfirmModal(
+  "Видалення поста",
+  `Видалити пост №${postIdToDelete}?`,
+  "Видалити"
+);
 
     return;
   }
