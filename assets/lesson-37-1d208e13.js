@@ -1,4 +1,4 @@
-import"./modulepreload-polyfill-3cfb730f.js";import{H as n}from"./handlebars-aa0ac26f.js";const e=`<div class="menu">
+import"./modulepreload-polyfill-3cfb730f.js";import{H as t}from"./handlebars-aa0ac26f.js";const n=`<div class="menu">
   <h1 class="header__title">{{headerTitle}}</h1>
   <nav>
   <ul class="header__menu">
@@ -18,4 +18,7 @@ import"./modulepreload-polyfill-3cfb730f.js";import{H as n}from"./handlebars-aa0
       <li class="header__menu-item"><a href="encyclopedia.html">Енциклопедія</a></li>
       <li class="header__menu-item"><a href="shop.html">Магазин</a></li>
     </ul>
-  </nav> --}}`;console.log("Star Wars");const l=document.querySelector("#container");console.log("cardTemplate:",e);const r={headerTitle:"Star Wars Fan Hub",headerMenu:["Про сайт","Всесвіт","Сила","Джедаї і Сітхи","Війни","Енциклопедія","Магазин"]},s=n.compile(e),a=s(r);console.log("markup:",a);l.innerHTML=a;
+  </nav> --}}`;console.log("Star Wars");const r=document.querySelector("#container");console.log("cardTemplate:",n);//!var1
+//!var2
+//! Створюємо рядок запиту,
+const c="http://localhost:3000/",o="starWars",s=`${c}${o}`;console.log("url:",s);async function i(){try{const a=await(await fetch(s)).json();console.log("data:",a.page1.header);const l=t.compile(n)(a.page1.header);r.innerHTML=l}catch(e){console.log(e)}}i();
