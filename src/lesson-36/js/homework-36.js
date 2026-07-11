@@ -50,6 +50,7 @@ let allPosts = [];
 let newPostData = null;
 let postIdToDelete = null;
 let postIdToEdit = null;
+let activeCommentPostId = null;
 let currentPosts = [];
 
 //? ================= LISTENERS =================
@@ -80,7 +81,7 @@ confirmBackdrop.addEventListener("click", (event) => {
   }
 });
 postsList.addEventListener("click", handlePostButtons);
-
+postsList.addEventListener("submit", handleCommentSubmit);
 //! ================= GET ALL POSTS =================
 async function getAllPosts() {
   const limit = Number(inputLimit.value);
@@ -178,67 +179,123 @@ function updateInfo() {
 
 //! ================= RENDER POSTS =================
 function renderPosts(posts, keyword = "") {
-  console.log("posts:", posts);
+  console.trace("renderPosts");
+  console.log("activeCommentPostId:",activeCommentPostId);
   postsList.innerHTML = "";
 
-  if (posts.length === 0) {
+  if (!posts.length) {
     postsList.innerHTML = "<li>Пости не знайдені 😕</li>";
     return;
   }
-  //!var 1
-  // posts.forEach(({ id, userId, title, body }) => {
-  //   const postItem = document.createElement("li");
 
-  //   postItem.classList.add("list-item");
-
-  //   postItem.innerHTML = `
-  //     <h3>${highlightText(title, keyword)}</h3>
-  //     <p><b>Post id:</b> ${id}</p>
-  //     <p><b>Author id:</b> ${userId}</p>
-  //     <p>${body}</p>
-  //   `;
-
-  //   postsList.appendChild(postItem);
-
-  // });
-  //! var 2
   const markup = posts
-    .map(
-      ({ id, userId, title, body }) => `
-      <li class="list-item">
+    .map(({ id, userId, title, body, comments = [] }) => {
+      const commentsMarkup = comments.length
+        ? comments
+            .map(
+              ({ author, text, createdAt }) => `
+                <li class="comment-item">
+                  <b>${author}</b>
+                  <span class="comment-date">${createdAt}</span>
+                  <p>${text}</p>
+                </li>
+              `,
+            )
+            .join("")
+        : `<li class="empty-comments">Коментарів ще немає</li>`;
 
-        <h3>${highlightText(title, keyword)}</h3>
+console.log(
+  typeof id,
+  id,
+  typeof activeCommentPostId,
+  activeCommentPostId
+);
 
-        <p><b>Post id:</b> ${id}</p>
+      return `
+<li class="list-item">
 
-        <p><b>Author id:</b> ${userId}</p>
+<h3>${highlightText(title, keyword)}</h3>
 
-        <p>${body}</p>
+<p><b>Post id:</b> ${id}</p>
 
-        <div class="card-buttons">
+<p><b>Author id:</b> ${userId}</p>
 
-          <button
-            class="edit-btn"
-            data-id="${id}"
-          >
-            ✏️ Edit
-          </button>
+<p>${body}</p>
 
-          <button
-            class="delete-btn"
-            data-id="${id}"
-          >
-            🗑 Delete
-          </button>
+<div class="card-buttons">
 
-        </div>
+<button
+class="edit-btn"
+data-id="${id}">
+✏️ Edit
+</button>
 
-      </li>
-    `,
-    )
+<button
+class="delete-btn"
+data-id="${id}">
+🗑 Delete
+</button>
+
+<button
+class="comment-btn"
+data-id="${id}">
+💬 Add comment
+</button>
+
+</div>
+
+<div class="comments">
+
+<h4>Comments</h4>
+
+<ul>
+
+${commentsMarkup}
+
+</ul>
+
+${
+  activeCommentPostId === id
+    ? `
+<form class="comment-form" data-id="${id}">
+
+<input
+class="comment-author"
+placeholder="Author"
+required>
+
+<textarea
+class="comment-text"
+placeholder="Comment"
+required></textarea>
+
+<div class="comment-buttons">
+
+<button type="submit">
+Save
+</button>
+
+<button
+type="button"
+class="cancel-comment">
+Cancel
+</button>
+
+</div>
+
+</form>
+`
+    : ""
+}
+
+</div>
+
+</li>
+`;
+    })
     .join("");
 
-  postsList.insertAdjacentHTML("beforeend", markup);
+  postsList.innerHTML = markup;
 }
 
 //! ================= SEARCH =================
@@ -609,6 +666,120 @@ const post = currentPosts.find(
 
     return;
   }
+
+const commentBtn = event.target.closest(".comment-btn");
+
+console.log("commentBtn:", commentBtn);
+
+if (commentBtn) {
+
+    console.log("ID =", commentBtn.dataset.id);
+
+    activeCommentPostId = Number(commentBtn.dataset.id);
+
+    console.log("active =", activeCommentPostId);
+
+    renderPosts(currentPosts);
+
+}
+const cancelBtn = event.target.closest(".cancel-comment");
+
+if (cancelBtn) {
+
+    activeCommentPostId = null;
+
+    renderPosts(currentPosts, searchInput.value.trim());
+
+    return;
+
+}
+}
+
+
+async function handleCommentSubmit(event) {
+
+    event.preventDefault();
+
+    const form = event.target;
+
+    if (!form.classList.contains("comment-form")) {
+        return;
+    }
+
+    const postId = Number(form.dataset.id);
+
+    const author = form
+        .querySelector(".comment-author")
+        .value
+        .trim();
+
+    const text = form
+        .querySelector(".comment-text")
+        .value
+        .trim();
+
+    if (!author || !text) {
+        alert("Заповніть усі поля.");
+        return;
+    }
+
+    const post = currentPosts.find(
+        ({ id }) => Number(id) === postId
+    );
+
+    if (!post) {
+        return;
+    }
+
+    const comments = post.comments || [];
+
+    const newComment = {
+        id: Date.now(),
+        author,
+        text,
+        createdAt: new Date().toLocaleString("uk-UA"),
+    };
+
+    comments.push(newComment);
+
+    await saveComments(postId, comments);
+
+}
+
+
+async function saveComments(postId, comments) {
+
+    try {
+
+        const response = await fetch(
+            `${BaseURL}${EndPoint}/${postId}`,
+            {
+                method: "PATCH",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    comments,
+                }),
+            }
+        );
+
+        if (!response.ok) {
+            throw new Error("Помилка PATCH");
+        }
+
+        activeCommentPostId = null;
+
+        await getAllPosts();
+
+    } catch (error) {
+
+        console.error(error);
+
+        alert("Не вдалося додати коментар.");
+
+    }
+
 }
 //! ================= START =================
 // getAllPosts();
