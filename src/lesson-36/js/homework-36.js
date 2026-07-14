@@ -1,6 +1,6 @@
 const BaseURL = "http://localhost:3000/";
 const EndPoint = "posts";
-
+const url =`${BaseURL}${EndPoint}`
 //? ================= INPUTS =================
 const inputLimit = document.querySelector(".limit-input");
 const inputPage = document.querySelector(".page-input");
@@ -696,10 +696,13 @@ async function handleCommentSubmit(event) {
     event.preventDefault();
 
     const form = event.target;
-
+//! можлива не потрібна 
     if (!form.classList.contains("comment-form")) {
+      console.log("виходимо з функції  handleCommentSubmit")
         return;
     }
+
+
 
     const postId = Number(form.dataset.id);
 
@@ -725,7 +728,7 @@ async function handleCommentSubmit(event) {
     if (!post) {
         return;
     }
-
+console.log("post.comments:",post.comments)
     const comments = post.comments || [];
 
     const newComment = {
@@ -747,7 +750,7 @@ async function saveComments(postId, comments) {
     try {
 
         const response = await fetch(
-            `${BaseURL}${EndPoint}/${postId}`,
+            `${url}/${postId}`,
             {
                 method: "PATCH",
                 headers: {
