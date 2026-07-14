@@ -111,7 +111,10 @@ async function getAllPosts() {
 
     console.log("data:", data);
 
-    allPosts = data.data;
+    allPosts = data.data.map(post => ({
+  ...post,
+  id: Number(post.id),
+}));
     currentPosts = allPosts;
 
     totalPosts = data.items;
@@ -255,7 +258,7 @@ ${commentsMarkup}
 </ul>
 
 ${
-  activeCommentPostId === id
+  activeCommentPostId === Number(id)
     ? `
 <form class="comment-form" data-id="${id}">
 
@@ -296,6 +299,7 @@ Cancel
     .join("");
 
   postsList.innerHTML = markup;
+  console.log(document.querySelector(".comment-form"));
 }
 
 //! ================= SEARCH =================
@@ -626,21 +630,40 @@ function createSearchParams() {
 //! ================= CARD BUTTONS =================
 
 function handlePostButtons(event) {
-  console.log("Edit натиснули");
+
+  const commentBtn = event.target.closest(".comment-btn");
+
+  if (commentBtn) {
+
+    activeCommentPostId = Number(commentBtn.dataset.id);
+
+    console.log("Відкриваємо форму для", activeCommentPostId);
+
+    renderPosts(currentPosts);
+
+console.log("ПЕРЕД renderPosts", activeCommentPostId);
+
+    return;
+  }
+
+  const cancelBtn = event.target.closest(".cancel-comment");
+
+  if (cancelBtn) {
+
+    activeCommentPostId = null;
+
+    renderPosts(currentPosts);
+
+    return;
+  }
+
   const editBtn = event.target.closest(".edit-btn");
 
-if (editBtn) {
+  if (editBtn) {
 
     postIdToEdit = Number(editBtn.dataset.id);
 
-console.log(postIdToEdit);
-console.log(currentPosts);
-
-const post = currentPosts.find(
-    ({ id }) => Number(id) === postIdToEdit
-);
-
-    console.log(post);
+    const post = currentPosts.find(({ id }) => Number(id) === postIdToEdit);
 
     if (!post) return;
 
@@ -651,48 +674,20 @@ const post = currentPosts.find(
     openModal();
 
     return;
-}
+  }
 
   const deleteBtn = event.target.closest(".delete-btn");
 
   if (deleteBtn) {
+
     postIdToDelete = Number(deleteBtn.dataset.id);
 
     openConfirmModal(
-  "Видалення поста",
-  `Видалити пост №${postIdToDelete}?`,
-  "Видалити"
-);
-
-    return;
+      "Видалення поста",
+      `Видалити пост №${postIdToDelete}?`,
+      "Видалити"
+    );
   }
-
-const commentBtn = event.target.closest(".comment-btn");
-
-console.log("commentBtn:", commentBtn);
-
-if (commentBtn) {
-
-    console.log("ID =", commentBtn.dataset.id);
-
-    activeCommentPostId = Number(commentBtn.dataset.id);
-
-    console.log("active =", activeCommentPostId);
-
-    renderPosts(currentPosts);
-
-}
-const cancelBtn = event.target.closest(".cancel-comment");
-
-if (cancelBtn) {
-
-    activeCommentPostId = null;
-
-    renderPosts(currentPosts, searchInput.value.trim());
-
-    return;
-
-}
 }
 
 

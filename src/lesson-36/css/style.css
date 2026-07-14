@@ -330,3 +330,51 @@ input {
   transform: scale(1.05);
 
 }
+
+
+.comment-btn {
+  padding: 10px 18px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  background: royalblue;
+  color: white;
+  font-weight: bold;
+}
+
+.comment-btn:hover {
+  transform: scale(1.05);
+}
+
+.comments {
+  margin-top: 20px;
+}
+
+.comment-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+.comment-form input,
+.comment-form textarea {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 8px;
+}
+
+.comment-buttons {
+  display: flex;
+  gap: 10px;
+}
+
+.comment-item {
+  margin-bottom: 10px;
+}
+
+.comment-date {
+  margin-left: 10px;
+  color: gray;
+  font-size: 12px;
+}
